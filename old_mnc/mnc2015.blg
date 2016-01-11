@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2015)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: mnc2015.aux
+The style file: ans.bst
+Database file #1: references.bib
+Warning--entry type for "willert" isn't style-file defined
+--line 247 of file references.bib
+You've used 16 entries,
+            2272 wiz_defined-function locations,
+            612 strings with 6724 characters,
+and the built_in function-call counts, 5034 in all, are:
+= -- 299
+> -- 149
+< -- 0
++ -- 56
+- -- 40
+* -- 427
+:= -- 551
+add.period$ -- 29
+call.type$ -- 16
+change.case$ -- 2
+chr.to.int$ -- 0
+cite$ -- 16
+duplicate$ -- 552
+empty$ -- 512
+format.name$ -- 53
+if$ -- 1033
+int.to.chr$ -- 0
+int.to.str$ -- 16
+missing$ -- 142
+newline$ -- 52
+num.names$ -- 16
+pop$ -- 192
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 56
+stack$ -- 0
+substring$ -- 237
+swap$ -- 397
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 31
+width$ -- 18
+write$ -- 141
+(There was 1 warning)
