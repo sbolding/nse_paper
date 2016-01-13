@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  6 JAN 2016 16:47
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  13 JAN 2016 10:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -904,6 +904,9 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <6> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
 
 
+LaTeX Warning: Reference `lo_cont' on page 1 undefined on input line 199.
+
+
 Package Fancyhdr Warning: \headheight is too small (14.0pt): 
  Make it at least 17.82594pt.
  We now make it that large for the rest of the document.
@@ -912,88 +915,95 @@ Package Fancyhdr Warning: \headheight is too small (14.0pt):
 [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 ]
-[2] [3] [4] [5] [6] [7]
-<figures/marshak_mesh_conv.pdf, id=44, 517.71071pt x 409.79662pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [2]
+[3] [4] [5] [6]
+
+LaTeX Warning: Citation `MCNP' on page 7 undefined on input line 566.
+
+[7] <figures/marshak_mesh_conv.pdf, id=44, 517.71071pt x 409.79662pt>
 File: figures/marshak_mesh_conv.pdf Graphic file (type pdf)
 
 <use figures/marshak_mesh_conv.pdf>
-Package pdftex.def Info: figures/marshak_mesh_conv.pdf used on input line 648.
+Package pdftex.def Info: figures/marshak_mesh_conv.pdf used on input line 689.
 (pdftex.def)             Requested size: 232.53pt x 184.0566pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 649.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 690.
 
 <figures/marshak_200_compare.pdf, id=45, 508.9671pt x 409.79662pt>
 File: figures/marshak_200_compare.pdf Graphic file (type pdf)
 
 <use figures/marshak_200_compare.pdf>
-Package pdftex.def Info: figures/marshak_200_compare.pdf used on input line 653
+Package pdftex.def Info: figures/marshak_200_compare.pdf used on input line 694
 .
 (pdftex.def)             Requested size: 232.53pt x 187.22687pt.
 
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 646--656
+Overfull \hbox (2.08049pt too wide) in paragraph at lines 687--697
 []$[]$ $[]$ 
  []
 
-[8 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
+[8] [9 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/marshak_200_compar
-e.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] [9] <figures/two_mat_conv.pdf, id=155, 501.29784pt x 409.79662pt>
+pdfTeX warning: pdflatex (file ./figures/marshak_200_compare.pdf): PDF inclusio
+n: multiple pdfs with page group included in a single page
+>] [10] <figures/two_mat_conv.pdf, id=158, 501.29784pt x 409.79662pt>
 File: figures/two_mat_conv.pdf Graphic file (type pdf)
 
 <use figures/two_mat_conv.pdf>
-Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 752.
+Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 809.
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
-<figures/two_mat_ho_compare.pdf, id=156, 501.29784pt x 409.79662pt>
+<figures/two_mat_ho_compare.pdf, id=159, 501.29784pt x 409.79662pt>
 File: figures/two_mat_ho_compare.pdf Graphic file (type pdf)
 
 <use figures/two_mat_ho_compare.pdf>
-Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 756.
+Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 813.
 
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 750--759
+Overfull \hbox (2.08049pt too wide) in paragraph at lines 807--816
 []$[]$ $[]$ 
  []
 
+[11 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
 
-Underfull \vbox (badness 1642) has occurred while \output is active []
+pdfTeX warning: pdflatex (file ./figures/two_mat_ho_compare.pdf): PDF inclusion
+: multiple pdfs with page group included in a single page
+>] (./mnc2015.bbl [12]) [13] (./mnc2015.aux)
 
- [10 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
+LaTeX Warning: There were undefined references.
 
-pdfTeX warning: /Library/TeX/texbin/pdflatex (file ./figures/two_mat_ho_compare
-.pdf): PDF inclusion: multiple pdfs with page group included in a single page
->] (./mnc2015.bbl [11]) [12] (./mnc2015.aux) ) 
+ ) 
 Here is how much of TeX's memory you used:
- 21144 strings out of 493089
- 414686 string characters out of 6134842
- 447672 words of memory out of 5000000
- 24258 multiletter control sequences out of 15000+600000
+ 21147 strings out of 493089
+ 414709 string characters out of 6134842
+ 445682 words of memory out of 5000000
+ 24261 multiletter control sequences out of 15000+600000
  29551 words of font info for 71 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,14n,54p,10396b,484s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2015/texmf-di
-st/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmex10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pu
-blic/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfo
-nts/cm/cmr7.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmsy6.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/latxfon
-t/lcircle1.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmb8a
-.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr
-/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on mnc2015.pdf (12 pages, 272634 bytes).
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/te
+xlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texl
+ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texliv
+e/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/20
+15/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2015/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2015/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/
+fonts/type1/public/amsfonts/latxfont/lcircle1.pfb></usr/local/texlive/2015/texm
+f-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fon
+ts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/u
+rw/times/utmri8a.pfb>
+Output written on mnc2015.pdf (13 pages, 275496 bytes).
 PDF statistics:
- 328 PDF objects out of 1000 (max. 8388607)
- 134 compressed objects within 2 object streams
+ 332 PDF objects out of 1000 (max. 8388607)
+ 137 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

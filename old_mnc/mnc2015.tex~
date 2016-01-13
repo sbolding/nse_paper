@@ -177,7 +177,7 @@ material energy balance equations, i.e.,\vspace{-0.05in}
 \begin{align}\label{ho_cont}
     \frac{1}{c}\pderiv{I}{t} + \mu \pderiv{I}{x} + \sigma_t I
 &= \frac{\sigma_s}{2} \phi +\frac{1}{2} \sigma_a a c T^4
-  \\
+    \\ \label{t_cont}
   \rho c_v \pderiv{T}{t} &=  \sigma_a \phi - \sigma_a a c T^4.
 \end{align}
 In the above equations $x$ is the position, $t$ is the time, $\mu$ is
@@ -185,7 +185,7 @@ the $x$-direction cosine of the angular intensity $I(x,\mu,t)$, and $a$, $c$, $\
 and
 $c_v$ are the radiation constant, speed of light, mass density, and specific heat; $\sigma_a$, $\sigma_s$, and
 $\sigma_t$ are the absorption, scattering, and total
-opacities (cm$^{-1}$), respectively. The desired unknowns are the material
+cross sections (cm$^{-1}$), respectively. The desired unknowns are the material
 temperature $T(x,t)$ and the scalar radiation intensity $\phi(x,t)=\int_{-1}^1
 I(x,\mu,t) \d \mu$. The equations are
 strongly coupled through the gray Planckian emission source $\sigma_a a c T^4$, which
@@ -196,19 +196,25 @@ streaming and optically-thick, diffusive regions.
 
 Monte Carlo (MC) solution to the TRT equations is typically achieved by the 
 implicit Monte Carlo (IMC) method~\cite{fnc}. This
-method linearizes the emission source in time to eliminate the material temperature from the transport equation.  The remaining
-transport equation contains an approximate emission source, as well as an effective scattering cross section representing
+method linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{lo_cont} over a discrete time
+step.  The linearization of the system produces a transport equation that contains an approximate emission source and an effective scattering cross section representing
 absorption and reemission over a time step. This transport equation is solved using MC, with
-the time derivative treated continously.   In optically thick regions, or for
+the time derivative treated continously. The MC solution for energy depositon by the
+radiaiton is used to directly estimate
+a new end of time step temperature in each cell of a fixed mesh.  In optically thick regions, or for
 large time steps, the
 effective scattering dominates interactions.  In these diffusive regions IMC
-becomes computationally expensive. Acceleration methods typically attempt to improve efficiency by allowing particles to take discrete steps through optically thick regions based on a discrete diffusion approximation~\cite{imd,ddmc}. In IMC the approximate linearization of the emission source is
-not iterated on within a time step, imposing a limit on the time step size to produce physically
-accurate results~\cite{wollaber2013discrete}. 
+becomes computationally expensive. Acceleration methods typically attempt to improve
+efficiency by allowing particles to take discrete steps through optically thick
+regions based on a discrete diffusion approximation~\cite{imd,ddmc}. In IMC the
+approximate linearization of the emission source is not iterated on within a time
+step due to the large computational cost of the MC transport each time step.  This
+imposes a limit on the time step size to produce physically accurate
+results~\cite{wollaber2013discrete}. 
 
 Moment-based hybrid Monte Carlo (MC) methods provide an alternative solution.  Recent work has focused on fixed-point iteration high-order low-order (HOLO)
 approaches~\cite{willert,park,rmc,ans_2014}.  Such methods utilize a low-order (LO)
-operator based on angular moments of the transport equation, formulated over a coarse
+operator based on angular moments of the transport equation, formulated over a fixed
 spatial mesh. Physics operators that are time consuming for MC
 to resolve, e.g., absorption-reemission and scattering events, are moved to the LO
 system.  Newton methods allow for non-linearities in the LO equations to be fully
@@ -226,10 +232,26 @@ In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolt
 exponentially-convergent Monte Carlo (ECMC) method~\cite{jake} for the HO solver.
 The ECMC algorithm uses information about the intensity from the previous time step to reduce statistical noise to the same order as
 the HOLO iteration error with significantly less particle histories than standard MC
-simulations, with less computational time per history. We have derived the LO operator directly from the transport
+simulations, with less computational cost than IMC per history.  We have derived the LO operator directly from the transport
 equation, using a linear-discontinuous (LD) finite-element (FE) spatial
 discretization, such that the HO and LO solutions are converging towards the same solution.
-Herein we describe the algorithm and present results for two test problems.
+
+Our algorithm contains similarities to~\cite{rmc}. Essentially, a single batch of
+ECMC is the first batch of the residual MC~\cite{rmc} HO solver in.  OUr method gives us
+an estimate of the error in each of the moments (with some unknown statistical
+uncertainty).  We also have a LDFE trial space for the temperature and radiation
+spatial representaiton, allowing for the discretization to preserve the equilibrium
+diffusion limit.  The formulation of the residual in~\cite{rmc} can produce minimal
+statistical noise in slowly varying problems where the behavior of the system is near
+equilbrium. In problems where there is greater variance over a time step.  The LO
+system in~\cite{rmc} assumes an ansantz relation between the face and volume averaged
+values, which instead we will ultimately enforce strict spatial consistency with an
+LD FE representation and angularly we have simply taken integrals of the transport
+equation.
+
+
+
+
 
 \Subsection{Overview of the HOLO Algorithm}
 
@@ -420,7 +442,7 @@ Newton iterations are repeated until $\phi^{n+1}(x)$ and $T^{n+1}(x)$ are conver
 to a desired relative tolerance.  The lumping-equivalent discretization
 discussed above is used for cells where the solution for
 $\phi^{n+1}$ becomes negative. When negativities are detected, the lumping-equivalent discretization is used within
-those cells and that Newton step is repeated.  
+those cells and that Newton step is repeated. 
 %Application of the first order Taylor expansion in time of the
 %gray emission source, about some temperature $T^*$ at some
 %time near $t^{n+1}$ gives
@@ -456,6 +478,8 @@ evaluated at $T^{n+1,k}$.  As all sources on the right side of the equation are 
 this defines a fixed-source, pure absorber transport problem.  We will solve
 this equation using ECMC.  A more detailed description of the
 ECMC method can be found in~\cite{jake_thesis}, but a brief overview is given here.
+Because only a linear transport problem is solved, the formulation is the same with a
+modified source each outer iteration.
 
  In operator notation, the previous equation can be written as
 \begin{equation}\label{te_oper}
@@ -497,6 +521,10 @@ estimate of the error in $\tilde{I}^{n+1,(m)}$, i.e.,
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
 \end{equation}
 where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.
+This inversion is strictly a standard Monte Carlo simulation.  The primary difference
+is the source requires a finite element representation of the solution and can be
+both positive and negative.  
+that particle histories may now represent negative weight. 
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
 solution onto the trial space.  This is in general far more accurate than a standard finite element solution.
 For example, the LD trial space preserves the zeroth and first spatial moment over a
@@ -531,13 +559,25 @@ Exponential convergence is obtained because with each batch a
 better estimate of the solution is being used to compute the new residual, decreasing
 the magnitude of the Monte Carlo source each iteration $m$, relative to the solution
 $I^{n+1}$.  Each Monte Carlo
-estimate of $\epsilon$ still has a computable statistical uncertainty.  If the statistical estimate of $\tilde\epsilon$ is not sufficiently
-accurate, then the iterations would diverge. Because the exact angular intensity does not in general lie within the LD trial space, the
+estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
+bounded by the standard $1/\sqrt{N}$ convergence rate.  If the statistical estimate of $\tilde\epsilon$ is not sufficiently
+accurate, then the iterations would diverge. It is noted that although the
+uncertainty in $\epsilon$ can be estimated with standard second moment of
+tallies~\cite{MCNP}, the statistical uncertainty in $I^{(i)}$ cannot be easily
+estimated due to the generally unknown correlation between $I^{(i)}$ and the source
+$r^{(i)}$.
+
+Because the exact angular intensity does not in general lie within the LD trial space, the
 iterative estimate of the error will eventually stagnate once the error cannot be sufficiently
 represented by a given FE mesh.  Although mesh refinement is not performed in the
-calculations presented here, an adaptive $h-$refinement algorithm has been implemented that can be used to allow the system to continue converging towards the exact solution. 
+calculations presented here, an adaptive $h-$refinement algorithm has been
+implemented that can be used to allow the system to continue converging towards the
+exact solution. In general, for TRT problems, optically thick and slowly varying
+regions of the problem do not require as refined of a mesh to accurately capture the
+solution because there is less variance in the angular dependence of the solution.
 
 \Subsection{Variance Reduction and Source Sampling}
+
 
 As in~\cite{park}, because we are solving a pure absorber problem with Monte Carlo, we will allow
 particles to stream without absorption to reduce statistical 
@@ -545,7 +585,8 @@ variance in the tallies.  The weight of particles is reduced deterministically a
 the path as they stream, with no need to sample a path length.  Because particles are exponentially attenuated, the normalized weight is
 adjusted as $w(x) = w(x_0)exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies are modified to account
 for the continuously changing weight. Histories are allowed to stream in this manner for 6 mean free paths
-before switching to analog path length sampling; this prevents the tracking of very small weight histories.
+before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
+continuously deposit weight until they reach 0.25\% of their original weight.
 
 As another way to improve efficiency and statistics, a modified systematic
 sampling
@@ -611,10 +652,6 @@ accuracy and robustness.
 
 \Section{Results}
 
-\Subsection{Marshak Wave}
-
-
-
 We will compare results of the HOLO method to IMC with
 a source tilting algorithm~\cite{jayenne}. In IMC the material and radiation energy fields are discretized spatially to solve for cell-averaged values.
 Inaccurate spatial representation of the emission source over a cell can result in
@@ -623,8 +660,13 @@ results referred to as ``teleportation error"~\cite{teleportation}.  The IMC met
 to mitigate this problem.  Source tilting reconstructs a more accurate
 linear-discontinuous representation of the
 emission source within a cell based on the cell-averaged material temperatures in adjacent
-cells. This is not necessary in our method because of the LD representation of the
-emission source.  
+cells. This reconstruction is not necessary in our method because of the LD representation of the
+emission source. We will also demonstrate the efficiency benefits of ECMC in our HOLO
+algorithm by comparing the results to the same HOLO algorithm if the HO solver
+is replaced with a standard Monte Carlo (SMC) algorithm.
+
+\Subsection{Marshak Wave}
+
 
 For the first problem, the radiation and material energies are initially in
 equilibrium at 2.5E-05 keV.   An isotropic incident intensity of 0.150 keV is applied
@@ -637,7 +679,7 @@ refinement, only performed one HOLO iteration per time
 step, and use a fixed 3 HO batches with equal number of histories per batch. A relative tolerance of 1.E-06 in the
 norm of $\phi(x)$ and $T(x)$ was used for the LO newton solver. Radiation energy
 distributions are plotted as an equivalent temperature given by
-$T_r=\sqrt[4]{\phi/(ac)}$.  Cell-averaged quantities are plotted.
+$T_r=(\phi/(ac))^{0.25}$.  Cell-averaged quantities are plotted.
 Although scattering physics
 can be handled by the LO solver in this method~\cite{ans_2014}, we have only considered pure absorber
 problems here.  
@@ -658,7 +700,7 @@ problems here.
 
 Fig.~\ref{marshak_mesh_conv} compares the cell-averaged radiation temperatures  for the
 IMC and HOLO method with ECMC, for various number of spatial mesh cells $N_c$.  For the HOLO solver, we have used
-4 equal-sized cells in $\mu$. For the cases
+4 equal-sized cells in $\mu$ for the finite-element angular mesh used by the ECMC solver. For the cases
 of $N_c=25$ and $N_c=200$, 4,000 histories per batch (12,000 per time step)  were used.  For $N_c=500$, 16,000 histories per batch were used due to increased number of cells that
 need to be sampled.  For all IMC calculations, 10$^5$ histories per time step were used. The solutions agree as the mesh is converged.  There is
 similar agreement in the location of the wave front due to the linear shape of the emission source over a cell.  The cells
@@ -677,9 +719,25 @@ time step, the statistical noise in the result is small relative to the magnitud
 $I^{n+1}$.  Also, the source sampling only places particles in cells where the residual is
 large.  No particles are sampled in the equilibrium region out front of the wave. 
 
-We have measured the total CPU time for simulations to provide a crude measure of the computational cost.  Absolute comparisons in the computational cost of the two methods are difficult to make. For instance, the IMC and HOLO methods are implemented in different code infrastructures. Additionally, the HOLO method fully resolves non-linearities at each time step, whereas IMC is using a single linearized step with lagged opacities.  A more thorough investigation of efficiency that accounts for statistical error and accuracy over larger time steps will be performed in future work.  
+We have measured the total CPU time for simulations to provide a crude measure of the
+computational cost.  Absolute comparisons in the computational cost of the two
+methods are difficult to make. For instance, the IMC and HOLO methods are implemented
+in different code infrastructures. Additionally, the HOLO method fully resolves
+non-linearities at each time step, whereas IMC is using a single linearized step with
+lagged opacities.  
 
-Table~\ref{marshak_table} compares simulation CPU times for IMC and the HOLO method with ECMC for different numbers of histories per time step.  Also given is one case with an increased time step size.   The HOLO method does not scale with the number of histories due to the fixed cost of the LO solver.  The cost of the LO solver is more significant at 12,000 histories per time step where IMC takes less time, whereas at $10^5$ histories the HOLO simulation takes less time.    The gain in efficiency of the HOLO method over IMC would be significant if the large reduction in statistical error, for the same number of histories, is considered.  Similar to the results in~\cite{park}, as the time step size is increased to to 0.005 sh, the IMC method increases in cost (per time step) more than the HOLO method. The increase in the IMC simulation time is due to the increased amount of (expensive) effective scattering events.   
+Table~\ref{marshak_table} compares simulation CPU times for IMC and the HOLO method
+with ECMC for different numbers of histories per time step.  Also given is one case
+with an increased time step size.   The HOLO method does not scale with the number of
+histories due to the fixed cost of the LO solver.  The cost of the LO solver is more
+significant at 12,000 histories per time step where IMC takes less time, whereas at
+$10^5$ histories the HOLO simulation takes less time.    The gain in efficiency of
+the HOLO method over IMC would be significant if the large reduction in statistical
+error, for the same number of histories, is considered.  Similar to the results
+in~\cite{park}, as the time step size is increased to to 0.005 sh, the IMC method
+increases in cost (per time step) more than the HOLO method. The increase in the IMC
+simulation time with a larger time step is due to the increased amount of (expensive) effective scattering
+events.   
 \begin{table}[H]
 \centering
 \caption{\label{marshak_table} \textbf{Total CPU time required for the Marshak Wave problem for 200 $x$ cells.  Simulation end time is $\mathbf{t=5}$ sh.}}
@@ -791,12 +849,12 @@ Future work will include comparisons of the HOLO method with IMC using a figure 
 merit to quantify the efficiency of the simulations when statistical noise is
 considered; the sensitivity of the method to mesh sizes and time step sizes will be
 investigated more thoroughly.  The loss of accuracy in optically thin regions due to the time discretization of
-the transport equation (which is required to form the residual in ECMC) will be analyzed.  Future
-work may consider higher accuracy time discretizations that
-provide greater accuracy in time, while still achieving stability~\cite{jarrod}. Do
-to the efficiency of the ECMC and HOLO algorithm such discretizations may be viable. 
-However, this is not of primary concern as this method is primarily intended for use in
-regions of high absorption-reemission where the LO acceleration is important.
+the transport equation (which is required to form the residual in ECMC) will be
+analyzed.  A formulazation of the ECMC method that allows for the trial space to be such that time-continous transport can
+be treated with Monte Carlo is currently being investigated; the additional sampling
+of the time variable will likely result in additional histories for problems where
+the time change is great over a time step.  However, greater time accuracy is not of primary concern as this method isintended for use in
+regions of high absorption-reemission where the LO acceleration is critical.
 
 Ultimately, we plan to extend this method to multiple spatial dimensions for the 
 case of multigroup TRT equations.  For TRT problems, it is important that
@@ -809,19 +867,34 @@ that the LO system correctly achieves the diffusion
 limit.  Further asymptotic
 analysis on the method will be applied before implementation.    It may be necessary to use a different LO system (e.g., the non-linear diffusion
 acceleration approach in~\cite{rmc}), if the S$_2$-like equations become too
-inefficient or difficult to implement in higher dimensions.  
+inefficient or difficult to implement in higher dimensions.  Alternatively, a
+variable Eddington Tensor approach may provide more stability in rapidly variable
+regions of the problem while still being
+efficiently solved.
 
 \section*{ACKNOWLEDGEMENTS}
 
 This research was performed using funding received from the DOE Office of Nuclear
-Energy's Nuclear Energy University Programs and under Los Alamos National Security, LLC, for the National Nuclear Security Administration of the U.S. Department of Energy under contract DE-AC52-06NA25396. 
+Energy's Nuclear Energy University Programs and under Los Alamos National Security,
+LLC, for the National Nuclear Security Administration of the U.S. Department of
+Energy under contract DE-AC52-06NA25396. 
+
 
 \setlength{\baselineskip}{12pt}
 %\Section*{REFERENCES}
 \bibliographystyle{ans}
 \bibliography{references}
 
+\appendix
 
+\section{Implementation of ECMC Tallies}
+
+To project onto the LD FE trial space, in $x$ and $\mu$, requires spatial and angular
+moments of the angular intensity to be tallied. For instance, the first 
+moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
+\begin{equation}
+    I_{x,j} = \int\limits_{mu_{j-1/2}}^\
+\end{equation}
 
 
 \end{document}
