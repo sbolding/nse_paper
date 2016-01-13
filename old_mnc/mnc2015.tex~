@@ -247,7 +247,9 @@ equilbrium. In problems where there is greater variance over a time step.  The L
 system in~\cite{rmc} assumes an ansantz relation between the face and volume averaged
 values, which instead we will ultimately enforce strict spatial consistency with an
 LD FE representation and angularly we have simply taken integrals of the transport
-equation.
+equation.  Generally, the minimum number of histories to obtain convergence with the
+LDFE trial space is larger than a piece-wise constant to accurately estimate the
+first moment in $x$ and $\mu$.
 
 
 
@@ -558,12 +560,13 @@ residual.
 Exponential convergence is obtained because with each batch a
 better estimate of the solution is being used to compute the new residual, decreasing
 the magnitude of the Monte Carlo source each iteration $m$, relative to the solution
+$I^{n+1}$. Thus the tallies of $\epsilon^{m}$ must have units relative to the solution
 $I^{n+1}$.  Each Monte Carlo
 estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
 bounded by the standard $1/\sqrt{N}$ convergence rate.  If the statistical estimate of $\tilde\epsilon$ is not sufficiently
 accurate, then the iterations would diverge. It is noted that although the
-uncertainty in $\epsilon$ can be estimated with standard second moment of
-tallies~\cite{MCNP}, the statistical uncertainty in $I^{(i)}$ cannot be easily
+uncertainty in $\epsilon$ can be estimated with standard samples standard deviation
+of each tally~\cite{shultis_mc}, the statistical uncertainty in $I^{(i)}$ cannot be easily
 estimated due to the generally unknown correlation between $I^{(i)}$ and the source
 $r^{(i)}$.
 
@@ -594,14 +597,16 @@ method~\cite{shultis_mc} was used for determining source particle locations.  Th
 histories to regions of importance, but to sample a sufficient number of histories in
 less probable regions to prevent large statistical noise.  However, there is no need
 to sample histories in regions that are in equilibrium and the solution is not
-changing over a time step. % By distributing the source according to the probability
-%of histories being born in each significant region of phase space, energy is locally distributed more accurately.  
+changing over a time step.
 The residual gives a good indication of where
-particles are most likely to contribute to the error, particularly in optically thick cells.
+histories are most likely to contribute to the error, particularly in optically thick
+cells where particles do not transport very far.  The residual consists of both face
+and volumetric sources~\cite{jake}.   
 In the sampling algorithm the number of particle histories sampled in
 each space-angle cell is predetermined and proportional to the magnitude of the
-residual in that cell.  Then, for the predetermined number of histories within a cell, the source
-location is randomly sampled according to the residual source distribution within that cell.  There is
+residual, including face and volumetric sources, within that cell.  Then, for the predetermined number of histories within a cell, the source
+location is randomly sampled according to the residual source distribution within
+that cell or face.  There is
 a relative probability cutoff such that cells with an insignificant
 residual will have no histories sampled there. In these regions the problem is
 remaining in equilibrium and the solution is known exactly.  
@@ -894,7 +899,8 @@ To project onto the LD FE trial space, in $x$ and $\mu$, requires spatial and an
 moments of the angular intensity to be tallied. For instance, the first 
 moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
 \begin{equation}
-    I_{x,j} = \int\limits_{mu_{j-1/2}}^\
+    I_{x,j} = \int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
+    \int\limits_{x_{i-1/2}}^{x_{i+1/2}}
 \end{equation}
 
 
