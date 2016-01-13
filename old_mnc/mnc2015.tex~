@@ -661,11 +661,12 @@ to mitigate this problem.  Source tilting reconstructs a more accurate
 linear-discontinuous representation of the
 emission source within a cell based on the cell-averaged material temperatures in adjacent
 cells. This reconstruction is not necessary in our method because of the LD representation of the
-emission source. We will also demonstrate the efficiency benefits of ECMC in our HOLO
+emission source. We will also demonstrate the efficiency advantage of ECMC in our HOLO
 algorithm by comparing the results to the same HOLO algorithm if the HO solver
 is replaced with a standard Monte Carlo (SMC) algorithm.
 
 \Subsection{Marshak Wave}
+
 
 
 For the first problem, the radiation and material energies are initially in
