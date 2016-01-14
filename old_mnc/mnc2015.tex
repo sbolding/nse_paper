@@ -62,6 +62,8 @@
 \newcommand{\xr}{{x_{i+1/2}}}
 \newcommand{\il}{{i-1/2}}
 \newcommand{\ir}{{i+1/2}}
+\newcommand{\jl}{{j-1/2}}
+\newcommand{\jr}{{j+1/2}}
 
 \graphicspath{{figures/}}
  
@@ -146,7 +148,7 @@ cleveland@lanl.gov \\
 \begin{quote}
 \begin{small}
 We have implemented a new high-order low-order (HOLO) algorithm for solving
-thermal radiative transfer problems.  The low-order (LO) system is based on spatial
+thermal radiative transfer (TRT) problems.  The low-order (LO) system is based on spatial
 and angular moments of the transport equation and a linear-discontinuous
 finite-element spatial representation, producing equations similar to the standard
 S$_2$ equations.  
@@ -161,8 +163,7 @@ terms.  We compare results with an
 implicit Monte Carlo (IMC) code for one-dimensional, gray test problems and 
 demonstrate the efficiency of ECMC over standard Monte Carlo in this algorithm.
 
-\emph{Key Words}: hybrid Monte Carlo, residual Monte Carlo, thermal radiative transfer,
-high order low order
+\emph{Key Words}: hybrid Monte Carlo, residual Monte Carlo, thermal radiative transfer
 
 \end{small} 
 \end{quote}
@@ -225,16 +226,20 @@ the angular intensity.  The MC estimate of the angular intensity is used to esti
 present in the LO equations, that require the LO system to preserve the angular accuracy of the
 MC solution; the HO system does not directly estimate a new material temperature,
 eliminating stability issues that require linearization of the emission source.
-However, sufficient MC histories must be performed to eliminate statistical
-noise in the consistency terms that can contaminate the LO solution.
 
-In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters} in conjunction with an
-exponentially-convergent Monte Carlo (ECMC) method~\cite{jake} for the HO solver.
-The ECMC algorithm uses information about the intensity from the previous time step to reduce statistical noise to the same order as
-the HOLO iteration error with significantly less particle histories than standard MC
-simulations, with less computational cost than IMC per history.  We have derived the LO operator directly from the transport
-equation, using a linear-discontinuous (LD) finite-element (FE) spatial
-discretization, such that the HO and LO solutions are converging towards the same solution.
+In the HOLO context, sufficient MC histories must be performed to eliminate statistical
+noise in the consistency terms that can contaminate the LO solution.
+Exponentially-convergent Monte Carlo provides an algorithm that can efficiently
+reduce statistical noise to the same order as the HOLO iteration error with
+significantly less particle histories than standard MC. In particular, ECMC is
+exceptionally good in the time-dependent TRT problems because information about the
+intensity from the previous time step can be used as an accurate initial guess to the
+problem. Additionally, no particle histories are required in regions of the problem
+where the problem is in equilibrium, similar to~\cite{rmc}.  However, implementation
+of ECMC is non-trivial, requiring a functional form of the solution in all
+phase-space variables that must be sampled from, and Monte Carlo sources that produce
+particels of both positive and negative weights.
+
 
 Our algorithm contains similarities to~\cite{rmc}. Essentially, a single batch of
 ECMC is the first batch of the residual MC~\cite{rmc} HO solver in.  OUr method gives us
@@ -251,9 +256,15 @@ equation.  Generally, the minimum number of histories to obtain convergence with
 LDFE trial space is larger than a piece-wise constant to accurately estimate the
 first moment in $x$ and $\mu$.
 
-
-
-
+In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters} in conjunction with an
+exponentially-convergent Monte Carlo (ECMC) method~\cite{jake} for the HO solver.
+The ECMC algorithm uses information about the intensity from the previous time step to reduce statistical noise to the same order as
+the HOLO iteration error with significantly less particle histories than standard MC
+simulations, with less computational cost than IMC per history.  We have derived the LO operator directly from the transport
+equation, using a linear-discontinuous (LD) finite-element (FE) spatial
+discretization, such that the HO and LO solutions are converging towards the same
+solution.
+Herein we describe the algorithm and present results for two test problems.
 
 \Subsection{Overview of the HOLO Algorithm}
 
@@ -498,7 +509,7 @@ $\tilde{I}^{n+1,(m)}$.
 The $m$-th residual is defined as $r^{(m)} = q - \B L\tilde{I}^{n+1,(m)}.$ 
 For reference, the residual at iteration $m$ in the HO solve
 is
-\begin{equation}
+\begin{equation}\label{eq:resid}
 r^{(m),k+1/2} = \frac{\sigma_s}{2} \phi^{n+1,k} +\frac{1}{2} \left(\sigma_a a c T^4
 \right)^{n+1,k} + \frac{\tilde{I}^n}{c \Delta t } -
 \left(\mu \pderiv{\tilde{I}^{n+1,k+1/2}}{x} +
@@ -895,13 +906,34 @@ Energy under contract DE-AC52-06NA25396.
 
 \section{Implementation of ECMC Tallies}
 
-To project onto the LD FE trial space, in $x$ and $\mu$, requires spatial and angular
+The HOLO algorithm uses a finite element representation in space and angle.  Over the
+$i$-th spatial and $j$-th angular cell, the linear representation is defined as
+\begin{equation}
+    \tilde I(x,\mu) = I_a + I
+\end{equation}
+for $x_\il <  x \leq x_\ir$ and $\mu_\jl \leq \mu \leq \mu_\jr$ where indices have
+been supressed for clarity and $I_a$ is the cell average intensity and $I_\mu$ and $I_x$ are
+the first moment in $\mu$ and $x$, respectively.  Standard upwinding is used to
+define the inflow at $x_{i-1/2}$. This representation can directly be plugged into
+Eq.~\eqref{eq:resid} and evaluated to produce the source in the ECMC HO transport
+problem.  
+
+During the MC simulation, a projection of the error in the current estimate of
+$\tilde{I}(x,\mu)$ is computed.  To project onto the LD FE trial space requires spatial and angular
 moments of the angular intensity to be tallied. For instance, the first 
 moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
 \begin{equation}
-    I_{x,j} = \int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
-    \int\limits_{x_{i-1/2}}^{x_{i+1/2}}
+    I_{x,ij} = \frac{6}{\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
+    \int\limits_{x_{i-1/2}}^{x_{i+1/2}} \left(\frac{x - x_i)}{h_{x_i}}\right)
+    I(x,\mu) \d x \d \mu.
 \end{equation}
+The $\mu$ moment and the moments of the intensity $I_a$, $I_\mu$, and $I_x$ are
+all defined analagously. The tally estimator is defined by integrating along each
+path in the cell as
+\begin{equation}
+    I_{x,ij} \simeq \frac{1}{h_xh_\mu} \int_{\Delta s_j}  w(x,\mu)
+\end{equation}
+where $w(x,\mu)$ is the normalized weight in the MC simulation. 
 
 
 \end{document}
