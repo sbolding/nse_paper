@@ -148,7 +148,7 @@ cleveland@lanl.gov \\
 \begin{quote}
 \begin{small}
 We have implemented a new high-order low-order (HOLO) algorithm for solving
-thermal radiative transfer (TRT) problems.  The low-order (LO) system is based on spatial
+thermal radiative transfer problems.  The low-order (LO) system is based on spatial
 and angular moments of the transport equation and a linear-discontinuous
 finite-element spatial representation, producing equations similar to the standard
 S$_2$ equations.  
@@ -923,7 +923,7 @@ $\tilde{I}(x,\mu)$ is computed.  To project onto the LD FE trial space requires 
 moments of the angular intensity to be tallied. For instance, the first 
 moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
 \begin{equation}
-    I_{x,ij} = \frac{6}{\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
+    I_{x,ij} = \frac{6}{h_xh_\mu}{\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
     \int\limits_{x_{i-1/2}}^{x_{i+1/2}} \left(\frac{x - x_i)}{h_{x_i}}\right)
     I(x,\mu) \d x \d \mu.
 \end{equation}
