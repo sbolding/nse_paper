@@ -649,22 +649,11 @@ constant throughout the entire simulation.
 
 For the HO solver, in cells near the radiation wave front, the LD trial space results in negativities in
 $\tilde{I}^{n+1}(x,\mu)$, as with the
-LO solver.  Currently, we do not treat these cells differently for the ECMC solve,
-but detect if the consistency terms lie in the appropriate half space at the end of the HO solve.  If the terms are non-physical, then
-they are set to the corresponding S$_2$-equivalent value.  This may lead to artificially fast
-wave-speeds in certain cells.  Future work will include using a different trial space
-or fixup to ensure the HO solution in these cells is strictly positive for greater
-accuracy and robustness.  
-%For the HO solver, in cells near the radiation wave front, the LD trial space results in negativities in
-%$\tilde{I}^{n+1}(x,\mu)$, as with the
-%LO solver.  Because the residual formulation in ECMC allows for negative weight
-%particles to occur, currently we do not treat these cells specially.  The
-%negativities can result in non-physical results for $I$, however.  We currently
-%switch to a
-%piece-wise constant finite element representation, in cells with negativities, for $\tilde{I}^{n+1}(x,\mu)$ at the
-%end of the HO solve to compute the consistency terms.  Cell aver  Future work will include investigating the
-%use of a strictly positive trial space representation in the residual to produce a
-%more accruate result in these cells  
+LO solver.  We currently force the solution within negative cells to be
+positive, after each batch. This is done such that we preserve the ratio of the
+first moment in $\mu$ to the first moment in $\x$. This modified solution will
+not satisfy the residual, however.  Thus, error will stagnate rapidly.  At the
+end of the solve, the strictly positive solution can be used to compute consistency terms without any issues:
 
 \Section{Results}
 
@@ -931,10 +920,19 @@ The $\mu$ moment and the moments of the intensity $I_a$, $I_\mu$, and $I_x$ are
 all defined analagously. The tally estimator is defined by integrating along each
 path in the cell as
 \begin{equation}
-    I_{x,ij} \simeq \frac{1}{h_xh_\mu} \int_{\Delta s_j}  w(x,\mu)
+    I_{x,ij} \simeq \frac{1}{h_xh_\mu} \int_{\Delta s_l}  w_l(x,\mu) \d s
 \end{equation}
-where $w(x,\mu)$ is the normalized weight in the MC simulation. 
-
+where $w(x,\mu)$ is the normalized weight in the MC simulation. Substituting the
+exponential attenuation of the weight produces the result for this tally as
+\begin{equation}
+    I_{x,ij} \simeq \frac{1}{h_x h_\mu} DERP.
+\end{equation}
+The tally for the first moment in $\mu$ is 
+\begin{equation}
+    I_{\mu,ij} \simeq \frac{6}{h_x h_\mu)\sum_{l=1}^N \frac{\mu - \mu_j}{h_\mu}
+        \frac{1 - exp\left( \frac{s} \right)
+\end{equation}
+where $s$ is the path length of the track within the cell of interest.
 
 \end{document}
 
