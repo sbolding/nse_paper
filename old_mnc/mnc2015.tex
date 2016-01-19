@@ -436,7 +436,7 @@ moments, e.g., $\phi^+_{i+1/2} = 2\mom{\phi}_R^+ - \mom{\phi}_L^+$.
 The HO ECMC solver computes an LDFE representation of the intensity, so the same spatial closure is used to relate volume and face averaged consistency terms.  Thus, the spatial closure between the LO and HO solvers are inherently
 consistent.  Because there are no
 spatial temperature derivatives, there is no need for an
-additional closure in $T$.  
+additional closure in $T$. The final LO equations can be found in Appendix??? 
 
 The LD closure is not strictly positive.  In particular, for
 optically thick cells with a steep intensity gradient, the solution becomes negative.  In thick regions of
@@ -495,7 +495,7 @@ I^{n+1,k+1/2}
 where the superscript $k$ represents the outer HOLO iteration index.  Material property indices will be
 suppressed from now on.  Here, $k+1/2$ denotes the
 ECMC solution within outer HOLO iteration $k$, whereas $k$ and $k+1$ represent successive LO
-solves. The sources at $k$ in Eq.~\eqref{eq:ho_base} have a LDFE spatial reprenstation and are estimated by the previous LO solution. Cross sections are
+solves. The sources at $k$ in Eq.~\eqref{eq:ho_base} are estimated by the previous LO solution. Cross sections are
 evaluated at $T^{n+1,k}$.  As all sources on the right side of the equation are known,
 this defines a fixed-source, pure absorber transport problem.  We will solve
 this equation using ECMC.  A more detailed description of the
@@ -523,52 +523,50 @@ r^{(m),k+1/2} = \frac{\sigma_s}{2} \phi^{n+1,k} +\frac{1}{2} \left(\sigma_a a c 
 \left(\sigma_t + \frac{1}{c \Delta t }\right) \tilde{I}^{n+1,k+1/2}\right)^{(m)}
 \end{equation}
 where the $k$ terms are LD in space on the coarsest mesh and are not recalculated at any point during
-the HO solve.  The functional form of $\tilde{I}^n$ is defined over the finest
-space-angle mesh from the final HOLO iteration of the previous time step.  
+the HO solve. The functional form of $\tilde{I}^n$ is defined from the final HO
+solution of the previous time step.  
 
 To define the ECMC algorithm, the HOLO iteration indices
 are dropped, as the LO estimated $q^{k}$ and $\B L^{k}$ remain constant over the entire HO solve.
 Addition of $\B L I^{n+1} - q=0$ to the residual equation 
 and manipulation of the result yields the error equation
 \begin{equation}
-    \B L (I^{n+1} - \tilde{I}^{n+1,(m)}) = \B L \tilde{\epsilon}^{(m)} = r^{(m)}
+    \B L (I^{n+1} - \tilde{I}^{n+1,(m)}) = \B L {\epsilon}^{(m)} = r^{(m)}
 \end{equation}
-where $I^{n+1}$ is the exact solution and $\tilde{\epsilon}^{(m)}$ is finite element
-representation of the error in
-$\tilde{I}^{n+1,(m)}$. The $\B L$ operator in the above equation is inverted yielding the Monte Carlo
-estimate of the error in $\tilde{I}^{n+1,(m)}$, i.e., 
+where $I^{n+1}$ is the exact solution and ${\epsilon}^{(m)}$ is the error in
+$\tilde{I}^{n+1,(m)}$. The $\B L$ operator in the above equation is inverted yielding
+the Monte Carlo LDFE projection of the error in $\tilde{I}^{n+1,(m)}$, i.e., 
 \begin{equation}
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
 \end{equation}
 where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.
-This inversion is strictly a standard Monte Carlo simulation.  The primary difference
-is the source requires a finite element representation of the solution and can be
-both positive and negative.  
-that particle histories may now represent negative weight. 
+This inversion is strictly a standard Monte Carlo simulation.  The space-angle moments of the
+error computed in $\tilde{\epsilon}^{(m)}$ are added to the moments of
+$\tilde{I}^{n+1},(m)$ to produce a more accurate solution.
+
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
-solution onto the trial space.  This is in general far more accurate than a standard finite element solution.
-For example, the LDFE trial space preserves the zeroth and first spatial moment over a
-cell; the zeroth moment is computed using a standard path-length volumetric flux tally, which
-is equivalent to typical volumetric averages computed in Monte Carlo calculations.  The primary truncation error is in the LD
-representation of the right hand side source terms and residual at each
-iteration.  Only volumetric flux tallies over all of the finest space-angle
-elements are used; tallies are computed for the average, slope in $x$, and slope in $\mu$ of
-$I^{n+1}(x,\mu)$ by weighting the tallies for $I^{n+1}$ with the appropriate basis
-function. 
+solution onto the trial space.  This is in general far more accurate than a standard
+finite element solution.  For example, in typical IMC calculations the average energy
+deposition within a cell is computed using a standard path-length volumetric flux
+tally; the zeroth moment of the LDFE projection of $\tilde{\epsilon}$ is computed
+using an equivalent tally.  The primary truncation error is in the LD
+representation of the right hand side source terms.  Volumetric flux tallies over
+each space-angle element are required to represent $\tilde{\epsilon}^{(m)}$.  The
+tallies are given in Appendix??? 
 
 The ECMC algorithm is
 \begin{enumerate}
     \item Initialize the guess for $\tilde{I}^{n+1,(0)}$ to $\tilde{I}^{n}$ or the
         projection of $\tilde{I}^{n+1}$ from the latest HO solve
 \item Compute $r^{(m)}$.
-\item Solve $\tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}$
+\item Perform a MC simulation to obtain $\tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}$
 \item Compute a new estimate of the intensity $\tilde I^{n+1,(m+1)} = \tilde I^{n+1,(m)}
 + \tilde\epsilon^{(m)}$
 \item Repeat steps 2 -- 4 until desired convergence criteria is achieved. 
 \end{enumerate}
 The initial guess for the angular intensity $I^{n+1,(0)}$ is computed based on the previous solution
 for $\tilde{I}^{n}$. This is a critical step in the algorithm; it significantly reduces the required number of
-particles per time step because $I$ does not change drastically between time steps in
+particles per time step because the intensity does not change drastically between time steps in
 optically thick regions.  It is noted that the ECMC batch (steps 1-4 of the
 algorithm) results in essentially the same estimate of the solution as the residual
 formulation used in~\cite{rmc}.  The primary difference is that our method uses an LDFE trial
@@ -578,15 +576,14 @@ residual.
 Exponential convergence is obtained because with each batch a
 better estimate of the solution is being used to compute the new residual, decreasing
 the magnitude of the Monte Carlo source each iteration $m$, relative to the solution
-$I^{n+1}$. Thus, the tallies of $\epsilon^{m}$ must have units relative to the solution
 $I^{n+1}$.  Each Monte Carlo
 estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
-bounded by the standard $1/\sqrt{N}$ convergence rate.  If the statistical estimate of $\tilde\epsilon$ is not sufficiently
+governed by the standard $1/\sqrt{N}$ convergence rate~\cite{shultis_mc}.  If the statistical estimate of $\tilde\epsilon$ is not sufficiently
 accurate, then the iterations would diverge. It is noted that although the
-uncertainty in $\epsilon$ can be estimated with standard samples standard deviation
-of each tally~\cite{shultis_mc}, the statistical uncertainty in $I^{(i)}$ cannot be easily
-estimated due to the generally unknown correlation between $I^{(i)}$ and the source
-$r^{(i)}$.
+variance in tallies of $\epsilon^{(m)}$ can be estimated with the sample variance of
+histories, the variance in the moments of $I^{n+1,(m)}$ cannot be easily
+estimated due to the correlation between $I^{n+1,(m)}$ and the source
+$r^{(m)}$.
 
 Because the exact angular intensity does not in general lie within the LDFE trial space, the
 iterative estimate of the error will eventually stagnate once the error cannot be sufficiently
@@ -595,12 +592,12 @@ calculations presented here, an adaptive $h-$refinement algorithm has been
 implemented that can be used to allow the system to continue converging towards the
 exact solution~\cite{jake,ans_2014}. In general, for TRT problems, optically thick and slowly varying
 regions of the problem do not require as refined of a mesh to accurately capture the
-solution because there is less variance in the angular dependence of the solution.
-Once error stagnation has occurred, additional histories can be performed to estimate
-the remaining error in the solution estimate.  Although the remaining error will
+solution because there is less variation in the angular dependence of the solution.
+Once error stagnation has occurred, additional histories can be performed with a
+fixed residual source to estimate the remaining error in the current solution.  Although the remaining error will
 converge statistically at a standard $1/\sqrt{N}$ convergence rate, the remaining
 error will be much smaller than a standard MC simulation, producing a much more
-efficient solution method.
+efficient solution method overall.
 
 \Subsection{Variance Reduction and Source Sampling}
 
@@ -609,37 +606,38 @@ As in~\cite{park}, because we are solving a pure absorber problem with Monte Car
 particles to stream without absorption to reduce statistical 
 variance in the tallies.  The weight of particles is reduced deterministically along
 the path as they stream, with no need to sample a path length.  Because particles are exponentially attenuated, the normalized weight is
-adjusted as $w(x) = w(x_0)exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies are modified to account
-for the continuously changing weight. Histories are allowed to stream in this manner for 6 mean free paths
+adjusted as $w(x) = w(x_0)\exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
+for the continuously changing weight, as given in Appendix???. Histories are allowed to stream in this manner for 6 mean free paths
 before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
 continuously deposit weight until they reach 0.25\% of their original weight.
 
-As another way to improve efficiency and statistics, a modified systematic
+As another way to improve efficiency, a modified systematic
 sampling
 method~\cite{shultis_mc} was used for determining source particle locations.  The goal is to effectively distribute particle
 histories to regions of importance, but to sample a sufficient number of histories in
 less probable regions to prevent large statistical noise.  However, there is no need
-to sample histories in regions that are in equilibrium and the solution is not
-changing over a time step.
+to sample histories in regions in equilibrium.
 The residual gives a good indication of where
 histories are most likely to contribute to the error, particularly in optically thick
-cells where particles do not transport very far.  The residual consists of both face
+cells where particles do not transport long distances.  The residual consists of both face
 and volumetric sources~\cite{jake}.   
 In the sampling algorithm the number of particle histories sampled in
 each space-angle cell is predetermined and proportional to the magnitude of the
 residual, including face and volumetric sources, within that cell.  Then, for the predetermined number of histories within a cell, the source
-location is randomly sampled according to the residual source distribution within
-that cell or face.  There is
+location is randomly sampled according to the residual source distribution of that
+cell.  There is
 a relative probability cutoff such that cells with an insignificant
 residual will have no histories sampled there. In these regions the problem is
 remaining in equilibrium and the solution is known exactly.  
 For cells that are significant, but have a predetermined number of histories below some preset
 minimum $N_{min}$, the number of histories sampled in that cell is set to
 $N_{min}$. This is to limit
-bad statistics in low probability cells, particularly in the case of adaptively
-refined meshes.  In the simulations performed for this work $N_{min}$ is set to one.
-This is done for comparing to IMC to keep the total number of histories per time step
-constant throughout the entire simulation.
+bad statistics in low probability cells (this would be important for adaptively
+refined meshes).  In the simulations performed for this work $N_{min}=1$.  This
+choice was made for comparing to IMC to keep the total number of histories per time step
+constant throughout the entire simulation. The
+relative probability cutoff was $10^{-5}$.
+
 %The unmodified probability of a particle being born in cell $j$ is 
 %\begin{equation}
 %p_j = \frac{||r^{(m)}_j||}{||r^{(m)}||}
