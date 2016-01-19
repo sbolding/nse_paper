@@ -100,6 +100,9 @@
 \pagestyle{fancy}
 %\setlength{\topmargin}{-20pt}
 }
+
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\Alph{subsection}}
  
 \normalsize
 \setlength{\baselineskip}{16.8pt}
@@ -197,76 +200,84 @@ streaming and optically-thick, diffusive regions.
 
 Monte Carlo (MC) solution to the TRT equations is typically achieved by the 
 implicit Monte Carlo (IMC) method~\cite{fnc}. This
-method linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{lo_cont} over a discrete time
+method linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{t_cont} over a discrete time
 step.  The linearization of the system produces a transport equation that contains an approximate emission source and an effective scattering cross section representing
-absorption and reemission over a time step. This transport equation is solved using MC, with
-the time derivative treated continously. The MC solution for energy depositon by the
-radiaiton is used to directly estimate
-a new end of time step temperature in each cell of a fixed mesh.  In optically thick regions, or for
+absorption and reemission of photons over a time step. This transport equation is solved using MC. The MC simulation tallies energy absorption
+over a discretized spatial mesh.  The energy absorption in each mesh cell is used to directly estimate
+a new end of time step temperature in that cell.  In optically thick regions, or for
 large time steps, the
 effective scattering dominates interactions.  In these diffusive regions IMC
 becomes computationally expensive. Acceleration methods typically attempt to improve
 efficiency by allowing particles to take discrete steps through optically thick
-regions based on a discrete diffusion approximation~\cite{imd,ddmc}. In IMC the
+regions based on a discretized diffusion approximation~\cite{imd,ddmc}. In IMC the
 approximate linearization of the emission source is not iterated on within a time
-step due to the large computational cost of the MC transport each time step.  This
+step due to the large computational cost of the MC transport each time step; this
 imposes a limit on the time step size to produce physically accurate
 results~\cite{wollaber2013discrete}. 
 
-Moment-based hybrid Monte Carlo (MC) methods provide an alternative solution.  Recent work has focused on fixed-point iteration high-order low-order (HOLO)
+Moment-based hybrid Monte Carlo (MC) methods provide an alternative solution method.
+Recent work has focused on so-called high-order low-order (HOLO)
 approaches~\cite{willert,park,rmc,ans_2014}.  Such methods utilize a low-order (LO)
 operator based on angular moments of the transport equation, formulated over a fixed
 spatial mesh. Physics operators that are time consuming for MC
 to resolve, e.g., absorption-reemission and scattering events, are moved to the LO
 system.  Newton methods allow for non-linearities in the LO equations to be fully
-resolved efficiently~\cite{willert}.  The high-order (HO) system is defined by
-Eq.~\eqref{ho_cont}, with sources estimated from the LO solution that are truly
-implicit in time. The HO system is solved via MC to produce a high-fidelity solution for
+resolved efficiently~\cite{willert}.  The high-order (HO) transport equation is defined by 
+Eq.~\eqref{ho_cont}, with sources that are truly implicit in time estimated from the LO solution. The HO equation is solved via MC to produce a high-fidelity solution for
 the angular intensity.  The MC estimate of the angular intensity is used to estimate consistency terms,
 present in the LO equations, that require the LO system to preserve the angular accuracy of the
-MC solution; the HO system does not directly estimate a new material temperature,
+MC solution.  The HO system does not directly estimate a new material temperature,
 eliminating stability issues that require linearization of the emission source.
 
-In the HOLO context, sufficient MC histories must be performed to eliminate statistical
+Sufficient MC histories must be performed to eliminate statistical
 noise in the consistency terms that can contaminate the LO solution.
-Exponentially-convergent Monte Carlo provides an algorithm that can efficiently
+Exponentially-convergent Monte Carlo (ECMC)\cite{ecmc} provides an algorithm that can efficiently
 reduce statistical noise to the same order as the HOLO iteration error with
 significantly less particle histories than standard MC. In particular, ECMC is
-exceptionally good in the time-dependent TRT problems because information about the
-intensity from the previous time step can be used as an accurate initial guess to the
-problem. Additionally, no particle histories are required in regions of the problem
+exceptionally efficient in time-dependent TRT problems because information about the
+intensity from the previous time step can be used as an accurate initial guess for
+the end of time step intensity. Additionally, no particle histories are required in regions of the problem
 where the problem is in equilibrium, similar to~\cite{rmc}.  However, implementation
-of ECMC is non-trivial, requiring a functional form of the solution in all
-phase-space variables that must be sampled from, and Monte Carlo sources that produce
-particels of both positive and negative weights.
+of ECMC is non-trivial, requiring a finite-element representation of the solution in all
+phase-space variables.  The fundamental transport of particles is the same
+as standard Monte Carlo transport codes, but the source will now contain positive and
+negative weight particles.
 
-
-Our algorithm contains similarities to~\cite{rmc}. Essentially, a single batch of
-ECMC is the first batch of the residual MC~\cite{rmc} HO solver in.  OUr method gives us
-an estimate of the error in each of the moments (with some unknown statistical
-uncertainty).  We also have a LDFE trial space for the temperature and radiation
-spatial representaiton, allowing for the discretization to preserve the equilibrium
-diffusion limit.  The formulation of the residual in~\cite{rmc} can produce minimal
+Our ECMC solver contains similarities to the residual Monte Carlo (RMC) HO solver
+in~\cite{rmc}, with some key differences.  The RMC algorithm uses a particular, fixed 
+estimate of the solution to significantly reduce the statistical noise in the
+simulation compared to a standard MC simulation. The guess for the solution is chosen to produce only sources on the faces of
+cells, reducing the dimension of the phase-space to be sampled~\cite{rmc}. The RMC
+algorithm  uses a piecewise constant trial space representation for the intensity in
+$x$ and $\mu$.
+The primary difference between the methods is that ECMC iteratively estimates the
+solution, in batches, producing a known MC estimate
+of the error in that estimate.  The ECMC algorithm also uses a linear-discontinuous
+finite-element (LDFE) trial space to represent the intensity, although the RMC
+algorithm could similarly be formulated with an LDFE representation.  The LDFE
+representation introduces significant implementation complexity.  The formulation of the residual in~\cite{rmc} can produce minimal
 statistical noise in slowly varying problems where the behavior of the system is near
-equilbrium. In problems where there is greater variance over a time step.  The LO
-system in~\cite{rmc} assumes an ansantz relation between the face and volume averaged
-values, which instead we will ultimately enforce strict spatial consistency with an
-LD FE representation and angularly we have simply taken integrals of the transport
-equation.  Generally, the minimum number of histories to obtain convergence with the
-LDFE trial space is larger than a piece-wise constant to accurately estimate the
-first moment in $x$ and $\mu$.
+equilibrium. The ECMC algorithm has
+similar statistical efficiency by choosing the old intensity as the initial guess to
+the algorithm.  The ECMC algorithm will generally be more efficient in cases where
+the solution varies greatly over a time step or when very low statistical noise is
+desired.  Generally, the minimum number of histories per batch to obtain convergence with the
+LDFE trial space is larger than a piece-wise constant representation because additional
+histories are needed to sufficiently estimate the first moment in $x$ and $\mu$ of the
+intensity. It is noted that our formulation of the LO
+equations is in great contrast to the formulation in~\cite{rmc}.
 
-In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters} in conjunction with an
-exponentially-convergent Monte Carlo (ECMC) method~\cite{jake} for the HO solver.
+In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters}
+in conjunction with an ECMC method~\cite{jake} for the HO solver.
 The ECMC algorithm uses information about the intensity from the previous time step to reduce statistical noise to the same order as
 the HOLO iteration error with significantly less particle histories than standard MC
 simulations, with less computational cost than IMC per history.  We have derived the LO operator directly from the transport
 equation, using a linear-discontinuous (LD) finite-element (FE) spatial
 discretization, such that the HO and LO solutions are converging towards the same
 solution.
-Herein we describe the algorithm and present results for two test problems.
+Herein we describe the algorithm and present results for two??? test problems.
 
-\Subsection{Overview of the HOLO Algorithm}
+\Section{Overview of the HOLO Algorithm}
 
 For simplicity, our HOLO method will use a backwards Euler discretization in time, as
 well as constant specific heats and cell-wise constant opacities. The time discretized
@@ -279,34 +290,33 @@ equations are
 \end{align}
 where $\Delta t$ is the time step size and the superscript $n$ is used to indicate
 the $n$-th time step. It is noted that in IMC the time derivative in
-Eq.~\eqref{ho_cont} is typically solved continuously.  Our HO transport equation is
-discrete in time to allow for the use of ECMC and avoid difficulties in coupling to the
+Eq.~\eqref{ho_cont} is typically treated using continuous time-dependent MC over each
+time step.  Our HO transport equation is
+discrete in time for easy application of ECMC and to avoid difficulties in coupling to the
 fully-discrete LO solver, but this does introduce some artificial propagation of
-energy due to the implicit time differencing.
+energy due to the implicit time differencing, in optically thin regions. 
 
 In the HOLO context, the LO solver models the physical scattering and
 resolves the material temperature spatial distribution $T(x)$ at each time step.  The LO equations are formed via half-range 
 angular and spatial moments of
 Eq.~\eqref{ho_trans} and Eq.~\eqref{lo_mat}, formed over a spatial finite element
-mesh.  The LO equations take the same form as those used in the
+mesh.  The angular treatment in the LO equations has the same form as those used in the
 hybrid-S$_2$ method in~\cite{wolters},  with
 element-averaged consistency parameters that are analogous to a variable
 Eddington factor.  If the angular consistency parameters were estimated exactly, then the LO equations are exact with respect to the chosen
 spatial discretization.  These consistency parameters are lagged in each LO solve,
 estimated from the previous HO solution for $I^{n+1}(x,\mu)$, as explained below. For
-the initial LO solve within a time step, the parameters are calculated based on the
-$I^{n}(x,\mu)$.  The LO equations always conserve energy, independent of the accuracy of the consistency terms.
+the initial LO solve for each time step, the parameters are calculated based on the
+$I^{n}(x,\mu)$.  The LO equations always conserve total energy, independent of the accuracy of the consistency terms.
 
 The solution to the LO system is used to construct a spatially LD representation of
 the scattering and emission sources on the right hand side of Eq.~\eqref{ho_trans}.  This defines a fixed-source, pure absorber
 transport problem for the HO operator. This HO transport problem represents a characteristic method that uses MC to
 invert the continuous streaming plus removal operator with an LD representation of
 sources. We will solve this transport problem using ECMC.  The output from ECMC is
-$\tilde{I}(x,\mu)$, a space-angle LD FE projection of the exact solution for
-$I(x,\mu)$.  This projection has minimal statistical noise due to the residual
-formulation used by the ECMC algorithm.  Once computed, $\tilde{I}(x,\mu)$ is used
-to directly evaluate the necessary LO
-consistency parameters for the next LO solve.  Since there is a global, functional representation of
+$\tilde{I}(x,\mu)$, a space-angle LDFE projection of the exact solution for
+$I(x,\mu)$.  Once computed, $\tilde{I}(x,\mu)$ is used
+to directly evaluate the necessary consistency parameters for the next LO solve.  Since there is a global, functional representation of
 the angular intensity,  LO parameters are estimated using quadrature and do not
 require additional tallies.  The HO solution is not used to directly estimate a new
 temperature at the end of the time step; it is
@@ -326,8 +336,7 @@ The process of performing subsequential HO and LO solves, within a single time s
 \item Store $\tilde{I}^{n}\leftarrow\tilde{I}^{n+1}$, and move to the next time step.
 \end{enumerate}
 where the superscript $k$ denotes an outer HOLO iteration.
-The convergence criteria is based on successive LO solutions for $\phi^{n+1}(x)$ and
-$T^{n+1}(x)$. The consistency terms force the HO
+The consistency terms force the HO
 and LO solutions for $\phi^{n+1}(x)$ to be consistent to the order of the current HOLO
 iteration error.
 %One HOLO fixed-point iteration $k$ denotes the process of an ECMC solve of the HO problem to estimate LO parameters, based on
@@ -346,11 +355,10 @@ interpolatory basis functions.  For example, the $L$  moment operator is defined
 where $h_i=x_{i+1/2}-x_{i-1/2}$ is the width of the spatial element and
 $b_{L,i}(x)=(x_{i+1/2}-x)/h_i$ is the FE basis function, for cell $i$, corresponding to position
 $x_{i-1/2}$.  The right moment $\mom{\cdot}_R$ is defined with weight function $b_{R,i}(x)=(x -
-x_{i-1/2})/h_i$. Here, it is noted that $\phi_{L,i}$ and $\phi_{R,i}$ represent
-the values of the scalar intensity in cell $i$ at $x_\il$ and $x_\ir$ that preserve the zeroth
-and first spatial moments of $\phi(x)$ over the cell, not to be confused with $\mom{\phi}_{L,i}$ and
-$\mom{\phi}_{R,i}$, which
-represent spatial moments. To reduce the angular dimensionality, positive and
+x_{i-1/2})/h_i$. Here, it is noted in this notation that $\mom{\phi}_{L,i}$ and
+$\mom{\phi}_{R,i}$ represent spatial moments of the intensity over cell $i$, rather
+than $\phi_{L,i}$ and $\phi_{R,i}$ which represent the interior value of the linear
+$\phi(x)$ at $x_\il$ and $x_\ir$. To reduce the angular dimensionality, positive and
 negative half-range integrals of the angular intensity are taken.  The half-range
 averages of $I$ are defined as $ \phi^+(x) = \int_0^{1} I(x,\mu) \d \mu$ and $ \phi^-(x) = \int_{-1}^{0} I(x,\mu) \d
 \mu$, respectively.  Thus, in terms of half-range quantities, $\phi(x) = \phi^-(x) +
@@ -581,14 +589,20 @@ of each tally~\cite{shultis_mc}, the statistical uncertainty in $I^{(i)}$ cannot
 estimated due to the generally unknown correlation between $I^{(i)}$ and the source
 $r^{(i)}$.
 
+
 Because the exact angular intensity does not in general lie within the LD trial space, the
 iterative estimate of the error will eventually stagnate once the error cannot be sufficiently
 represented by a given FE mesh.  Although mesh refinement is not performed in the
 calculations presented here, an adaptive $h-$refinement algorithm has been
 implemented that can be used to allow the system to continue converging towards the
-exact solution. In general, for TRT problems, optically thick and slowly varying
+exact solution~\cite{jake,ans_2014}. In general, for TRT problems, optically thick and slowly varying
 regions of the problem do not require as refined of a mesh to accurately capture the
 solution because there is less variance in the angular dependence of the solution.
+Once error stagnation has occurred, additional histories can be performed to estimate
+the remaining error in the solution estimate.  Although the remaining error will
+converge statistically at a standard $1/\sqrt{N}$ convergence rate, the remaining
+error will be much smaller than a standard MC simulation, producing a much more
+efficient solution method.
 
 \Subsection{Variance Reduction and Source Sampling}
 
@@ -651,7 +665,7 @@ For the HO solver, in cells near the radiation wave front, the LD trial space re
 $\tilde{I}^{n+1}(x,\mu)$, as with the
 LO solver.  We currently force the solution within negative cells to be
 positive, after each batch. This is done such that we preserve the ratio of the
-first moment in $\mu$ to the first moment in $\x$. This modified solution will
+first moment in $\mu$ to the first moment in $x$. This modified solution will
 not satisfy the residual, however.  Thus, error will stagnate rapidly.  At the
 end of the solve, the strictly positive solution can be used to compute consistency terms without any issues:
 
@@ -912,8 +926,8 @@ $\tilde{I}(x,\mu)$ is computed.  To project onto the LD FE trial space requires 
 moments of the angular intensity to be tallied. For instance, the first 
 moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
 \begin{equation}
-    I_{x,ij} = \frac{6}{h_xh_\mu}{\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
-    \int\limits_{x_{i-1/2}}^{x_{i+1/2}} \left(\frac{x - x_i)}{h_{x_i}}\right)
+    I_{x,ij} = \frac{6}{h_xh_\mu}\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
+    \int\limits_{x_{i-1/2}}^{x_{i+1/2}} \left(\frac{x - x_i}{h_{x_i}}\right)
     I(x,\mu) \d x \d \mu.
 \end{equation}
 The $\mu$ moment and the moments of the intensity $I_a$, $I_\mu$, and $I_x$ are
@@ -929,8 +943,8 @@ exponential attenuation of the weight produces the result for this tally as
 \end{equation}
 The tally for the first moment in $\mu$ is 
 \begin{equation}
-    I_{\mu,ij} \simeq \frac{6}{h_x h_\mu)\sum_{l=1}^N \frac{\mu - \mu_j}{h_\mu}
-        \frac{1 - exp\left( \frac{s} \right)
+    I_{\mu,ij} \simeq \frac{6}{h_x h_\mu}\sum_{l=1}^N \frac{\mu - \mu_j}{h_\mu}
+        1 - exp\left( \sigma_t s \right)
 \end{equation}
 where $s$ is the path length of the track within the cell of interest.
 
