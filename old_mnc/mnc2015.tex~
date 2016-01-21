@@ -436,7 +436,7 @@ moments, e.g., $\phi^+_{i+1/2} = 2\mom{\phi}_R^+ - \mom{\phi}_L^+$.
 The HO ECMC solver computes an LDFE representation of the intensity, so the same spatial closure is used to relate volume and face averaged consistency terms.  Thus, the spatial closure between the LO and HO solvers are inherently
 consistent.  Because there are no
 spatial temperature derivatives, there is no need for an
-additional closure in $T$. The final LO equations can be found in Appendix??? 
+additional closure in $T$. 
 
 The LD closure is not strictly positive.  In particular, for
 optically thick cells with a steep intensity gradient, the solution becomes negative.  In thick regions of
@@ -450,10 +450,8 @@ standard FE lumping procedure.  The $L$ and $R$ moments are defined the same as 
 preserving the same average within a cell, but the relation between the moments and
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
-positive, the outflow is inherently positive.  This closure is only used
+positive, the outflow is positive.  This closure is only used
 in cells in which negativities occur.
-
-MAYBE DO THE OTHER SPATIAL CLOSURE
 
 \Subsection{Solving the Non-Linear LO System}
 
@@ -606,7 +604,7 @@ As in~\cite{park}, because we are solving a pure absorber problem with Monte Car
 particles to stream without absorption to reduce statistical 
 variance in the tallies.  The weight of particles is reduced deterministically along
 the path as they stream, with no need to sample a path length.  Because particles are exponentially attenuated, the normalized weight is
-adjusted as $w(x) = w(x_0)\exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
+adjusted as $w(x,\mu) = w(x_0,\mu)\exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
 for the continuously changing weight, as given in Appendix???. Histories are allowed to stream in this manner for 6 mean free paths
 before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
 continuously deposit weight until they reach 0.25\% of their original weight.
@@ -686,8 +684,8 @@ is replaced with a standard Monte Carlo (SMC) simulation.
 
 
 For the first problem, the radiation and material energies are initially in
-equilibrium at $2.5\times 10^{-05}$ keV.   An isotropic incident intensity of 0.150 keV is applied
-at $x=0$; the incident intensity on the right boundary is $2.5\times10^{-05}$ keV.
+equilibrium at $2.5\times 10^{-5}$ keV.   An isotropic incident intensity of 0.150 keV is applied
+at $x=0$; the incident intensity on the right boundary is $2.5\times10^{-5}$ keV.
 The material properties are $\rho = 1$ g cm$^{-3}$ and $c_v = 0.013784$ jks/keV-g. The
 absorption cross section varies as $\sigma(T) = 0.001\;\rho\; T^{-3}$ (cm$^{-1}$). The simulation was ran for 5 sh (1 sh =
 10$^{-8}$ s) with a fixed time step size of 0.001 sh. For comparison purposes, we
@@ -698,8 +696,8 @@ norm of $\phi(x)$ and $T(x)$ was used for the LO newton solver. Radiation energy
 distributions are plotted as an equivalent temperature given by
 $T_r=(\phi/(ac))^{0.25}$.  Cell-averaged quantities are plotted.
 Although scattering physics
-can be handled by the LO solver in this method~\cite{ans_2014}, we have only considered pure absorber
-problems here.  
+can be handled by the LO solver in this method~\cite{ans_2014}, we have only
+considered problems with $\sigma_s = 0$ here.  
 
 \begin{figure}[htb]
 \begin{subfigure}{0.5\textwidth}
@@ -792,15 +790,6 @@ over the finer mesh.
 On the coarse mesh ($N_c=20$), the HOLO method predicts the location of the
 wave-front more accurately than the IMC method. 
 
-Fig.~\ref{compare_ho} compares results for different HO solvers.  The HOLO algorithm
-with the ECMC HO solver (HOLO-ECMC) results
-are for running 3 batches of 10,000 histories, per time step. The solution for the HOLO method with a standard MC solver as the HO solver
-(HOLO-SMC) with standard source sampling uses 10$^5$ histories per time step. Also
-plotted is an S$_2$ solution obtained by using consistency terms that are equivalent
-to S$_2$ and not performing the HO correction step.  The HOLO-SMC solution demonstrates significant
-statistical noise.  This noise is introduced into the LO solver by bad statistics in
-computing the consistency terms. The S$_2$ solution results in an artificially fast
-wave front as expected, demonstrating the necessity of HO correction in this problem.
 
 Total CPU times for the two material problem are given in Table~\ref{twomat_table}. The end time for the simulations in this table was reduced to 2 sh.  The observed behavior in the computational times is similar to those
 in the first problem.  Because the opacities do not have a $T^{-3}$ behavior in this problem, the cost of the effective scattering cross section in IMC is more apparent, resulting in longer simulation times.  As the time step size is increased by a factor of 5, the average cost per time step for the simulation increases by a factor of $\sim3.4$; for HOLO-ECMC the increase is only $\sim1.1$.   
@@ -815,7 +804,19 @@ $3\times10^4$     &   0.005	&  699  &       86     \\ \hline
 \end{tabular}
 \end{table}
 
+\Subsection{Comparison of Standard MC and ECMC HO Solvers}
 
+Fig.~\ref{compare_ho} compares results for different HO solvers.  The HOLO algorithm
+with the ECMC HO solver (HOLO-ECMC) results
+are for running 3 batches of 10,000 histories, per time step. The solution for the HOLO method with a standard MC solver as the HO solver
+(HOLO-SMC) with standard source sampling uses 10$^5$ histories per time step. Also
+plotted is an S$_2$ solution obtained by using consistency terms that are equivalent
+to S$_2$ and not performing the HO correction step.  The HOLO-SMC solution demonstrates significant
+statistical noise.  This noise is introduced into the LO solver by bad statistics in
+computing the consistency terms. The S$_2$ solution results in an artificially fast
+wave front as expected, demonstrating the necessity of HO correction in this problem.
+
+\Subsection{Comparison of RMC and ECMC HO Solvers}
 
 
 
@@ -899,50 +900,64 @@ Energy under contract DE-AC52-06NA25396.
 %\Section*{REFERENCES}
 \bibliographystyle{ans}
 \bibliography{references}
-
+\clearpage
 \appendix
 
 \section{Implementation of ECMC Tallies}
 
-The HOLO algorithm uses a finite element representation in space and angle.  Over the
-$i$-th spatial and $j$-th angular cell, the linear representation is defined as
-\begin{equation}
-    \tilde I(x,\mu) = I_a + I
-\end{equation}
-for $x_\il <  x \leq x_\ir$ and $\mu_\jl \leq \mu \leq \mu_\jr$ where indices have
-been supressed for clarity and $I_a$ is the cell average intensity and $I_\mu$ and $I_x$ are
-the first moment in $\mu$ and $x$, respectively.  Standard upwinding is used to
-define the inflow at $x_{i-1/2}$. This representation can directly be plugged into
-Eq.~\eqref{eq:resid} and evaluated to produce the source in the ECMC HO transport
-problem.  
+The ECMC solver uses a finite element representation in space and angle. On the
+interior of the a cell with the $i$-th spatial index and $j$-th angular index, the linear representation is defined as
+\begin{equation*}
+    \tilde I(x,\mu) = I_{a,ij} + \frac{2}{h_x}I_{x,ij}\left(x-x_i\right) +
+    \frac{2}{h_\mu}I_{\mu,ij}\left(\mu-\mu_j\right), \quad x_\il <  x < x_\ir,\quad
+     \mu_\jl \leq \mu \leq \mu_\jr
+\end{equation*}
+for $x_\il <  x <  x_\ir$ and $\mu_\jl \leq \mu \leq \mu_\jr$. The spatial cell width is $h_x$, the angular width is
+$h_\mu$, the center of the cell is $(x_i,\mu_j)$, and
+\begin{align}\label{app1}
+    I_{a,ij} &= \frac{1}{h_x h_\mu} \iint\limits_{\mathcal{D}} I(x,\mu)\, \d x \d \mu \\
+    I_{x,ij} &= \frac{6}{h_xh_\mu}\iint\limits_{\mathcal{D}} \left(\frac{x - x_i}{h_{x}}\right)
+    I(x,\mu)\, \d x \d \mu \\ \label{app2}
+    I_{\mu,ij} &= \frac{6}{h_xh_\mu}\iint\limits_{\mathcal{D}}
+     \left(\frac{\mu - \mu_j}{h_{\mu}}\right)
+    I(x,\mu)\, \d x \d \mu,
+\end{align}
+where $\mathcal{D}: x_\il \leq  x \leq  x_\ir \times \mu_\jl \leq \mu \leq \mu_\jr$.
+%$I_a$ is the cell average intensity, and $I_\mu$ and $I_x$ define the
+%the first moment in $\mu$ and $x$ of the intensity, respectively. 
+Standard upwinding in space is used to
+define $I(\mu)$  on incoming faces. This representation can directly be plugged into
+Eq.~\eqref{eq:resid} and evaluated to produce the residual source in the ECMC HO transport
+problem. 
 
-During the MC simulation, a projection of the error in the current estimate of
-$\tilde{I}(x,\mu)$ is computed.  To project onto the LD FE trial space requires spatial and angular
-moments of the angular intensity to be tallied. For instance, the first 
-moment in $x$ of the $i$-th spatial and $j$-th angular cell is defined as
+During a MC batch, moments of the error are tallied.  Moments of the error are
+defined analogously to Eq.'s~\eqref{app1}--\eqref{app2}.
+The tallies are evaluated by weighting the particle density with the appropriate
+basis function and integrating along the path.  For the cell average, the $n$-th
+particle makes the contribution
 \begin{equation}
-    I_{x,ij} = \frac{6}{h_xh_\mu}\int\limits_{\mu_{j-1/2}}^{\mu_{j+1/2}}
-    \int\limits_{x_{i-1/2}}^{x_{i+1/2}} \left(\frac{x - x_i}{h_{x_i}}\right)
-    I(x,\mu) \d x \d \mu.
+    \epsilon^n_{a,ij} = \frac{1}{h_xh_\mu} \int_{s^n}  w^n(x,\mu) \d s
 \end{equation}
-The $\mu$ moment and the moments of the intensity $I_a$, $I_\mu$, and $I_x$ are
-all defined analagously. The tally estimator is defined by integrating along each
-path in the cell as
+where $s^n$ is the length of the $n$-th particle track in the cell and $w(x,\mu)$ is the weight of the error particle in the MC simulation.
+Substitution of the exponential attenuation of the weight produces the result
 \begin{equation}
-    I_{x,ij} \simeq \frac{1}{h_xh_\mu} \int_{\Delta s_l}  w_l(x,\mu) \d s
+    \epsilon^n_{a,ij} = \frac{w(x_0,\mu)}{\sigma_t h_x h_\mu} \left(1 - e^{-\sigma_ts^n}\right)
 \end{equation}
-where $w(x,\mu)$ is the normalized weight in the MC simulation. Substituting the
-exponential attenuation of the weight produces the result for this tally as
+where $w(x_0,\mu)$ is the particle weight at the start of the path. The contribution of a
+particle track to $\epsilon_x$ is given by
 \begin{equation}
-    I_{x,ij} \simeq \frac{1}{h_x h_\mu} DERP.
+    \epsilon^n_{x,ij} = \frac{w(x_0,\mu)}{h_x^2h_\mu \sigma_t} \left[x_0 - x_f e^{-\sigma_t s^n}
+        + \left(\frac{\mu}{\sigma_t} - x_i \right)\left(1-e^{-\sigma_t s^n}\right),
+    \right]
 \end{equation}
-The tally for the first moment in $\mu$ is 
+where $x_0$ and $x_f$ are the beginning and ending $x$ coordinates of the $n$-th
+path.  The contribution to the first moment in $\mu$ is 
 \begin{equation}
-    I_{\mu,ij} \simeq \frac{6}{h_x h_\mu}\sum_{l=1}^N \frac{\mu - \mu_j}{h_\mu}
-        1 - exp\left( \sigma_t s \right)
+    \epsilon^n_{\mu,ij} = \frac{w(x_0,\mu)}{h_{\mu}^2h_x\sigma_t}\left(\mu - \mu_j\right) \left(1 - e^{-\sigma_ts^n}\right)
 \end{equation}
-where $s$ is the path length of the track within the cell of interest.
-
+where the particle $x$-direction cosine $\mu$ does not change along the particle
+track because it is a pure-absorber simulation.
+The moments are simply the average contribution of all particles.
 \end{document}
 
 
