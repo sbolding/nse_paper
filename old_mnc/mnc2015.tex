@@ -440,7 +440,8 @@ spatial temperature derivatives, there is no need for an
 additional closure in $T$. 
 
 The LD closure is not strictly positive.  In particular, for
-optically thick cells with a steep intensity gradient, the solution becomes negative.  In thick regions of
+optically thick cells with a steep intensity gradient, the solution becomes negative.
+These negativities can also result in adjacent cells in the direction of flow. In thick regions of
 TRT problems, reasonably fine spatial cells can still be on the order of millions of mean
 free paths; negativities with a LD representation are unavoidable in practice for
 such cells and mesh refinement is of minimal use.  Typically, for a standard LDFE method,
@@ -654,14 +655,10 @@ relative probability cutoff was $10^{-5}$.
 %where $N_{\min}$ is the minimum number of histories in significant cells, $N_c$  is the number of cells, and $p_{cut}$ is the chosen relative probability cutoff.
  %This is done by first filling the cells with $N_{min}$ histories and distributing the remaining number of histories proportional to $p_j$.
 
-\Subsection{Fixup Near the Wave-Front}
-
-For the HO solver, in cells near the radiation wave front, the LDFE trial space results in negativities in
-$\tilde{I}^{n+1}(x,\mu)$, as with the
-LO solver.  We currently force the solution within negative cells to be
-positive, after each batch. This is done such that we preserve the calculated cell average and preserve the ratio of the
-first moment in $\mu$ to the first moment in $x$.  Any negative averages are set to
-the floor temperature, i.e., the initial temperature of the simulation.  Although the modified solution is
+For the HO solver, in cells near the radiation wave front, the LDFE trial space can result in negativities in
+$\tilde{I}^{n+1}(x,\mu)$, similar to the LO solver.  We currently force the solution within negative cells to be
+positive, after each batch. The methodology for enforcing positivity is given in Appendix???.
+  Although the modified solution is
 physical, it will not satisfy the residual equation very accurately.  Thus, error stagnation will
 rapidly occur. At the end of the HO solve, the strictly positive solution can be used
 to compute consistency terms.
@@ -973,6 +970,21 @@ path.  The contribution to the first moment in $\mu$ is
 where the particle $x$-direction cosine $\mu$ does not change along the particle
 track because it is a pure-absorber simulation.
 The moments are simply the average contribution of all particles.
+
+\section{HO fixup for radiation}
+
+When the result of an ECMC batch produces a negative solution, the solution is
+modified to enforce a positive solution.  Although the residual trial space allows
+for a positive result, allowing for the negative represnetation will cause errors in
+cells further downstream.  After detecting a negativity at the end of a batch, the
+solution is modified such that the most negative part of the solution is positive,
+and the new solution  preserves the calculated cell average $I_{a,ij}$, and the ratio of
+$I_{x,ij}$ to $I_{\mu,ij}$. 
+first moment in $\mu$ to the first moment in $x$.  Negative averages can occur
+occasionally do to statistics.  In this case, the solution within that cell is set to
+the minimum temperature, i.e., the initial temperature of the simulation.
+
+
 \end{document}
 
 
