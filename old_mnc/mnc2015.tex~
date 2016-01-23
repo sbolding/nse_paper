@@ -42,8 +42,10 @@
 \usepackage{soul}
 \usepackage[labelfont=bf]{caption}
 \usepackage[framemethod=tikz]{mdframed}
+\usepackage{multirow}
  
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\ss}{\ensuremath{\overline{s}}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
@@ -678,6 +680,7 @@ emission source. We will also demonstrate the efficiency advantage of ECMC in ou
 algorithm by comparing the results to the same HOLO algorithm if the HO solver
 is replaced with a standard Monte Carlo (SMC) simulation.
 
+
 \Subsection{Marshak Wave}
 
 
@@ -721,7 +724,6 @@ similar agreement in the location of the wave front due to the linear shape of t
 at the wave front required use of the lumping-equivalent discretization during the LO
 solve, resulting in strictly positive solutions.
 
-
 Fig.~\ref{marshak_200_compare} compares solutions
 for the case of 200 cells.  For the IMC solution $10^5$ histories per time step were
 simulated; for the HOLO method only $4,000$ histories per batch
@@ -730,6 +732,39 @@ compared to the HOLO solution.  The HOLO solution visually demonstrates no stati
 time step, the statistical noise in the result is small relative to the magnitude of
 $I^{n+1}$.  Also, the source sampling only places particles in cells where the residual is
 large.  No particles are sampled in the equilibrium region out front of the wave. 
+
+To get a quantitative measure of the statistical accuracy of different solution
+methods, a spatially averaged, relative standard deviation of independent simulations was
+computed.
+Twenty simulations for each input were performed with different
+random number seeds.  The relative standard deviation is computed as
+\begin{equation} 
+    \ss = \frac{1}{N_c}\sum_i^{N_c} \left(\frac{\;\;1\;\;}{\overline{\phi_{i}}}\right)\sqrt{\frac{20}{20-1} \sum_{n=1}^{20} \left(\overline{\phi_{i}} - \phi_{i}^n\right)^2}
+\end{equation}
+where $\phi_{i}^n$ is the cell-averaged scalar intensity for cell $i$ from the $n$-th of 20 independent simulations and
+$\overline{\phi_{i}}$ is the corresponding sample mean of all simulations. For both
+methods, we have only included cells that produced a non-zero variance, i.e., we have
+excluded cells that remained in equilibrium from the calculation.  
+ The maximum standard deviation of all cells $s_{\max}$ is also computed.  It is important
+to note that these are the relative variances in the angularly integrated intensity,
+not the radiation temperature. The radiation temperature has less noise.
+
+Table~\ref{marshak_var} compares $\ss$ for IMC and HOLO with ECMC, for two different
+time-step sizes. All results in the table were generated
+with 12,000 histories per time step.  
+\begin{table}[H]
+\centering
+\caption{\label{marshak_var} \textbf{Comparison of sample standard deviations for the Marshak Wave problem
+    for 200 $x$ cells and 12,000 histories per time step.   Simulation end time is $\mathbf{t=5}$ sh.}}
+\vspace{-0.1in}
+\begin{tabular}{|c|cc|cc|}\cline{2-5}
+    \multicolumn{1}{c|}{}       & \multicolumn{2}{|c|}{\ss} & \multicolumn{2}{|c|}{$s_{\max}$} \\ \hline
+$\Delta t (sh)$   & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
+   0.001	      & 3.46\%  & 0.36\% &  17.79\%    &  7.70\%            \\
+   0.005          & 2.08\%  & 0.78\% &  65.70\%    & 29.84\%     \\ \hline
+\end{tabular}
+\end{table}
+
 
 
 \Subsection{Two Material Problem}
@@ -758,6 +793,34 @@ over the finer mesh.
 On the coarse mesh ($N_c=20$), the HOLO method predicts the location of the
 wave-front more accurately than the IMC method. 
 
+
+\begin{figure}
+\begin{subfigure}{0.5\textwidth}
+    \centering
+    \includegraphics[width=0.99\textwidth]{two_mat_conv.pdf}
+    \caption{Comparison of IMC and HOLO-ECMC.\label{twomat_full}}
+\end{subfigure}    \begin{subfigure}{0.5\textwidth}
+\centering
+    \includegraphics[width=0.99\textwidth]{two_mat_ho_compare.pdf}
+    \caption{Comparison of SMC and ECMC HO solvers. \label{compare_ho}}
+\end{subfigure}
+    \caption{\bf Comparison of radiation temperatures for two material problem. \label{twomat}}
+\end{figure}
+
+
+
+\begin{table}[H]
+\centering
+\caption{\label{twomat_var} \textbf{Comparison of sample standard deviations for the
+    two material problem for 200 $x$ cells and 30,000 histories per time step.   Simulation end time is $\mathbf{t=2}$ sh.}}
+\vspace{-0.1in}
+\begin{tabular}{|c|cc|cc|}\cline{2-5}
+    \multicolumn{1}{c|}{}       & \multicolumn{2}{|c|}{\ss} & \multicolumn{2}{|c|}{$s_{\max}$} \\ \hline
+$\Delta t (sh)$   & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
+   0.001	      & 7.45\%  & 0.014\% &  19.90\%  & 0.166 \%            \\
+   0.005          & 3.98\%  & 0.022\% &  8.63\%   & 0.159 \%     \\ \hline
+\end{tabular}
+\end{table}
 
 \Subsection{Performance comparison of IMC and HOLO-ECMC}
 
@@ -813,7 +876,7 @@ $3\times10^4$     &   0.005	&  699 s  &  86 s  &    7.6 \\ \hline
 \end{table}
 
 
-\Subsection{Comparison of Standard MC and ECMC HO Solvers}
+\Subsection{Comparison of different HO Solvers}
 
 Fig.~\ref{compare_ho} compares results for different HO solvers.  The HOLO algorithm
 with the ECMC HO solver (HOLO-ECMC) results
@@ -825,25 +888,41 @@ plotted is an S$_2$ solution obtained with consistency terms that are equivalent
 to S$_2$ and not performing the HO correction step in the algorithm.  The S$_2$ solution results in an artificially fast
 wave front, as expected, demonstrating the necessity of HO correction in this problem.
 
-\Subsection{Comparison of RMC and ECMC HO Solvers}
-
 To demonstrate the benefit of ECMC over RMC, we compare the variance for the two
 methods. We simulate RMC by performing a single batch in the ECMC solver.  This is
 similar to the approach in~\cite{rmc}, but with a slightly different source.
 
 
-\begin{figure}
-\begin{subfigure}{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.99\textwidth]{two_mat_conv.pdf}
-    \caption{Comparison of IMC and HOLO-ECMC.\label{twomat_full}}
-\end{subfigure}    \begin{subfigure}{0.5\textwidth}
+\begin{table}[H]
 \centering
-    \includegraphics[width=0.99\textwidth]{two_mat_ho_compare.pdf}
-    \caption{Comparison of SMC and ECMC HO solvers. \label{compare_ho}}
-\end{subfigure}
-    \caption{\bf Comparison of radiation temperatures for two material problem. \label{twomat}}
-\end{figure}
+\caption{\label{marshak_var} \textbf{Comparison of sample standard deviations for the Marshak Wave problem
+    for 200 $x$ cells and 12,000 histories per time step.   Simulation end time is $\mathbf{t=5}$ sh.}}
+\vspace{-0.1in}
+\begin{tabular}{|c|ccc|ccc|}\cline{2-7}
+    \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} & \multicolumn{3}{|c|}{$s_{\max}$} \\ \hline
+$\Delta t (sh)$ & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
+   0.001	      & 3.05\%   & 0.13\% &  0.36\% &  43.38\%  & 2.26\%  &  7.70 \%            \\
+   0.005          & 14.88\%  & 0.25\% &  0.78\% &  63.48\%  & 9.92\%  & 29.84 \%     \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\centering
+\caption{\label{marshak_var} \textbf{Comparison of sample standard deviations for the
+    two material problem
+    for 200 $x$ cells and 12,000 histories per time step.   Simulation end time is $\mathbf{t=2}$ sh.}}
+\vspace{-0.1in}
+\begin{tabular}{|c|ccc|ccc|}\cline{2-7}
+    \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} & \multicolumn{3}{|c|}{$s_{\max}$} \\ \hline
+$\Delta t (sh)$ & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
+   0.001	      &  3.01\% & 0.0095\% & 0.014\% & 7.92 \%  & 0.559  & 0.166\%            \\
+   0.005          &  1.79\% & 0.0168\% & 0.022\% & 23.49\%  & 0.493  & 0.159\%     \\ \hline
+\end{tabular}
+\end{table}
+
+
+
 
 
 \Section{Conclusions}
@@ -918,13 +997,13 @@ Energy under contract DE-AC52-06NA25396.
 \section{Implementation of ECMC Tallies}
 
 The ECMC solver uses a finite element representation in space and angle. On the
-interior of the a cell with the $i$-th spatial index and $j$-th angular index, the linear representation is defined as
+interior of the cell with the $i$-th spatial index and $j$-th angular index, the linear representation is defined as
 \begin{equation*}
     \tilde I(x,\mu) = I_{a,ij} + \frac{2}{h_x}I_{x,ij}\left(x-x_i\right) +
     \frac{2}{h_\mu}I_{\mu,ij}\left(\mu-\mu_j\right), \quad x_\il <  x < x_\ir,\quad
      \mu_\jl \leq \mu \leq \mu_\jr
 \end{equation*}
-for $x_\il <  x <  x_\ir$ and $\mu_\jl \leq \mu \leq \mu_\jr$. The spatial cell width is $h_x$, the angular width is
+The spatial cell width is $h_x$, the angular width is
 $h_\mu$, the center of the cell is $(x_i,\mu_j)$, and
 \begin{align}\label{app1}
     I_{a,ij} &= \frac{1}{h_x h_\mu} \iint\limits_{\mathcal{D}} I(x,\mu)\, \d x \d \mu \\
@@ -973,6 +1052,7 @@ The moments are simply the average contribution of all particles.
 
 \section{HO fixup for radiation}
 
+NOT DONE???YET
 When the result of an ECMC batch produces a negative solution, the solution is
 modified to enforce a positive solution.  Although the residual trial space allows
 for a positive result, allowing for the negative represnetation will cause errors in
@@ -983,6 +1063,7 @@ $I_{x,ij}$ to $I_{\mu,ij}$.
 first moment in $\mu$ to the first moment in $x$.  Negative averages can occur
 occasionally do to statistics.  In this case, the solution within that cell is set to
 the minimum temperature, i.e., the initial temperature of the simulation.
+
 
 
 \end{document}
