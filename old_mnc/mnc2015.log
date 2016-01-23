@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  22 JAN 2016 16:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  23 JAN 2016 11:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -821,14 +821,7 @@ Package zref Info: New property: mdf@pagevalue on input line 895.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 \bigstrutjot=\dimen258
-) (./mnc2015.aux
-
-LaTeX Warning: Label `marshak_var' multiply defined.
-
-
-LaTeX Warning: Label `marshak_var' multiply defined.
-
-)
+) (./mnc2015.aux)
 \openout1 = `mnc2015.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 86.
@@ -844,7 +837,7 @@ LaTeX Font Info:    ... okay on input line 86.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 86.
 LaTeX Font Info:    ... okay on input line 86.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 86.
- (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -903,9 +896,108 @@ Package Fancyhdr Warning: \headheight is too small (14.0pt):
 
 ]
 
+LaTeX Warning: Citation `fnc' on page 2 undefined on input line 205.
+
+
+LaTeX Warning: Citation `imd' on page 2 undefined on input line 215.
+
+
+LaTeX Warning: Citation `ddmc' on page 2 undefined on input line 215.
+
+
+LaTeX Warning: Citation `wollaber2013discrete' on page 2 undefined on input lin
+e 219.
+
+
+LaTeX Warning: Citation `willert' on page 2 undefined on input line 223.
+
+
+LaTeX Warning: Citation `park' on page 2 undefined on input line 223.
+
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 223.
+
+
+LaTeX Warning: Citation `ans_2014' on page 2 undefined on input line 223.
+
+
+LaTeX Warning: Citation `willert' on page 2 undefined on input line 228.
+
+
 LaTeX Warning: Citation `ecmc' on page 2 undefined on input line 237.
 
-[2] [3] [4] [5] [6] [7] [8]
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 243.
+
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 250.
+
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 253.
+
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 261.
+
+
+LaTeX Warning: Citation `rmc' on page 2 undefined on input line 271.
+
+[2]
+
+LaTeX Warning: Citation `wolters' on page 3 undefined on input line 273.
+
+
+LaTeX Warning: Citation `jake' on page 3 undefined on input line 274.
+
+
+LaTeX Warning: Citation `wolters' on page 3 undefined on input line 307.
+
+[3]
+
+LaTeX Warning: Citation `wolters' on page 4 undefined on input line 375.
+
+[4] [5]
+
+LaTeX Warning: Citation `morel_newton' on page 6 undefined on input line 450.
+
+
+LaTeX Warning: Citation `morel_newton' on page 6 undefined on input line 464.
+
+
+LaTeX Warning: Citation `jake_thesis' on page 6 undefined on input line 504.
+
+[6]
+
+LaTeX Warning: Citation `rmc' on page 7 undefined on input line 574.
+
+
+LaTeX Warning: Citation `shultis_mc' on page 7 undefined on input line 583.
+
+[7]
+
+LaTeX Warning: Citation `jake' on page 8 undefined on input line 595.
+
+
+LaTeX Warning: Citation `ans_2014' on page 8 undefined on input line 595.
+
+
+LaTeX Warning: Citation `park' on page 8 undefined on input line 607.
+
+
+LaTeX Warning: Citation `shultis_mc' on page 8 undefined on input line 618.
+
+
+LaTeX Warning: Citation `jake' on page 8 undefined on input line 625.
+
+[8]
+
+LaTeX Warning: Citation `jayenne' on page 9 undefined on input line 671.
+
+
+LaTeX Warning: Citation `teleportation' on page 9 undefined on input line 674.
+
+
+LaTeX Warning: Citation `ans_2014' on page 9 undefined on input line 701.
+
 <figures/marshak_mesh_conv.pdf, id=47, 517.71071pt x 409.79662pt>
 File: figures/marshak_mesh_conv.pdf Graphic file (type pdf)
 
@@ -931,22 +1023,34 @@ Overfull \hbox (2.08049pt too wide) in paragraph at lines 705--715
 
 pdfTeX warning: pdflatex (file ./figures/marshak_200_compare.pdf): PDF inclusio
 n: multiple pdfs with page group included in a single page
->] [10] <figures/two_mat_conv.pdf, id=158, 501.29784pt x 409.79662pt>
+>]
+
+LaTeX Warning: Reference `marshak_var' on page 10 undefined on input line 757.
+
+
+LaTeX Warning: Reference `two_mat_props' on page 10 undefined on input line 779
+.
+
+[10]
+
+LaTeX Warning: Reference `twomat_full' on page 11 undefined on input line 793.
+
+<figures/two_mat_conv.pdf, id=158, 501.29784pt x 409.79662pt>
 File: figures/two_mat_conv.pdf Graphic file (type pdf)
 
 <use figures/two_mat_conv.pdf>
-Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 800.
+Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 805.
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
 <figures/two_mat_ho_compare.pdf, id=159, 501.29784pt x 409.79662pt>
 File: figures/two_mat_ho_compare.pdf Graphic file (type pdf)
 
 <use figures/two_mat_ho_compare.pdf>
-Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 804.
+Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 809.
 
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 798--807
+Overfull \hbox (2.08049pt too wide) in paragraph at lines 803--812
 []$[]$ $[]$ 
  []
 
@@ -954,27 +1058,60 @@ Overfull \hbox (2.08049pt too wide) in paragraph at lines 798--807
 
 pdfTeX warning: pdflatex (file ./figures/two_mat_ho_compare.pdf): PDF inclusion
 : multiple pdfs with page group included in a single page
->] [12]
-Overfull \hbox (8.60767pt too wide) in paragraph at lines 901--907
+>]
+
+LaTeX Warning: Reference `marshak_table' on page 12 undefined on input line 841
+.
+
+
+LaTeX Warning: Citation `park' on page 12 undefined on input line 852.
+
+
+LaTeX Warning: Reference `twomat_table' on page 12 undefined on input line 870.
+
+
+
+LaTeX Warning: Reference `compare_ho' on page 12 undefined on input line 886.
+
+[12]
+
+LaTeX Warning: Citation `rmc' on page 13 undefined on input line 898.
+
+
+Overfull \hbox (8.60767pt too wide) in paragraph at lines 906--912
  [][] 
  []
 
 
-Overfull \hbox (8.60767pt too wide) in paragraph at lines 916--922
+Overfull \hbox (8.60767pt too wide) in paragraph at lines 921--927
  [][] 
  []
 
-[13] (./mnc2015.bbl [14]) [15] [16
+[13]
+
+LaTeX Warning: Citation `rmc' on page 14 undefined on input line 981.
+
+(./mnc2015.bbl [14]) [15]
+
+LaTeX Warning: Reference `app1' on page 16 undefined on input line 1030.
+
+
+LaTeX Warning: Reference `app2' on page 16 undefined on input line 1030.
+
+[16
 
 ] (./mnc2015.aux)
 
-LaTeX Warning: There were multiply-defined labels.
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
  19034 strings out of 493304
  358969 string characters out of 6139871
- 408809 words of memory out of 5000000
+ 407596 words of memory out of 5000000
  22074 multiletter control sequences out of 15000+600000
  29551 words of font info for 71 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -995,7 +1132,7 @@ xmf-dist/fonts/type1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
 es/utmri8a.pfb>
-Output written on mnc2015.pdf (16 pages, 291809 bytes).
+Output written on mnc2015.pdf (16 pages, 292684 bytes).
 PDF statistics:
  341 PDF objects out of 1000 (max. 8388607)
  143 compressed objects within 2 object streams

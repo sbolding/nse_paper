@@ -45,7 +45,7 @@
 \usepackage{multirow}
  
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
-\renewcommand{\ss}{\ensuremath{\overline{s}}}
+\renewcommand{\ss}{\ensuremath{\|s\|}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\deriv}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
@@ -734,15 +734,20 @@ $I^{n+1}$.  Also, the source sampling only places particles in cells where the r
 large.  No particles are sampled in the equilibrium region out front of the wave. 
 
 To get a quantitative measure of the statistical accuracy of different solution
-methods, a spatially averaged, relative standard deviation of independent simulations was
-computed.
-Twenty simulations for each input were performed with different
-random number seeds.  The relative standard deviation is computed as
+methods, a spatially integrated standard deviation of independent simulations was
+computed. Twenty simulations for each method and problem were performed with different
+random number seeds.  The variance of a particular cell average is
+computed as 
 \begin{equation} 
-    \ss = \frac{1}{N_c}\sum_i^{N_c} \left(\frac{\;\;1\;\;}{\overline{\phi_{i}}}\right)\sqrt{\frac{20}{20-1} \sum_{n=1}^{20} \left(\overline{\phi_{i}} - \phi_{i}^n\right)^2}
+    s_i^2 =  \frac{20}{20-1} \sum_{n=1}^{20} \left(\overline{\phi_{i}} - \phi_{i}^n\right)^2
 \end{equation}
 where $\phi_{i}^n$ is the cell-averaged scalar intensity for cell $i$ from the $n$-th of 20 independent simulations and
-$\overline{\phi_{i}}$ is the corresponding sample mean of all simulations. For both
+$\overline{\phi_{i}}$ is the corresponding sample mean from all simulations. To
+provide a normalized, spatially integrated result we compute a norm over all cells as 
+\begin{equation}
+    \ss = \sqrt{\frac{\sum_{i}^{N_c} s_i^2}{\sum_{i}^{N_c}\overline{\phi_{i}}^2}
+\end{equation}
+For both
 methods, we have only included cells that produced a non-zero variance, i.e., we have
 excluded cells that remained in equilibrium from the calculation.  
  The maximum standard deviation of all cells $s_{\max}$ is also computed.  It is important
