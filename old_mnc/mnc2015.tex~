@@ -745,7 +745,7 @@ where $\phi_{i}^n$ is the cell-averaged scalar intensity for cell $i$ from the $
 $\overline{\phi_{i}}$ is the corresponding sample mean from all simulations. To
 provide a normalized, spatially integrated result we compute a norm over all cells as 
 \begin{equation}
-    \ss = \sqrt{\frac{\sum_{i}^{N_c} s_i^2}{\sum_{i}^{N_c}\overline{\phi_{i}}^2}
+    \ss = \sqrt{\frac{\sum_{i}^{N_c} s_i^2}{\sum_{i}^{N_c}\overline{\phi_{i}}^2}}
 \end{equation}
 For both
 methods, we have only included cells that produced a non-zero variance, i.e., we have
@@ -764,9 +764,9 @@ with 12,000 histories per time step.
 \vspace{-0.1in}
 \begin{tabular}{|c|cc|cc|}\cline{2-5}
     \multicolumn{1}{c|}{}       & \multicolumn{2}{|c|}{\ss} & \multicolumn{2}{|c|}{$s_{\max}$} \\ \hline
-$\Delta t (sh)$   & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
-   0.001	      & 3.46\%  & 0.36\% &  17.79\%    &  7.70\%            \\
-   0.005          & 2.08\%  & 0.78\% &  65.70\%    & 29.84\%     \\ \hline
+Hists./Step   & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
+   12,000	 & 3.46\%  & 0.36\% &  17.79\%    &  7.70\%            \\
+  100,000    & 2.08\%  & 0.78\% &  65.70\%    & 29.84\%     \\ \hline
 \end{tabular}
 \end{table}
 
@@ -821,9 +821,9 @@ wave-front more accurately than the IMC method.
 \vspace{-0.1in}
 \begin{tabular}{|c|cc|cc|}\cline{2-5}
     \multicolumn{1}{c|}{}       & \multicolumn{2}{|c|}{\ss} & \multicolumn{2}{|c|}{$s_{\max}$} \\ \hline
-$\Delta t (sh)$   & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
-   0.001	      & 7.45\%  & 0.014\% &  19.90\%  & 0.166 \%            \\
-   0.005          & 3.98\%  & 0.022\% &  8.63\%   & 0.159 \%     \\ \hline
+Hists./Step     & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
+   12,000	    & 7.45\%  & 0.014\% &  19.90\%  & 0.166 \%            \\
+  100,000       & 3.98\%  & 0.022\% &  8.63\%   & 0.159 \%     \\ \hline
 \end{tabular}
 \end{table}
 
@@ -860,7 +860,7 @@ events.
     solutions the average number of LO Newton iterations per LO solve are given. }}
 \vspace{-0.1in}
 	\begin{tabular}{|cc|c|cc|}\hline
-Hists. per step & $\Delta t (sh)$ & IMC & HOLO-ECMC & Iters./LO solve \\ \hline
+Hists./step & $\Delta t (sh)$ & IMC & HOLO-ECMC & Iters./LO solve \\ \hline
 10$^5$                    &   0.001	& 5190 s &	4003 s & 3.8               \\
 $1.2\times10^4 $   &    0.001	& 635   s &	   692 s   & 4.1               \\
 $1.2\times10^4$     &   0.005	& 303   s &    179 s   & 6.2                \\ \hline
@@ -873,7 +873,7 @@ in the first problem.  Because the opacities do not have a $T^{-3}$ behavior in 
 \centering
 \caption{\label{twomat_table} \textbf{Total CPU time required for the two material problem.  Simulation end time is $\mathbf{t=2}$ sh.}}
 	\begin{tabular}{|cc|c|cc|} \hline
-Hists. per step & $\Delta t (sh)$ & IMC & HOLO-ECMC  &  Iters./LO Solve\\ \hline
+Hists./step & $\Delta t (sh)$ & IMC & HOLO-ECMC  &  Iters./LO Solve\\ \hline
 10$^5$                    &   0.001	& 3428 s  &	673 s & 4.9 \\
 $3\times10^4 $   &    0.001	& 1036 s  &	397 s  &    5.0 \\
 $3\times10^4$     &   0.005	&  699 s  &  86 s  &    7.6 \\ \hline
@@ -901,13 +901,13 @@ similar to the approach in~\cite{rmc}, but with a slightly different source.
 \begin{table}[H]
 \centering
 \caption{\label{marshak_var} \textbf{Comparison of sample standard deviations for the Marshak Wave problem
-    for 200 $x$ cells and 12,000 histories per time step.   Simulation end time is $\mathbf{t=5}$ sh.}}
+    for 200 $x$ cells and $\Delta t = 0.001$ sh.   Simulation end time is $\mathbf{t=5}$ sh.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|ccc|ccc|}\cline{2-7}
     \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} & \multicolumn{3}{|c|}{$s_{\max}$} \\ \hline
-$\Delta t (sh)$ & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
-   0.001	      & 3.05\%   & 0.13\% &  0.36\% &  43.38\%  & 2.26\%  &  7.70 \%            \\
-   0.005          & 14.88\%  & 0.25\% &  0.78\% &  63.48\%  & 9.92\%  & 29.84 \%     \\ \hline
+Hists./Step  & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
+   12,000	   & 3.05\%   & 0.13\% &  0.36\% &  43.38\%  & 2.26\%  &  7.70 \%            \\
+  100,000      & 14.88\%  & 0.25\% &  0.78\% &  63.48\%  & 9.92\%  & 29.84 \%     \\ \hline
 \end{tabular}
 \end{table}
 
@@ -919,10 +919,11 @@ $\Delta t (sh)$ & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-
     for 200 $x$ cells and 12,000 histories per time step.   Simulation end time is $\mathbf{t=2}$ sh.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|ccc|ccc|}\cline{2-7}
-    \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} & \multicolumn{3}{|c|}{$s_{\max}$} \\ \hline
-$\Delta t (sh)$ & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
-   0.001	      &  3.01\% & 0.0095\% & 0.014\% & 7.92 \%  & 0.559  & 0.166\%            \\
-   0.005          &  1.79\% & 0.0168\% & 0.022\% & 23.49\%  & 0.493  & 0.159\%     \\ \hline
+    \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} &
+    \multicolumn{3}{|c|}{$s_{\max}$} \\ \hli
+Hists./Step   & HOLO-SMC & HOLO-RMC & HOLO-ECMC  & HOLO-SMC & HOLO-RMC & HOLO-ECMC   \\ \hline
+   12,000	    &  3.01\% & 0.0095\% & 0.014\% & 7.92 \%  & 0.559  & 0.166\%            \\
+  100,000       &  1.79\% & 0.0168\% & 0.022\% & 23.49\%  & 0.493  & 0.159\%     \\ \hline
 \end{tabular}
 \end{table}
 
