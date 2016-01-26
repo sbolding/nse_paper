@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  25 JAN 2016 17:05
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  26 JAN 2016 17:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -913,27 +913,24 @@ LaTeX Warning: Citation `ecmc' on page 2 undefined on input line 248.
 File: figures/marshak_mesh_conv.pdf Graphic file (type pdf)
 
 <use figures/marshak_mesh_conv.pdf>
-Package pdftex.def Info: figures/marshak_mesh_conv.pdf used on input line 742.
+Package pdftex.def Info: figures/marshak_mesh_conv.pdf used on input line 748.
 (pdftex.def)             Requested size: 232.53pt x 184.0566pt.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 743.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 749.
 
 <figures/marshak_200_compare.pdf, id=51, 508.9671pt x 409.79662pt>
 File: figures/marshak_200_compare.pdf Graphic file (type pdf)
 
 <use figures/marshak_200_compare.pdf>
-Package pdftex.def Info: figures/marshak_200_compare.pdf used on input line 747
+Package pdftex.def Info: figures/marshak_200_compare.pdf used on input line 753
 .
 (pdftex.def)             Requested size: 232.53pt x 187.22687pt.
 
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 740--750
+Overfull \hbox (2.08049pt too wide) in paragraph at lines 746--756
 []$[]$ $[]$ 
  []
 
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [10 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
+[10 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
 
 pdfTeX warning: pdflatex (file ./figures/marshak_200_compare.pdf): PDF inclusio
 n: multiple pdfs with page group included in a single page
@@ -941,45 +938,41 @@ n: multiple pdfs with page group included in a single page
 File: figures/two_mat_conv.pdf Graphic file (type pdf)
 
 <use figures/two_mat_conv.pdf>
-Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 824.
+Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 830.
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
 <figures/two_mat_ho_compare.pdf, id=159, 501.29784pt x 409.79662pt>
 File: figures/two_mat_ho_compare.pdf Graphic file (type pdf)
 
 <use figures/two_mat_ho_compare.pdf>
-Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 828.
+Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 834.
 
 (pdftex.def)             Requested size: 232.53pt x 190.09073pt.
 
-Overfull \hbox (2.08049pt too wide) in paragraph at lines 822--831
+Overfull \hbox (2.08049pt too wide) in paragraph at lines 828--837
 []$[]$ $[]$ 
  []
 
-[11 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
+[11] [12 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
 
 pdfTeX warning: pdflatex (file ./figures/two_mat_ho_compare.pdf): PDF inclusion
 : multiple pdfs with page group included in a single page
->] [12]
-Overfull \hbox (23.33305pt too wide) in paragraph at lines 928--934
+>]
+Overfull \hbox (23.33305pt too wide) in paragraph at lines 935--941
  [][] 
  []
 
 
-Overfull \hbox (23.33305pt too wide) in paragraph at lines 943--950
+Overfull \hbox (23.33305pt too wide) in paragraph at lines 950--957
  [][] 
  []
 
 
-Overfull \hbox (23.33305pt too wide) in paragraph at lines 958--966
+Overfull \hbox (46.13142pt too wide) in paragraph at lines 965--974
  [][] 
  []
 
-
-Underfull \vbox (badness 3792) has occurred while \output is active []
-
- [13]
-[14] (./mnc2015.bbl [15]) [16] [17
+[13] [14] (./mnc2015.bbl [15]) [16] [17
 
 ] (./mnc2015.aux)
 
@@ -1010,7 +1003,7 @@ xmf-dist/fonts/type1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/font
 s/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
 es/utmri8a.pfb>
-Output written on mnc2015.pdf (17 pages, 294851 bytes).
+Output written on mnc2015.pdf (17 pages, 295736 bytes).
 PDF statistics:
  344 PDF objects out of 1000 (max. 8388607)
  145 compressed objects within 2 object streams
