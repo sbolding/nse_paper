@@ -161,13 +161,13 @@ S$_2$ equations.
 The LO solver is fully implicit in time and efficiently resolves the non-linear
 temperature dependence at each time step.   The HO solver
 utilizes exponentially-convergent Monte Carlo (ECMC) to give a globally accurate solution
-for the angular intensity to a fixed-source, pure absorber transport problem.  This global solution is used to compute consistency terms
-that require the HO and LO solutions to converge towards the same solution.  The use of ECMC
+for the angular intensity to a fixed-source, pure absorber transport problem.  This
+global solution is used to compute consistency terms, which require the HO and LO solutions to converge towards the same solution.  The use of ECMC
 allows for the efficient reduction of statistical noise in the MC solution, reducing
 inaccuracies introduced through the LO consistency
 terms.  We compare results with an
 implicit Monte Carlo (IMC) code for one-dimensional, gray test problems and 
-demonstrate the efficiency of ECMC over standard Monte Carlo in this algorithm.
+demonstrate the efficiency of ECMC over standard Monte Carlo in this HOLO algorithm.
 
 \emph{Key Words}: hybrid Monte Carlo, residual Monte Carlo, thermal radiative transfer
 
@@ -335,7 +335,7 @@ to directly evaluate the necessary consistency parameters for the next LO solve.
 the angular intensity,  LO parameters are estimated using quadrature and do not
 require additional tallies.  The HO solution is not used to directly estimate a new
 temperature at the end of the time step; it is
-only used to estimate the spatial and angular parameters in the LO solution, which eliminates
+only used to estimate the angular consistency parameters for the LO equations, which eliminates
 typical operator splitting stability issues that require linearization of the emission source.
 
 The process of performing subsequential HO and LO solves, within a single time step, can be repeated to obtain an increasingly accurate solution for $\phi^{n+1}(x)$ and $T^{n+1}(x)$.  Thus, the HOLO algorithm, for the $n$-th time step, is
@@ -370,9 +370,9 @@ interpolatory basis functions.  For example, the $L$  moment operator is defined
 where $h_i=x_{i+1/2}-x_{i-1/2}$ is the width of the spatial element and
 $b_{L,i}(x)=(x_{i+1/2}-x)/h_i$ is the FE basis function, for cell $i$, corresponding to position
 $x_{i-1/2}$.  The right moment $\mom{\cdot}_R$ is defined with weight function $b_{R,i}(x)=(x -
-x_{i-1/2})/h_i$. Here, it is noted in this notation $\mom{\phi}_{L,i}$ and
+x_{i-1/2})/h_i$. It is noted in this notation $\mom{\phi}_{L,i}$ and
 $\mom{\phi}_{R,i}$ represent spatial moments of the intensity over cell $i$, rather
-than $\phi_{L,i}$ and $\phi_{R,i}$ which represent the interior value of the linear
+than $\phi_{L,i}$ and $\phi_{R,i}$, which represent the interior value of the linear
 $\phi(x)$ at $x_\il$ and $x_\ir$. To reduce the angular dimensionality, positive and
 negative half-range integrals of the angular intensity are taken.  The half-range
 averages of $I$ are defined as $ \phi^+(x) = \int_0^{1} I(x,\mu) \d \mu$ and $ \phi^-(x) = \int_{-1}^{0} I(x,\mu) \d
@@ -386,7 +386,7 @@ moments with the $+$ and $-$ half-range integrals to Eq.~\eqref{ho_trans}
 ultimately yields four radiation moment
 equations per cell. As in~\cite{wolters}, algebraic manipulation is performed to form
 intensity-weighted
-averages of $\mu$, which we denote consistency terms.  As an example, the final equation resulting from application of the $L$ moment and
+averages of $\mu$, which we denote consistency terms.  As an example, the equation resulting from application of the $L$ moment and
 positive half-range integral is
 \begin{multline}\label{lo_tran}
     -2{\mu}_{i-1/2}^{n+1,+} \phi_{i-1/2}^{n+1,+} + \cur {\mu}_{L,i}^{n+1,+}
@@ -467,7 +467,7 @@ preserving the same average within a cell, but the relation between the moments 
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
 positive, the outflow is positive.  This closure is only used
-in cells in which negativities occur.
+in cells that negativities occur.
 
 \Subsection{Solving the Non-Linear LO System}
 
@@ -938,9 +938,9 @@ $1.2\times10^4$           &   0.005	& 19  &  9.4   & 6.2                \\ \hlin
 \caption{\label{twomat_table} \textbf{Average CPU times per history required for the two material problem.  Simulation end time is $\mathbf{t=2}$ sh.}}
 	\begin{tabular}{|cc|c|cc|} \hline
 hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist)  &  Iters./LO Solve\\ \hline
-10$^5$            &   0.001	& 3428 s  &	673 s & 4.9 \\
-$3\times10^4 $   &    0.001	& 1036 s  &	397 s  &    5.0 \\
-$3\times10^4$     &   0.005	&  699 s  &  86 s  &    7.6 \\ \hline
+10$^5$            &   0.001	& 17  &	3.5   & 4.9 \\
+$3\times10^4 $   &    0.001	& 18  &	6.9   &    5.0 \\
+$3\times10^4$     &   0.005	& 59  & 7.4   &    7.6 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -1067,8 +1067,6 @@ hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) 
 \end{table}
 
 
-
-
 \Section{Conclusions}
 
 We have been able to produce solutions for Marshak wave test problems using
@@ -1089,7 +1087,7 @@ The primary difficulty to overcome in the ECMC algorithm is when the solution ca
 be accurately represented by the trial space, e.g., in optically thick cells where
 the solution is driven negative.   We are currently developing an approach to allow
 the ECMC iterations to continue converging globally when there are such regions
-present.  It is necessary to ensure that the
+present.  It is necessary to ensure the
  closure in the LO system is consistent with the HO
 representation for the solution in such regions.  The ability to represent the solution accurately in
 rapidly varying regions of the problem will be key for generalization of this method
@@ -1197,7 +1195,18 @@ Finally, the moments of the error are simply the average contribution of all par
 
 \Section{Adaptive Mesh Refinement}
 \label{app:refinement}
-IN ???PROGRESS
+This section describes the adaptive refinement strategy for the ECMC algorithm.
+Detailed equations for performing projections and computing the residual source on
+the refined meshes can be found in~\cite{jake}.  At the end of the ECMC batch,
+refinement is performed in space-angle cells based on a jump indicator.  The jump
+indicator is the magnitude of the different between solutions in adjacent cells,
+averaged over an edge.  The maximum jump within a cell is used as the indicator for
+each cell.  Based on this indicator, the 20\% of cells with the largest jump are
+refined.  The refinement of a cell is symmetric, with each space-angle cell divided into four
+equal-sized cells.  The solution for $\tilde{I}^{n+1}$ of the batch is projected onto
+the finer mesh for the next batch.  At the end of the last HO solve in a time step,
+$\tilde{I}^{n+1}$ is projected back onto the original, coarsest mesh and stored as
+$\tilde{I}^{n}$ for the time step.
 
 
 \end{document}
