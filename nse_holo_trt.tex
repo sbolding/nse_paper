@@ -1,33 +1,114 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt]{article}
+\usepackage{multirow}
+\usepackage{tabls}
+\usepackage{afterpage}
+\usepackage{booktabs}
+\usepackage{epsf}
+\usepackage{amsmath}   
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{bm}
+\usepackage{epsfig}
+\usepackage{rotating}
+\usepackage{setspace}
+\usepackage{tabls}
+\usepackage{hhline}
+\usepackage{float}
+%\usepackage{subfigmat}
+%\usepackage{cites}
+%\usepackage{overcite}                                                                                                
+% uncomment for submission of manuscript to NSE
+\usepackage[nolists, nomarkers]{endfloat}
 %
-%  This is a sample LaTeX input file for your contribution to 
-%  the MC2013 conference. Modified by R.C. Martineau at INL from A. 
-%  Sood at LANL, from J. Wagner ORNL who obtained the original class 
-%  file by Jim Warsa, LANL, 16 July 2002}
+% use to include postscript figures
+\usepackage{graphicx}
 %
-%  Please use it as a template for your full paper 
-%    Accompanying/related file(s) include: 
-%       1. Document class/format file: mc2013.cls
-%       2. Sample Postscript Figure:   figure.eps
-%       3. A PDF file showing the desired appearance: template.pdf 
-%    Direct questions about these files to: richard.martinea@inl.gov
-%
-%    Notes: 
-%      (1) You can use the "dvips" utility to convert .dvi 
-%          files to PostScript.  Then, use either Acrobat 
-%          Distiller or "ps2pdf" to convert to PDF format. 
-%      (2) Different versions of LaTeX have been observed to 
-%          shift the page down, causing improper margins.
-%          If this occurs, adjust the "topmargin" value in the
-%          mc2013.cls file to achieve the proper margins. 
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[light,firsttwo]{draftcopy}
+%\draftcopySetGrey{0.90}
+                                                                                                            
+%\usepackage{dbl}
+% -----------------------------------------------------------------------------
+% define newcommands
+% -----------------------------------------------------------------------------
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\thesection.\Alph{subsection}}
 
+%\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\textfloatsep}{8pt plus 1pt minus 1pt}
+%\setlength{\intextsep}{4pt plus 1pt minus 1pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 1pt}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass{mc2013}
+%\makeatletter
+%\renewcommand{\@thesubfigure}{\thefigure\thesubfigure\space}
+%\makeatother
+% =================================================================================================
+% more new commands
+% +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\textwidth}{1.0in}
+\addtolength{\textheight}{0.5in}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
 %
-%  various packages that you may wish to activate for usage 
+% -----------------------------------------------------------------------------
+% define newcommands
+% -----------------------------------------------------------------------------
+
+%\setlength{\floatsep}{4pt plus 1pt minus 1pt}
+\setlength{\textfloatsep}{8pt plus 1pt minus 1pt}
+%\setlength{\intextsep}{4pt plus 1pt minus 1pt}
+\setlength{\abovedisplayskip}{4pt plus 1pt minus 1pt}
+\setlength{\belowdisplayskip}{4pt plus 1pt minus 1pt}
+
+% =================================================================================================
+% more new commands
+% +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+%
+% Tabular and center beginnings and endings
+%
+\newcommand{\bc}{\begin{center}}
+\newcommand{\ec}{\end{center}}
+\newcommand{\btb}{\begin{center}\begin{tabular}}
+\newcommand{\etb}{\end{tabular}\end{center}}
+%
+% Single space command
+%
+%\newcommand{\bss}{\begin{singlespace}}
+%\newcommand{\ess}{\end{singlespace}}
+\newcommand{\bss}{\singlespacing}
+\newcommand{\ess}{\doublespacing}
+%
+%---New environment "arbspace". (modeled after singlespace environment
+%                                in Doublespace.sty)
+%   The baselinestretch only takes effect at a size change, so do one.
+%
+\def\arbspace#1{\def\baselinestretch{#1}\@normalsize}
+\def\endarbspace{}
+\newcommand{\bas}{\begin{arbspace}}
+\newcommand{\eas}{\end{arbspace}}
+%
+%
+% MY COMMANDS
+%
+\usepackage{graphicx}
+\usepackage{tabls}
+\usepackage{afterpage}
+\usepackage{float}
+\usepackage{cites}
+\usepackage{color}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{verbatim}
+\usepackage[parfill]{parskip}
+\usepackage{tikz}
+\usepackage{subcaption}
+\usepackage{soul}
+\usepackage[labelfont=bf]{caption}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{multirow}
+ 
 \renewcommand{\thefootnote}{\fnsymbol{footnote}}
 \renewcommand{\ss}{\ensuremath{\|s\|}}
 \newcommand{\N}{\mathbb{N}}
@@ -53,67 +134,45 @@
 \newcommand{\FOM}{\ensuremath{\text{FOM}}}
 
 \graphicspath{{figures/}}
- 
-%\usepackage{epsf}
-%
-%
-% Insert authors' names and short version of title in lines below
-%
-\newcommand{\authorHead}      % Author's names here
-   {S.R. Bolding, M. Cleveland, and J.E. Morel}  
-\newcommand{\shortTitle}      % Short title here
-   {A HOLO method with ECMC for Thermal Radiative Transfer}  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%   BEGIN DOCUMENT
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% =================================================================================================
+\date{}
+
 \begin{document}
 
-%
-%      Headers and Footers
-\afterpage{%
-\fancyhf{}%
-\fancyhead[CE]{              
-{\scriptsize \authorHead}}                                                
-\fancyhead[CO]{               
-{\scriptsize \shortTitle}}                  
-%\lfoot{\scriptsize{
-%International Conference on Mathematics and Computational Methods
-%Applied to Nuclear Science \& Engineering (M\&C 2013), 
-%\\ Sun Valley, Idaho, USA, May 5-9, 2013.}}%
-\rfoot{\thepage/\totalpages{}}%
+%\bibliographystyle{nse}
+%\bibnum{p}
 
-\pagestyle{fancy}
-%\setlength{\topmargin}{-20pt}
-}
-
-\renewcommand\thesection{\Roman{section}}
-\renewcommand\thesubsection{\thesection.\Alph{subsection}}
- 
-\normalsize
-\setlength{\baselineskip}{16.8pt}
-\vspace{-3pt}
-
-% 
-% TITLE
-%
+\thispagestyle{empty}
 
 \begin{center}
 \textbf{\large \\%
 A HIGH-ORDER LOW-ORDER ALGORITHM WITH EXPONENTIALLY-CONVERGENT MONTE CARLO FOR
-THERMAL RADIATIVE TRANSFER\\ \vspace{0.1in}
+THERMAL RADIATIVE TRANSFER
+\\
 }
+
+\ess
+% 
+% FIRST AUTHORS 
+%
 % 
 % FIRST AUTHORS 
 %
 \setlength{\baselineskip}{14pt}
-\textbf{Simon R. Bolding\footnote{LA-UR-14-29653} and Jim E. Morel} \\
+\textbf{\\Simon R. Bolding\footnote{LA-UR-??????}} \\
 Department of Nuclear Engineering\\
 Texas A\&M University  \\
 College Station, TX 77843 \\
-sbolding@tamu.edu; morel@tamu.edu \\
+sbolding@tamu.edu 
+\vspace{6.2pt}
 
+\setlength{\baselineskip}{14pt}
+\textbf{Jim E. Morel} \\
+Department of Nuclear Engineering\\
+Texas A\&M University  \\
+College Station, TX 77843 \\
+morel@tamu.edu \\
 % 
 % SECOND AUTHORS (if not needed delete from here) 
 %
@@ -126,17 +185,32 @@ cleveland@lanl.gov \\
 % SECOND AUTHORS (to here)
 %
 
-\end{center}
 
-%
-% SET RAGGED RIGHT MARGIN
-%
-\raggedright
 
-\vspace{4pt}
-\section*{ABSTRACT} 
-\begin{quote}
-\begin{small}
+\vspace{2.0in}
+
+Send proofs and page charges to:\\
+\vspace{0.1in}
+Professor Jim Morel \\
+Texas A\&M University\\
+Department of Nuclear Engineering\\
+TAMU 3133\\
+College Station, TX  77843-3133\\
+morel@tamu.edu\\
+\vspace{0.25in}
+?? Pages -- ? Tables -- ? Figures \\
+\ec
+\ess
+
+% =================================================================================================
+
+\newpage
+
+%\setcounter{page}{1}
+
+
+\begin{abstract} 
+
 We have implemented a new high-order low-order (HOLO) algorithm for solving
 thermal radiative transfer problems.  The low-order (LO) system is based on spatial
 and angular moments of the transport equation and a linear-discontinuous
@@ -153,23 +227,29 @@ terms.  We compare results with an
 implicit Monte Carlo (IMC) code for one-dimensional, gray test problems and 
 demonstrate the efficiency of ECMC over standard Monte Carlo in this HOLO algorithm.
 
+\vspace{20pt}
 \emph{Key Words}: hybrid Monte Carlo, residual Monte Carlo, thermal radiative transfer
+  
+\end{abstract}
 
-\end{small} 
-\end{quote}
+\newpage
 
-\setlength{\baselineskip}{14pt}
-\normalsize
+% =============================================================================
+% Introduction
+% +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-\Section{INTRODUCTION}
+\setlength{\parindent}{5ex}
+
+\section{INTRODUCTION}
 
 We have implemented a high-order low-order (HOLO) algorithm for the case of 1D gray thermal radiative transfer (TRT) problems. The governing equations are the radiation and
 material energy balance equations, i.e.,\vspace{-0.05in}
 \begin{align}\label{ho_cont}
-    \frac{1}{c}\pderiv{I}{t} + \mu \pderiv{I}{x} + \sigma_t I
-&= \frac{\sigma_s}{2} \phi +\frac{1}{2} \sigma_a a c T^4
+    \frac{1}{c}\pderiv{I(x,\mu,t)}{t} + \mu \pderiv{I(x,\mu,t)}{x} + \sigma_t
+    I(x,\mu,t)
+&= \frac{\sigma_s}{2} \phi(x,t) +\frac{1}{2} \sigma_a a c T^4(x,t)
     \\ \label{t_cont}
-  \rho c_v \pderiv{T}{t} &=  \sigma_a \phi - \sigma_a a c T^4.
+  \rho c_v \pderiv{T(x,t)}{t} &=  \sigma_a \phi(x,t) - \sigma_a a c T^4(x,t).
 \end{align}
 In the above equations $x$ is the position, $t$ is the time, $\mu$ is
 the $x$-direction cosine of the angular intensity $I(x,\mu,t)$, and $a$, $c$, $\rho$,
@@ -179,7 +259,7 @@ $\sigma_t$ are the absorption, scattering, and total
 cross sections (cm$^{-1}$), respectively. The desired unknowns are the material
 temperature $T(x,t)$ and the scalar radiation intensity $\phi(x,t)=\int_{-1}^1
 I(x,\mu,t) \d \mu$.  The scalar intensity is related to the radiation energy density
-as $E = \phi/c$.  The equations are
+$E$ by the relation $E = \phi/c$.  The equations are
 strongly coupled through the gray Planckian emission source $\sigma_a a c T^4$, which
 is a nonlinear function of temperature, and the absorption
 term $\sigma_a \phi$.   In general, the material properties are a function of $T$.  The temperature dependent material properties and
@@ -190,7 +270,8 @@ Monte Carlo (MC) solution to the TRT equations is typically achieved by the
 implicit Monte Carlo (IMC) method~\cite{fnc}. This
 method linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{t_cont} over a discrete time
 step.  The linearization of the system produces a transport equation that contains an approximate emission source and an effective scattering cross section representing
-absorption and reemission of photons over a time step. This transport equation is solved using MC. The MC simulation tallies energy absorption
+absorption and reemission of photons over a time step. This transport equation is
+advanced over a time step via MC. The MC simulation tallies energy absorption
 over a discretized spatial mesh.  The energy absorption in each mesh cell is used to directly estimate
 a new end of time step temperature in that cell.  In optically thick regions, or for
 large time steps, the
@@ -229,15 +310,15 @@ eliminating stability issues that require linearization of the emission source.
 
 Sufficient MC histories must be performed to eliminate statistical
 noise in the consistency terms that can contaminate the LO solution.
-Exponentially-convergent Monte Carlo (ECMC)\cite{ecmc} provides an algorithm that can efficiently
+Exponentially-convergent Monte Carlo (ECMC)\cite{jake,ans_2014} provides an algorithm that can efficiently
 reduce statistical noise to the same order as the HOLO iteration error with
 significantly less particle histories than standard MC. In particular, ECMC is
 exceptionally efficient in time-dependent TRT problems because information about the
 intensity from the previous time step can be used as an accurate initial guess for
-the end of time step intensity. Additionally, no particle histories are required in regions of the problem
-where the problem is in equilibrium, similar to~\cite{rmc}.  However, implementation
-of ECMC is non-trivial, requiring a finite-element representation of the solution in all
-phase-space variables.  The fundamental transport of particles is the same
+the new end of time step intensity. Additionally, no particle histories are required
+in regions where the radiation and material energy field are in equilibrium, similar to~\cite{rmc}.  However, implementation
+of ECMC is non-trivial, requiring a finite-element representation of the solution in
+all phase-space variables that are being sampled with MC.  The fundamental transport of particles is the same
 as standard Monte Carlo transport codes, but the source will now contain positive and
 negative weight particles.
 
@@ -250,10 +331,12 @@ algorithm  uses a piecewise constant trial space representation for the intensit
 $x$ and $\mu$.
 The primary difference between the methods is that ECMC iteratively estimates the
 solution, in batches, producing a known MC estimate
-of the error in that estimate.  The ECMC algorithm also uses a linear-discontinuous
-finite-element (LDFE) trial space to represent the intensity, although the RMC
-algorithm could similarly be formulated with an LDFE representation.  The LDFE
-representation introduces significant implementation complexity.  The formulation of the residual in~\cite{rmc} can produce minimal
+of the error in that estimate.  The ECMC algorithm projects the intensity onto a linear-discontinuous
+finite-element (LDFE) trial space, although the RMC
+algorithm could similarly be formulated with an LDFE representation.  Adaptive
+mesh-refinement can be used in ECMC to produce highly accurate solutions with minimal
+statistical noise, as long as sufficient particle histories are performed. 
+The formulation of the residual in~\cite{rmc} can produce minimal
 statistical noise in slowly varying problems where the behavior of the system is near
 equilibrium. The ECMC algorithm has
 similar statistical efficiency by choosing the old intensity as the initial guess to
@@ -263,7 +346,12 @@ desired.  Generally, the minimum number of histories per batch to obtain converg
 LDFE trial space is larger than a piece-wise constant representation because additional
 histories are needed to sufficiently estimate the first moment in $x$ and $\mu$ of the
 intensity. It is noted that our formulation of the LO
-equations is in great contrast to the formulation in~\cite{rmc}.
+equations and consistency terms contrast greatly from the typical formulation
+in~\cite{rmc,willert,park}.  
+%The LDFE
+%representation in the HO and LO systems enforces spatial consistency and ensures the
+%solution correctly produce the equilibrium diffusion limit, a critical aspect
+%for TRT equations.
 
 In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters}
 in conjunction with an ECMC method~\cite{jake} for the HO solver.
@@ -274,24 +362,25 @@ equation, using a linear-discontinuous (LD) finite-element (FE) spatial
 discretization, such that the HO and LO solutions are converging towards the same
 solution. Herein we describe the algorithm and present results for one-dimensional test problems.
 
-\Section{Overview of the HOLO Algorithm}
+\section{Overview of the HOLO Algorithm}
 
 For simplicity, our HOLO method will use a backwards Euler discretization in time, as
-well as constant specific heats and cell-wise constant cross sections. The time discretized
+well as constant specific heats and cell-wise constant cross sections. The time-discretized
 equations are
 \begin{align}
-\mu \pderiv{I^{n+1}}{x} + \left(\sigma_t + \frac{1}{c \Delta t }\right) I^{n+1}
+    \mu \pderiv{I^{n+1}}{x} + \left(\sigma_t^{n+1} + \frac{1}{c \Delta t }\right) I^{n+1}
 &= \frac{\sigma_s}{2} \phi^{n+1} +\frac{1}{2} \left(\sigma_a a c T^4 \right)^{n+1} + \frac{I^n}{c \Delta t} \label{ho_trans} \\
-\rho c_v \frac{T^{n+1} - T^n}{\Delta t} &= \sigma_a \phi^{n+1}
-- \sigma_a a c (T^4)^{n+1} \label{lo_mat}.
+\rho c_v \frac{T^{n+1} - T^n}{\Delta t} &= \sigma_a^{n+1} \phi^{n+1}
+- \sigma_a a c (T^4)^{n+1} \label{lo_mat},
 \end{align}
-where $\Delta t$ is the time step size and the superscript $n$ is used to indicate
-the $n$-th time step. It is noted that in IMC the time derivative in
-Eq.~\eqref{ho_cont} is typically treated using continuous time-dependent MC over each
+where $\Delta t$ is the uniform time step size, the superscript $n$ is used to indicate
+the $n$-th time step. Cross sections are evaluated at the end of time step
+temperature, i.e., $\sigma_a^{n+1}\equiv\sigma_a(T^{n+1})$. It is noted that in IMC the time derivative in
+Eq.~\eqref{ho_cont} is typically treated continuously using time-dependent MC over each
 time step.  Our HO transport equation is
-discrete in time for easy application of ECMC and to avoid difficulties in coupling to the
-fully-discrete LO solver, but this does introduce some artificial propagation of
-energy due to the implicit time differencing, in optically thin regions. 
+discrete in time for simpler application of ECMC and to avoid difficulties in coupling to the
+fully-discrete LO solver.  However, this does introduce some artificial propagation of
+energy due to the implicit time differencing in optically thin regions. 
 
 In the HOLO context, the LO solver models the physical scattering and
 resolves the material temperature spatial distribution $T(x)$ at each time step.  The LO equations are formed via half-range 
@@ -303,18 +392,18 @@ element-averaged consistency parameters that are analogous to a variable
 Eddington factor.  If the angular consistency parameters were estimated exactly, then the LO equations are exact with respect to the chosen
 spatial discretization.  These consistency parameters are lagged in each LO solve,
 estimated from the previous HO solution for $I^{n+1}(x,\mu)$, as explained below. For
-the initial LO solve for each time step, the parameters are calculated based on the
-$I^{n}(x,\mu)$.  The LO equations always conserve total energy, independent of the accuracy of the consistency terms.
+the initial LO solve for each time step, the parameters are calculated with
+$I^{n}(x,\mu)$.  The discrete LO equations always conserve total energy, independent of the accuracy of the consistency terms.
 
-The solution to the LO system is used to construct a spatially LDFE representation of
+The solution to the LO system is used to construct a LDFE spatial representation of
 the scattering and emission sources on the right hand side of Eq.~\eqref{ho_trans}.
 The LDFE representation of the emission source mitigates teleportation error.
  This defines a fixed-source, pure absorber
 transport problem for the HO operator. This HO transport problem represents a characteristic method that uses MC to
 invert the continuous streaming plus removal operator with an LDFE representation of
 sources. We will solve this transport problem using ECMC.  The output from ECMC is
-$\tilde{I}(x,\mu)$, a space-angle LDFE projection of the exact solution for
-$I(x,\mu)$.  Once computed, $\tilde{I}(x,\mu)$ is used
+$\tilde{I}^{n+1}(x,\mu)$, a space-angle LDFE projection of the exact solution for
+$I^{n+1}(x,\mu)$.  Once computed, $\tilde{I}^{n+1}(x,\mu)$ is used
 to directly evaluate the necessary consistency parameters for the next LO solve.  Since there is a global, functional representation of
 the angular intensity,  LO parameters are estimated using quadrature and do not
 require additional tallies.  The HO solution is not used to directly estimate a new
@@ -326,48 +415,49 @@ The process of performing subsequential HO and LO solves, within a single time s
 \begin{enumerate}
 \item Perform a LO solve to produce an initial guess for $T^{n+1,0}(x)$
     and $\phi^{n+1,0}(x)$, based on consistency terms estimated with $\tilde{I}^{n}$.
-\item Solve the HO system for $\tilde{I}^{n+1,k+1/2}(x,\mu)$ using ECMC, based on the current
+\item Solve the HO system for $\tilde{I}^{n+1,k+1/2}(x,\mu)$ with ECMC, based on the current
     LO estimate of the emission and scattering sources.%$\sigma_s(T^k)\phi^{k}$ and $B(T)^{k}$.
 \item Compute LO consistency parameters with $\tilde{I}^{n+1,k+1/2}$.  
-\item Solve the LO system using HO consistency parameters to produce a new
+\item Solve the LO system with HO consistency parameters to produce a new
     estimate of $\phi^{n+1,k+1}$ and $T^{n+1,k+1}$.
-\item Repeat 2 -- 4 until convergence is achieved.
+\item Optionally repeat 2 -- 4 until desired convergence is achieved.
 \item Store $\tilde{I}^{n}\leftarrow\tilde{I}^{n+1}$, and move to the next time step.
 \end{enumerate}
-where the superscript $k$ denotes an outer HOLO iteration.
+where the superscript $k$ denotes the outer HOLO iteration.
 The consistency terms force the HO
 and LO solutions for $\phi^{n+1}(x)$ to be consistent to the order of the current HOLO
-iteration error.
+iteration error, as long as the LDFE spatial representation can accurately represent
+$\phi(x)$ and $T(x)$.
 %One HOLO fixed-point iteration $k$ denotes the process of an ECMC solve of the HO problem to estimate LO parameters, based on
 %the current LO estimate of sources, followed by a solution of the 
 %LO system for $T^{n+1}(x)$ and $\phi^{n+1}(x)$.
 
 
-\Section{Forming the Low-Order System}
+\section{Forming the Low-Order System}
 
 To form the LO system of equations, spatial moments are taken over each spatial cell $i$:
-$x\in[x_{i-1/2},x_{i+1/2}]$, weighted with the standard linear FE
+$x\in[x_{i-1/2},x_{i+1/2}]$, weighted with the standard linear finite element (FE)
 interpolatory basis functions.  For example, the $L$  moment operator is defined by
 \begin{equation}\label{x_mom}
 \mom{\cdot}_{L,i} = \frac{2}{h_i} \int_{x_{i-1/2}}^{\xr} b_{L,i}(x) (\cdot) \d x,
 \end{equation}
 where $h_i=x_{i+1/2}-x_{i-1/2}$ is the width of the spatial element and
 $b_{L,i}(x)=(x_{i+1/2}-x)/h_i$ is the FE basis function, for cell $i$, corresponding to position
-$x_{i-1/2}$.  The right moment $\mom{\cdot}_R$ is defined with weight function $b_{R,i}(x)=(x -
+$x_{i-1/2}$.  The right moment $\mom{\cdot}_{R,i}$ is defined with weight function $b_{R,i}(x)=(x -
 x_{i-1/2})/h_i$. It is noted in this notation $\mom{\phi}_{L,i}$ and
-$\mom{\phi}_{R,i}$ represent spatial moments of the intensity over cell $i$, rather
-than $\phi_{L,i}$ and $\phi_{R,i}$, which represent the interior value of the linear
-$\phi(x)$ at $x_\il$ and $x_\ir$. To reduce the angular dimensionality, positive and
+$\mom{\phi}_{R,i}$ represent spatial moments of the intensity over cell $i$, opposed
+to $\phi_{L,i}$ and $\phi_{R,i}$, which represent the interior value of the linear
+representation of $\phi(x)$ at $x_\il$ and $x_\ir$ within the cell. To reduce the angular dimensionality, positive and
 negative half-range integrals of the angular intensity are taken.  The half-range
 averages of $I$ are defined as $ \phi^+(x) = \int_0^{1} I(x,\mu) \d \mu$ and $ \phi^-(x) = \int_{-1}^{0} I(x,\mu) \d
 \mu$, respectively.  Thus, in terms of half-range quantities, $\phi(x) = \phi^-(x) +
 \phi ^+(x)$.  
 
-\Subsection{Radiation Energy Equations}
+\subsection{Radiation Energy Equations}
 
 Pairwise application of the $L$ and $R$ basis
 moments with the $+$ and $-$ half-range integrals to Eq.~\eqref{ho_trans} 
-ultimately yields four radiation moment
+ultimately yields four moment
 equations per cell. As in~\cite{wolters}, algebraic manipulation is performed to form
 intensity-weighted
 averages of $\mu$, which we denote consistency terms.  As an example, the equation resulting from application of the $L$ moment and
@@ -376,15 +466,13 @@ positive half-range integral is
     -2{\mu}_{i-1/2}^{n+1,+} \phi_{i-1/2}^{n+1,+} + \cur {\mu}_{L,i}^{n+1,+}
   \mom{\phi}_{L,i}^{n+1,+}
   +  \cur\mu_{R,i}^{n+1,+}
-  \mom{\phi}_{R,i}^{n+1,+} +  \left(\sigma_t^{n+1}+\frac{1}{c \Delta t} \right) h_i 
-  \mom{\phi}_{L,i}^{n+1,+} \\-  \frac{\sigma_s h_i}{2} \left( \mom{\phi}_{L,i}^{n+1,+} +
+  \mom{\phi}_{R,i}^{n+1,+} +  \left(\sigma_{t,i}^{n+1}+\frac{1}{c \Delta t} \right) h_i 
+  \mom{\phi}_{L,i}^{n+1,+} \\-  \frac{\sigma_{s,i} h_i}{2} \left( \mom{\phi}_{L,i}^{n+1,+} +
   \mom\phi_{L,i}^{n+1,-}\right) = \frac{h_i}{2} \mom{\sigma_a^{n+1} a c T^{n+1,4}}_{L,i} +
   \frac{h_i}{c\Delta t}\mom{\phi}_{L,i}^{n,+},
 \end{multline}
 where the $\phi^+_{i-1/2}$ and $\mu^+_{i-1/2}$ terms represent face-averaged quantities at $x_{\il}$.  The negative direction and $R$ moment equations are
-derived analogously. Opacities are assumed constant over each element, evaluated at the
-average temperature in the element, i.e., $\sigma_a = \sigma_a([T_{L,i}+T_{R,i}]/2)$,
-$x\in(x_\il, x_\ir)$. The element-averaged angular consistency terms are defined in terms of half-range integrals, e.g.,
+derived analogously.  The element-averaged angular consistency terms are defined in terms of half-range integrals, e.g.,
 \begin{equation}\label{const}
     \cur{{\mu}}_{L,i}^{n+1,+} \equiv \frac{\mom{\mu I^{n+1}}_{L,i}^+}{\mom{I^{n+1}}_{L,i}^+} =  \frac{
 {\displaystyle \frac{2}{h_i}} \int\limits_0^1 \int\limits_\xl^\xr \mu \, b_{L,i}(x)
@@ -394,7 +482,7 @@ I^{n+1}(x,\mu) \d x \d \mu } .
 \end{equation}
 The $\mu_{i-1/2}^{n+1,+}$ term is defined analogously and represents an angular average on the face at $x_{\il}$.
 
-\Subsection{Material Energy Equations}
+\subsection{Material Energy Equations}
 
 To derive the LO material energy equations, $T(x)$ is represented spatially in
 the LDFE trial space, i.e.,
@@ -406,16 +494,19 @@ energy equation, using these definitions for $T(x)$ and $\sigma_a a c T^4(x)$ to
  \begin{multline}\label{lo_mat_dis}
      \frac{\rho_i c_{v,i}}{\Delta t}\left[ \left(\frac{2}{3}T_{L,i} + \frac{1}{3}T_{R,i}
         \right)^{n+1} - \left(\frac{2}{3}T_{L,i} + \frac{1}{3}T_{R,i}
-    \right)^{n} \right]  + \sigma_a^{n+1} \left( \mom{\phi}_{L,i}^+ +
-    \mom{\phi}_{L,i}^- \right)^{n+1} \\ = \sigma_a^{n+1}a c
+    \right)^{n} \right]  + \sigma_{a,i}^{n+1} \left( \mom{\phi}_{L,i}^+ +
+    \mom{\phi}_{L,i}^- \right)^{n+1} \\ = \sigma_{a,i}^{n+1}a c
 \left( \frac{2}{3} T_{L,i}^4 + \frac{1}{3}T_{R,i}^4
         \right)^{n+1}.
 \end{multline}
+Cross sections have been assumed constant over each element, evaluated at the
+average temperature within the element, i.e., $\sigma_{a,i}^{n+1} =
+\sigma_{a,i}([T^{n+1}_{L,i}+T^{n+1}_{R,i}]/2)$.
 Because the material energy balance
  only contains angularly integrated quantities, there is no need to take angular
  moments of the above equation.  
 
-\Subsection{Closing the System with Information from the HO solution}
+\subsection{Closing the System with Information from the HO solution}
 \label{sec:closure}
 
 The six degrees of freedom (DOF) over each cell $i$ are the four moments $\mom{\phi}_{L,i}^+$,
@@ -432,18 +523,19 @@ approximation is used.  For example, for positive flow (e.g., Eq.~\eqref{lo_tran
 are upwinded from the previous cell $i-1$ or from a boundary condition; the terms
 at $x_{i+1/2}$ are linearly extrapolated, computed using the $L$ and $R$ basis
 moments, e.g., $\phi^+_{i+1/2} = 2\mom{\phi}_R^+ - \mom{\phi}_L^+$. 
-The HO ECMC solver computes an LDFE representation of the intensity, so the same spatial closure is used to relate volume and face averaged consistency terms.  Thus, the spatial closure between the LO and HO solvers are inherently
+The HO ECMC solver computes an LDFE representation of the intensity, so the same
+spatial closure is used to calculate volume and face averaged consistency terms.  Thus, the spatial closure between the LO and HO solvers are inherently
 consistent.  Because there are no
-spatial temperature derivatives, there is no need for an
-additional closure in $T$. 
+spatial temperature derivatives, there is no need to define $T$ on the faces; the temperature has been assumed linear over a cell to
+relate $T$ and $T^4$.
 
-The LD closure is not strictly positive.  In particular, for
+The linear-discontinuous (LD) closure with upwinding is not strictly positive.  In particular, for
 optically thick cells with a steep intensity gradient, the solution becomes negative.
-These negativities can also result in adjacent cells in the direction of flow. In thick regions of
+These negativities can propagate to adjacent cells. In thick regions of
 TRT problems, reasonably fine spatial cells can still be on the order of millions of mean
-free paths; negativities with a LD representation are unavoidable in practice for
+free paths; negativities with an LD representation are unavoidable in practice for
 such cells and mesh refinement is of minimal use.  Typically, for a standard LDFE method,
-the equations are lumped to produce a strictly positive solution for 1D~\cite{morel_newton}. However, standard FE lumping
+the equations are lumped to produce a strictly positive solution (for 1D)~\cite{morel_newton}. However, standard FE lumping
 procedures would introduce difficulties in computing the consistency terms from the
 HO solution.  Thus, an alternative spatial closure is used that is equivalent to the
 standard FE lumping procedure.  The $L$ and $R$ moments are defined the same as before,
@@ -451,13 +543,13 @@ preserving the same average within a cell, but the relation between the moments 
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
 positive, the outflow is positive.  This closure is only used
-in cells that negativities occur.
+in cells where negativities occur.
 
-\Subsection{Solving the Non-Linear LO System}
+\subsection{Solving the Non-Linear LO System}
 
 We have used Newton's method to solve the global system of coupled LO
 equations, based on a typical linearization of the Planckian source with cross
-sections evaluated at the previous iteration temperatures, as described in~\cite{morel_newton}.  
+sections evaluated at temperatures of the previous iteration, as described in~\cite{morel_newton}.  
 Once the system is linearized, a discrete matrix equation is formed.  Scattering is included in the system matrix. The system
 matrix is an asymmetric, banded matrix with a band width of seven and is inverted
 directly. 
@@ -486,7 +578,7 @@ those cells and that Newton step is repeated.
 %conserve the total energy.  This estimate of $T^{n+1}$ can now be used as $T^*$ to form a more
 %accurate linearization of the emission source. 
 
-\Section{The ECMC High Order Solver}
+\section{The ECMC High Order Solver}
 
 The transport equation to be solved by the HO solver is
 \begin{equation}\label{eq:ho_base}
@@ -502,7 +594,7 @@ solves. The sources at $k$ in Eq.~\eqref{eq:ho_base} are estimated by the previo
 evaluated at $T^{n+1,k}$.  As all sources on the right side of the equation are known,
 this defines a fixed-source, pure absorber transport problem.  We will solve
 this equation using ECMC.  A more detailed description of the
-ECMC method can be found in~\cite{jake_thesis}, but a brief overview is given here.
+ECMC method can be found in~\cite{jake}, but a brief overview is given here.
 
  In operator notation, the previous equation can be written as
 \begin{equation}\label{te_oper}
@@ -516,7 +608,7 @@ side of Eq.~\eqref{ho_trans}.
 The $m$-th approximate LDFE solution to Eq.~\eqref{te_oper} ($m$ is the index of inner HO
 batches) is represented as
 $\tilde{I}^{n+1,(m)}$.    
-The $m$-th residual is defined as $r^{(m)} = q - \B L\tilde{I}^{n+1,(m)}.$ 
+The $m$-th residual is defined as $r^{(m)} = q - \B L^k\tilde{I}^{n+1,(m)}.$ 
 For reference, the residual at iteration $m$ in the HO solve
 is
 \begin{equation}\label{eq:resid}
@@ -529,15 +621,15 @@ where the $k$ terms are LD in space on the coarsest mesh and are not recalculate
 the HO solve. The functional form of $\tilde{I}^n$ is defined from the final HO
 solution of the previous time step.  
 
-To define the ECMC algorithm, the HOLO iteration indices
-are dropped, as the LO estimated $q^{k}$ and $\B L^{k}$ remain constant over the entire HO solve.
 Addition of $\B L I^{n+1} - q=0$ to the residual equation 
 and manipulation of the result yields the error equation
 \begin{equation}
     \B L (I^{n+1} - \tilde{I}^{n+1,(m)}) = \B L {\epsilon}^{(m)} = r^{(m)}
 \end{equation}
 where $I^{n+1}$ is the exact solution and ${\epsilon}^{(m)}$ is the error in
-$\tilde{I}^{n+1,(m)}$. The $\B L$ operator in the above equation is inverted yielding
+$\tilde{I}^{n+1,(m)}$. 
+We have suppressed the HOLO iteration indices because the LO estimated $q^{k}$ and $\B L^{k}$ remain constant over the entire HO solve.
+The $\B L$ operator in the above equation is inverted yielding
 the Monte Carlo LDFE projection of the error in $\tilde{I}^{n+1,(m)}$, i.e., 
 \begin{equation}
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
@@ -548,14 +640,14 @@ error computed in $\tilde{\epsilon}^{(m)}$ can be added to the moments of
 $\tilde{I}^{n+1},(m)$ to produce a more accurate solution.
 
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
-solution onto the trial space.  This is in general far more accurate than a standard
+solution onto the LDFE trial space.  This is in general far more accurate than a standard
 finite element solution.  For example, in typical IMC calculations the average energy
 deposition within a cell is computed using a standard path-length volumetric flux
 tally; the zeroth moment of the LDFE projection of $\tilde{\epsilon}$ is computed
-using an equivalent tally.  The primary truncation error is in the LD
-representation of the right hand side source terms.  Volumetric flux tallies over
+using an equivalent tally.  The primary truncation error is in the LD spatial
+representation of the source term $q$.  Volumetric flux tallies over
 each space-angle element are required to represent $\tilde{\epsilon}^{(m)}$.  The
-tallies are given in Appendix~\ref{app:tallies}.
+procedure for representing the solution and tally definitions are given in Appendix~\ref{app:tallies}.
 
 The ECMC algorithm is
 \begin{enumerate}
@@ -573,34 +665,33 @@ particles per time step because the intensity does not change drastically betwee
 optically thick regions.  It is noted that the ECMC batch (steps 1-4 of the
 algorithm) results in essentially the same estimate of the solution as the residual
 formulation used in~\cite{rmc}.  The primary difference is that our method uses an LDFE trial
-space, and we are able to use our new estimate of the solution to recompute a
-residual.
+space and iterates on the solution estimate by recomputing the residual.
 
 Exponential convergence is obtained because with each batch a
 better estimate of the solution is being used to compute the new residual, decreasing
-the magnitude of the Monte Carlo source each iteration $m$, relative to the solution
-$I^{n+1}$.  Each Monte Carlo
+the magnitude of the MC residual source each iteration $m$, relative to the solution
+$I^{n+1}$.  Each MC
 estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
 governed by the standard $1/\sqrt{N}$ convergence rate~\cite{shultis_mc}, for a
-particular source $r^{(m)}$.  If the statistical estimate of the projection $\tilde\epsilon$ is not sufficiently
+particular source $r^{(m)}$, where $N$ is the number of histories performed.  If the statistical estimate of the projection $\tilde\epsilon$ is not sufficiently
 accurate, then the iterations would diverge.  Although the
 variance in tallies of $\epsilon^{(m)}$ can be estimated with the sample variance of
-histories, the variance in the moments of $I^{n+1,(m)}$ cannot be easily
+histories, the variance in the moments of $I^{n+1,(m+1)}$ cannot be easily
 estimated due to the correlation between $I^{n+1,(m)}$ and the source
 $r^{(m)}$.
 
 Because the exact angular intensity does not in general lie within the LDFE trial space, the
 iterative estimate of the error will eventually stagnate once the error cannot be sufficiently
-represented by a given FE mesh.  Although mesh refinement is not performed in the
-calculations presented here, an adaptive $h-$refinement algorithm has been
+represented by a given FE mesh.  An adaptive $h-$refinement algorithm has been
 implemented that can be used to allow the system to continue converging towards the
 exact solution~\cite{jake,ans_2014}. In general, for TRT problems, optically thick and slowly varying
-regions of the problem do not require as refined of a mesh to accurately capture the
+regions of the problem do not require as refined of a mesh as neutronics calculation to accurately capture the
 solution because there is less variation in the angular dependence of the solution.
-Once error stagnation has occurred, additional histories can be performed with a
+Once error stagnation has occurred (and mesh refinement has reached a maximum level),
+additional histories can be performed with a
 fixed residual source to estimate the remaining error in the current solution.  Although the remaining error will
 converge statistically at a standard $1/\sqrt{N}$ convergence rate, the remaining
-error will be much smaller than a standard MC simulation, producing a much more
+error will be much smaller than for a standard MC simulation, producing a much more
 efficient solution method overall.
 
 For the HO solver, in cells near the radiation wave front, the LDFE trial space results in negativities in
@@ -612,14 +703,14 @@ they are replaced with the corresponding S$_2$-equivalent value. In general,
 in such cells where the trial space cannot accurately represent the solution, error stagnation will
 rapidly occur. 
 
-\Subsection{Variance Reduction and Source Sampling}
+\subsection{Variance Reduction and Source Sampling}
 
 
 As in~\cite{park}, because we are solving a pure absorber problem with Monte Carlo, we will allow
 particles to stream without absorption to reduce statistical 
 variance in the tallies.  The weight of particles is reduced deterministically along
 the path as they stream, with no need to sample a path length.  Because particles are exponentially attenuated, the normalized weight is
-adjusted as $w(x,\mu) = w(x_0,\mu)\exp(-\sigma|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
+adjusted as $w(x,\mu) = w(x_0,\mu)\exp(-\sigma_t|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
 for the continuously changing weight, as given in Appendix~\ref{app:tallies}. Histories are allowed to stream in this manner for 6 mean free paths
 before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
 continuously deposit weight until they reach 0.25\% of their original weight.
@@ -639,7 +730,7 @@ each space-angle cell is predetermined and proportional to the magnitude of the
 residual, including face and volumetric sources, within that cell.  Then, for the predetermined number of histories within a cell, the source
 location is randomly sampled according to the residual source distribution of that
 cell.  There is
-a relative probability cutoff such that cells with an insignificant
+a relative probability cutoff of $10^{-4}$ such that cells with an insignificant
 residual will have no histories sampled there. In these regions the problem is
 remaining in equilibrium and the solution is known exactly.  
 For cells that are significant, but have a predetermined number of histories below some preset
@@ -647,10 +738,8 @@ minimum $N_{min}$, the number of histories sampled in that cell is set to
 $N_{min}$. This is to limit
 bad statistics in low probability cells (this would be important for adaptively
 refined meshes).  In the simulations performed for this work $N_{min}=1$.  This
-choice was made for comparing to IMC to keep the total number of histories per time step
-constant throughout the entire simulation. The
-relative probability cutoff was $10^{-4}$.
-
+choice was made to keep the total number of histories per time step
+constant throughout the simulation for comparison to IMC. 
 %The unmodified probability of a particle being born in cell $j$ is 
 %\begin{equation}
 %p_j = \frac{||r^{(m)}_j||}{||r^{(m)}||}
@@ -668,7 +757,7 @@ relative probability cutoff was $10^{-4}$.
 %where $N_{\min}$ is the minimum number of histories in significant cells, $N_c$  is the number of cells, and $p_{cut}$ is the chosen relative probability cutoff.
  %This is done by first filling the cells with $N_{min}$ histories and distributing the remaining number of histories proportional to $p_j$.
 
-\Section{Results}
+\section{COMPUTATIONAL RESULTS}
 
 We will compare results of the HOLO method to IMC with
 a source tilting algorithm for two test problems~\cite{jayenne}.  
@@ -676,12 +765,12 @@ Also, we briefly compare performance in Section~\ref{timing}.
 Finally,  we will demonstrate the efficiency advantage of ECMC in our HOLO
 algorithm by comparing the results to the same HOLO algorithm if the ECMC algorithm
 is replaced with a standard Monte Carlo (SMC) simulation.  Results are also given for
-the case of a single ECMC batch, which is similar to a RMC method~\cite{rmc}.  
+the case of a single ECMC batch, which is similar to a RMC method.
 
 A measure of variance in cell-averaged scalar intensities was
 calculated to provide a quantitative measure of the statistical accuracy of different solution
 methods.  To form sample standard deviations, twenty independent simulations for each
-particular result were performed using different pseudo-random number seeds.
+particular result were performed using unique random number generator seeds.
 The variance of a particular cell-averaged $\phi(x)$ is 
 \begin{equation} 
     S_i^2 =  \frac{20}{20-1} \sum_{l=1}^{20} \left(\overline{\phi_{i}} -
@@ -711,7 +800,7 @@ of $N_{\text{tot}}$ for IMC or
 our HOLO method due to correlation of the solution between time steps; additionally, ECMC
 has correlations between batches.
 
-\Subsection{Marshak Wave}
+\subsection{Marshak Wave}
 \label{sec:marsh}
 
 For the first problem, the radiation and material energies are initially in
@@ -723,31 +812,31 @@ The simulation was advanced until $t=5$~sh~(1~sh~$\equiv$~10$^{-8}$~s) with a fi
 have not used adaptive mesh
 refinement, only performed one HOLO iteration per time
 step, and use a fixed 3 HO batches with equal number of histories per batch. A
-relative tolerance of $10^{-6}$ for the change in $\phi(x)$ and $T(x)$ was used for the LO newton solver. Radiation energy
+relative tolerance of $10^{-6}$ for the change in $\phi(x)$ and $T(x)$ was used for
+the LO newton solver for all results. Radiation energy
 distributions are plotted as an equivalent temperature given by
 $T_r=(\phi/(ac))^{0.25}$.  Cell-averaged quantities are plotted.
 Although isotropic scattering can be included in the LO solver with this method~\cite{ans_2014}, we have only
 considered problems with $\sigma_s = 0$ here.  
 
 \begin{figure}[htb]
-\begin{subfigure}{0.5\textwidth}
+    \centering
+\begin{subfigure}{0.7\textwidth}
   \centering
     \includegraphics[width=0.99\linewidth]{marshak_mesh_conv.pdf}
     \caption{\label{marshak_mesh_conv} Convergence of IMC and HOLO-ECMC solutions.}
 \end{subfigure}
-\begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.7\textwidth}
   \centering
   \includegraphics[width=0.99\linewidth]{marshak_200_compare.pdf}
   \caption{\label{marshak_200_compare}  Comparison of solutions for 200 spatial cells. }
 \end{subfigure}
-\caption{\bf Comparison of solutions for Marshak wave problem at $\mathbf{t=5}$ sh.}
+\caption{\bf Comparison of radiation temperatures for Marshak wave problem at $\mathbf{t=5}$ sh.}
 \end{figure}
 
 Fig.~\ref{marshak_mesh_conv} compares the cell-averaged radiation temperatures  for the
 IMC and HOLO method with ECMC, for various number of spatial mesh cells $N_c$; we
-have used HOLO-ECMC to denote our algorithm because the results in
-Section~\ref{ho_solvers} 
-HO solvers.   For
+have used HOLO-ECMC to denote our algorithm because later results will use different HO solvers.   For
 all IMC calculations, $n=10^5$ histories per time step were used.  For the HOLO method, we have used
 4 equal-sized cells in $\mu$ for the finite-element angular mesh used by the ECMC
 solver.  The spatial grid is the same for the HO and LO solvers. For the cases
@@ -772,15 +861,14 @@ large.  No particles are sampled in the equilibrium region out front of the wave
 
 Table~\ref{marshak_var} compares $\ss$ and the FOM for IMC and the HOLO method, for different
 numbers of histories per time step. The FOM results are normalized to the value for IMC with
-$n=12,000$.  HOLO-ECMC demonstrates less variance
+$n=12,000$.  The HOLO method demonstrates less variance
 for the same numbers of histories.  Where as the FOM remains relatively constant for
-IMC, as $n$ is increased the FOM improves for HOLO-ECMC.  This is a result of
+IMC, as $n$ is increased the FOM improves for the HOLO method.  This is a result of
 each batch producing more statistically accurate estimates of the error $\epsilon$,
 which results in an increased convergence rate of $\epsilon$ overall.  
 \begin{table}[H]
 \centering
-\caption{\label{marshak_var} \textbf{Comparison of sample statistics for the Marshak Wave problem
-    for 200 $x$ cells.   Simulation end time is $\mathbf{t=5}$ sh.}}
+\caption{\label{marshak_var} \textbf{Comparison of sample statistics for the Marshak Wave problem.   Simulation end time is $\mathbf{t=5}$ sh.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|cc|cc|}\cline{2-5}
     \multicolumn{1}{c|}{}       & \multicolumn{2}{|c|}{\ss} &
@@ -793,10 +881,11 @@ hists./step   & IMC & HOLO-ECMC &  IMC & HOLO-ECMC   \\ \hline
 
 
 
-\Subsection{Two Material Problem}
+\subsection{Two Material Problem}
+\label{sec:two}
 
 This problem consists of an optically thin (left) and an optically thick (right) material region,
-with constant cross sections.  The material properties are given in
+with temperature-independent cross sections.  The material properties are given in
 Table~\ref{two_mat_props}.  Initially the radiation and material energies are in
 equilibrium at a temperature of 0.05 keV.  An isotropic incident intensity of 0.500 keV
 is applied at $x=0$ at $t=0$; the isotropic incident intensity on the right boundary is 0.05
@@ -828,7 +917,7 @@ are for running 3 batches of 10,000 histories, per time step. The solution for t
 statistical noise.  This noise is introduced into the LO solver by bad statistics in
 computing the consistency terms. Also
 plotted is an S$_2$ solution obtained with consistency terms that are equivalent
-to S$_2$ and not performing the HO correction step in the algorithm.  The S$_2$ solution results in an artificially fast
+to S$_2$ and no HO correction.  The S$_2$ solution results in an artificially fast
 wave front, as expected, demonstrating the necessity of HO correction in this problem.
 
 Table~\ref{twomat_var} compares the FOM and $\ss$ for IMC and the HOLO-ECMC method.  The FOM
@@ -836,18 +925,20 @@ values are normalized to the value for IMC with $n=30,000$.  The end time was re
 to $2$ sh for these results to reduce computational times. The reduction in variance by
 the HOLO method over IMC is substantial. The improvement of the FOM for the HOLO
 method compared to IMC is greater than for the
-Marshak wave problem.  This improvement is because the wave moves much slower in this problem, due to
-the large, constant cross section in the right region.  Also, in the optically thin
+Marshak wave problem.  This improvement is because the wave moves much slower in
+right region of this problem, due to
+the large, constant cross section.  Also, in the optically thin
 region of the problem the solution quickly comes to equilibrium.  Thus, the ECMC
-algorithm has to estimate a very small change in the solution over a time step.  Additionally, difficulties in resolving
+algorithm has to estimate a very small change in the intensity over a time step.  Additionally, difficulties in resolving
 the solution at the wave front are not as severe compared to the Marshak wave
 problem, where the cold cells have a much larger cross section.
 \begin{figure}
-\begin{subfigure}{0.5\textwidth}
+    \centering
+\begin{subfigure}{0.65\textwidth}
     \centering
     \includegraphics[width=0.99\textwidth]{two_mat_conv.pdf}
     \caption{Comparison of IMC and HOLO-ECMC.\label{twomat_full}}
-\end{subfigure}    \begin{subfigure}{0.5\textwidth}
+\end{subfigure}    \begin{subfigure}{0.65\textwidth}
 \centering
     \includegraphics[width=0.99\textwidth]{two_mat_ho_compare.pdf}
     \caption{Comparison of SMC and ECMC HO solvers. \label{compare_ho}}
@@ -869,22 +960,22 @@ hists./step     & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
 \end{tabular}
 \end{table}
 
-\Subsection{Performance comparison of IMC and HOLO-ECMC}
+\subsection{Performance comparison of IMC and HOLO-ECMC}
 \label{timing}
 
-We have measured the total CPU time for simulations to provide a crude measure of the
-computational cost.  These results provide a measure of how the methods compare for
-the two different problems and how they scale with
-time step size and particle histories.  Absolute comparisons in the computational cost of the two
+We have measured the total CPU time for simulations to provide a simplified measure of the
+computational cost.  These results compare how computational times change the two
+different problems and how the methods scale with time step size and particle histories.  Absolute comparisons in the computational cost of the two
 methods cannot be made because the methods are implemented
 in different code infrastructures. Additionally, the HOLO method fully resolves
 non-linearities at each time step, whereas IMC is using a single linearized step with
 lagged cross sections. Simulations were performed on the same processor, using a single CPU
-core.  Reported times are the average of 10 runs.
+core.  Reported times are the average of 10 runs and all results used 200 $x$ cells,
+$\Delta t = 0.001$ sh, and an end time of $t=2$ sh.
 
 Table~\ref{marshak_table} compares the average
 simulation time per history performed for the Marshak wave problem.  The average time per history is computed by dividing the total simulation time by
-the total number of histories performed (the time of the LO solves is included for
+the total number of histories performed (e.g., the time of the LO solves is included for
 the HOLO method).  Results are given for different numbers of histories per time step, as
 well as a case with an increased time step size.  The table also includes the number of LO
 iterations performed per LO solve for the HOLO method, averaged over all time steps;
@@ -906,8 +997,7 @@ resulting in longer simulation times.
 \begin{table}[H]
 \centering
 \caption{\label{marshak_table} \textbf{Comparison of average CPU times per history
-    and LO iterations counts for the Marshak Wave problem
-    for 200 $x$ cells.  Simulation end time is $\mathbf{t=2}$ sh. }}
+    and LO iteration counts for the Marshak Wave problem. }}
 \vspace{-0.1in}
 	\begin{tabular}{|cc|c|cc|}\hline
 hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist) & Iters./LO solve \\ \hline
@@ -919,7 +1009,8 @@ $1.2\times10^4$           &   0.005	& 19  &  9.4   & 6.2                \\ \hlin
 
 \begin{table}[htb!]
 \centering
-\caption{\label{twomat_table} \textbf{Average CPU times per history required for the two material problem.  Simulation end time is $\mathbf{t=2}$ sh.}}
+\caption{\label{twomat_table} \textbf{Average CPU times per history and LO iteration
+counst required for the two material problem.}}
 	\begin{tabular}{|cc|c|cc|} \hline
 hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist)  &  Iters./LO Solve\\ \hline
 10$^5$            &   0.001	& 17  &	3.5   & 4.9 \\
@@ -928,38 +1019,36 @@ $3\times10^4$     &   0.005	& 59  & 7.4   &    7.6 \\ \hline
 \end{tabular}
 \end{table}
 
-\Subsection{Comparison of different HO Solvers}
+\subsection{Comparison of different HO Solvers}
 \label{ho_solvers}
 
 In this section we compare the results of our HOLO algorithm with different HO
-solvers.  We compare standard MC (SMC) as a HO solver to the HOLO algorithm with ECMC using
+solvers for the test problems in Section~\ref{sec:marsh} and~\ref{sec:two}.  We compare standard MC (SMC) as a HO solver to the HOLO algorithm with ECMC using
 both three batches and a single batch, per time step.  The use of a single batch is
-similar to the approach in~\cite{rmc}.  Results are tabulated using the same total
+similar to the approach in~\cite{rmc}.  Results are tabulated for 200 $x$ cells, using the same total
 number of histories per time step, divided evenly among the batches.
 
 Tables~\ref{homarshak_var} and~\ref{hotwomat_var} compare the results for the Marshak
 wave and two material problems. The number of batches for each ECMC case is indicated
-in parenthesis.  The FOM values are normalized to the corresponding
-IMC values from Tables~\ref{marshak_var} and~\ref{twomat_var}.  For HOLO-SMC there is
-minimal reduction in variance compared to IMC in the Marshak wave problem and the two
+in parenthesis.  The FOM values are normalized to the reference IMC result for the
+corresponding problem.  For HOLO-SMC there is
+minimal reduction in variance compared to IMC in the Marshak wave problem, and the two
 material problem actually demonstrates worse variance.  Sufficient histories are not
 performed to accurately estimate consistency terms throughout the problem.  For ECMC,
 a single batch produces less variance than the case of three equal batches.  This
 indicates that if the solution cannot be resolved with the trial space (i.e., the
 intensity is driven negative), a single large batch may be more accurate. It is noted
-that these results only account for statistical variance, and do not account for the
-additional error in the solution $\epsilon$ that is being computed each
-iteration.   
+that these results only account for statistical variance, and do not account for
+accuracy, which will depend on the the estimates of $\epsilon$ computed each iteration.   
 
 \begin{table}[H]
 \centering
-\caption{\label{homarshak_var} \textbf{Comparison of sample statistics for the Marshak Wave problem
-    for 200 $x$ cells.   Simulation end time is $\mathbf{t=5}$ sh.}}
+\caption{\label{homarshak_var} \textbf{Comparison of sample statistics for the Marshak Wave problem.  Number of ECMC batches is
+indicated in parenthesis.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|ccc|ccc|}\cline{2-7}
     \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} &     \multicolumn{3}{|c|}{\FOM} \\ \hline
-hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) & ECMC
-(3 batches)   \\ \hline
+hists./step   & SMC & ECMC (1) & ECMC (3)  & SMC & ECMC (1) & ECMC (3)   \\ \hline
    12,000	   & 2.77\%  & 0.10\% &  0.28\% &   1.50    & 1280  & 145     \\
   100,000      & 0.98\%  & 0.03\% &  0.06\% &   1.43    & 1270  & 422     \\ \hline
 \end{tabular}
@@ -969,66 +1058,63 @@ hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) 
 \begin{table}[H]
 \centering
 \caption{\label{hotwomat_var} \textbf{Comparison of sample standard deviations for the
-    two material problem
-for 200 $x$ cells and $\delta t=0.001$ sh.   Simulation end time is $\mathbf{t=2}$ sh.}}
+    two material problem. Number of ECMC batches is indicated in parenthesis.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|ccc|ccc|}\cline{2-7}
     \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} &
     \multicolumn{3}{|c|}{\FOM} \\ \hline
-hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) & ECMC
-(3 batches)   \\ \hline
+hists./step   & SMC & ECMC (1) & ECMC (3)  & SMC & ECMC (1) & ECMC
+(3)   \\ \hline
    30,000	  & 5.35\%   & 0.002953\% & 0.011\%  & 0.46     & 1.51$\times10^6$   & $1.04\times10^4$          \\
   100,000     & 2.85\%   & 0.001474\% & 0.0033\% & 0.49     & 1.80$\times10^6$   & $3.59\times10^4$          \\ \hline
 \end{tabular}
 \end{table}
 
-\Subsection{Pre-heated Marshak wave problem and adaptive mesh refinement}
+\subsection{Pre-heated Marshak wave problem and adaptive mesh refinement}
 
 Finally, to demonstrate the potential of ECMC with adaptive space-angle mesh refinement, we perform
 results for a modified Marshak wave problem. The problem is modified so that the LDFE
 trial space can accurately represent the solution (i.e., the intensity is strictly
-positive).  Mesh refinement is of minimal use in the previous problems due to the
-large cross sections.   The modified problem has the same material
+positive).  Mesh refinement is of minimal use in the previous problems due to most of
+the error existing at the wave fronts, caused by the large cross sections.   The modified problem has the same material
 properties and left boundary source as the Marshak wave problem in
 Section~\ref{sec:marsh}.  However, the initial equilibrium
 temperature and right boundary condition are raised to $0.03$ keV.   The higher initial temperature reduces the
 initial cross section and increases the strength of the emission source within cells.  
 The LDFE mesh can now sufficiently resolve the solution and lumping is
-not required by the LO solution.  The simulation end time is 0.5 $sh$ with a constant
+not required by the LO solution.  The simulation end time is 0.5 sh with a constant
 time step of $\Dt=0.001$ sh.  
 
 Fig.~\ref{hot_plot} compares the result from HOLO-ECMC with three batches and IMC.
 It was found that 100 $x$ cells was sufficient to resolve the solution spatially. There is slightly more noise in IMC past the wave front due to the increased emission
 source.  Additionally, the opacity is thin enough that some photon energy is able to
-reach the equilibrium region of the problem past the wave. 
+reach the right boundary, in front of the wave front. 
 
 Table~\ref{preheat_var} compares the variances for this problem for the various HO
-solvers.  The final row of the table is for an ECMC simulation with adaptive mesh
-refinement.  The strategy for refinement is described in
+solvers. The FOM values are normalized to the case of HOLO-SMC with 12,000
+histories per time step. The final row of the table is for an ECMC simulation with adaptive mesh
+refinement (AMR).  The strategy for refinement is described in
 Appendix~\ref{app:refinement}.  The adaptive
-mesh refinement case used a total of nine batches, with a refinement occuring at the end
-of the third and sixth batches. The initial number of histories was adjusted so that
+mesh refinement case used a total of nine batches, with a refinement occurring at the end
+of the third and sixth batches, for every time step. The initial number of histories was adjusted so that
 the average number of histories per time step is near 100,000; on average 99,881
-histories were used.  All ECMC meshes used 4 equally-spaced $\mu$ cells
+histories per time step were used.  All ECMC meshes used 4 equally-spaced $\mu$ cells
 initially. 
-
-The FOM values are normalized to the case of HOLO-SMC with 12,000
-histories per time step.   The improvement in variance over SMC is not as significant
+   The improvement in variance by ECMC compared to SMC is not as significant
 as for the other problems.  This is a
-result of the reduced opacity leading to intensity changing throughout the problem.
-The angular solution also varies more.  The
+result of the reduced opacity leading to intensity changing throughout the spatial
+and angular domains.  The
 FOM is highest for the case of ECMC with adaptive refinement. When the solution can
 be resolved, the adaptive algorithm allows for a higher convergence rate of
-statistical variance.  It is noted that the consistency terms are still computed over
-the coarser LO mesh.
-Additionally, in general, the refined mesh can produce higher accuracy in consistency terms that is
+statistical variance.  It is noted that the consistency terms and LO solution are still computed over
+the fixed, coarser mesh.  However, in general, the refined mesh can produce higher accuracy in consistency terms that is
 not being measured by the FOM.
 
 \begin{figure}[htb]
   \centering
-    \includegraphics[width=0.5\linewidth]{heated_marshak.pdf}
-    \caption{\label{hot_plot}   }
-\caption{\bf Comparison of solutions for the pre-heated Marshak wave problem for 100
+    \includegraphics[width=0.65\textwidth]{heated_marshak.pdf}
+    \caption{\label{hot_plot}}
+\caption{\bf Comparison of radiation temperatures for the pre-heated Marshak wave problem for 100
     $x$ cells at $\mathbf{t=0.5}$ sh.}
 \end{figure}
 
@@ -1036,14 +1122,13 @@ not being measured by the FOM.
 \begin{table}[H]
 \centering
 \caption{\label{preheat_var} \textbf{Comparison of sample statistics for the 
-    pre-heated marshak wave problem for 100 $x$ cells. 
-    Simulation end time is $\mathbf{t=0.5}$ sh.}}
+    pre-heated marshak wave problem for 100 $x$ cells. Number of ECMC batches is
+indicated in parenthesis.}}
 \vspace{-0.1in}
 \begin{tabular}{|c|ccc|ccc|}\cline{2-7}
     \multicolumn{1}{c|}{}       & \multicolumn{3}{|c|}{\ss} &
     \multicolumn{3}{|c|}{\FOM} \\ \hline
-hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) & ECMC
-(3 batches)   \\ \hline
+hists./step   & SMC & ECMC (1) & ECMC (3)  & SMC & ECMC (1) & ECMC (3)   \\ \hline
    12,000	  & 0.86\%   & 0.13\% & 0.24\% & 1      & 41  & 13      \\
   100,000     & 0.16\%   & 0.042\% & 0.08\% & 3.32   & 52  & 15       \\
   99,881 (AMR) & --  & --  & 0.038\% & -- & -- &   61               \\ \hline
@@ -1051,14 +1136,15 @@ hists./step   & SMC & ECMC (1 batch) & ECMC (3 batches)  & SMC & ECMC (1 batch) 
 \end{table}
 
 
-\Section{Conclusions}
+\section{CONCLUSIONS}
 
 We have been able to produce solutions for Marshak wave test problems using
 a new HOLO method that are in agreement with IMC.  Unlike IMC, our method requires no effective scattering
 events to be included in the MC simulation, which limits the run time of particle
-tracking and adding the relatively steady cost of the LO newton solver. The LDFE spatial representation
-mitigates issues with teleportation error, similar to source tilting in the IMC
-algorithm.   The ECMC approach, with initial guesses based on the
+tracking, while adding the cost of a LO newton solver. Average LO iteration counts
+did not significantly increase as the time step size was increased. The LDFE spatial representation
+mitigates issues with teleportation error, producing results with spatial accuracy
+comparable to IMC with source tilting.  The ECMC approach, with initial guesses based on the
 previous radiation intensity, results in efficient reduction of statistical error and
 allows for particles to be distributed to largely varying regions of the problem.
 The LO solver resolves the non-linearities in the equations resulting in a fully
@@ -1076,19 +1162,17 @@ present.  It is necessary to ensure the
 representation for the solution in such regions.  The ability to represent the solution accurately in
 rapidly varying regions of the problem will be key for generalization of this method
 to higher dimensions.  A formulization of the ECMC method
-that allows for time-continous MC transport (similar to IMC) is also currently being
+that allows for time-continuous MC transport (similar to IMC) is also currently being
 investigated.  This may reduce some of the loss of accuracy in optically thin regions
 due to the time discretization of the transport equation in the HO solver.
 However, greater time accuracy is not of primary concern as this method is intended
 for use in problems dominated by large absorption opacities, where the
 absorption-reemission physics make the LO acceleration is critical.  
 
-
-Future work will also explore the accuracy of the HOLO method, in particular comparing
-using more than one batch and the benefit of adaptive refinement.  This will likely
+Future work will also explore the accuracy of the HOLO method, in particular,
+analyzing the optimal number of batches and the benefit of adaptive refinement.  This will likely
 require the use of manufactured solutions.  The sensitivity of the method to mesh sizes and time step sizes will be
-investigated more thoroughly.  Future results will investigate the ability of this
-method to preserve the maximum principle~\cite{wollaber2013discrete}.  
+investigated more thoroughly.  
 Ultimately, we plan to extend this method to multiple spatial dimensions for the 
 case of multigroup TRT equations.  For TRT problems, it is important that
 the LO spatial discretization satisfies the equilibirium diffusion limit.  To extend
@@ -1099,7 +1183,7 @@ analysis on the method will be applied before implementation. It may be necessar
 acceleration approach in~\cite{rmc}), if the S$_2$-like equations become too
 inefficient or difficult to implement in higher dimensions.  Alternatively, a
 variable Eddington Tensor approach may provide more stability in rapidly variable
-regions of the problem while still being consistent and efficiently solvable.
+regions of the problem while still allowing for a consistent, LDFE solution that is efficiently solvable.
 
 \section*{ACKNOWLEDGEMENTS}
 
@@ -1110,11 +1194,14 @@ LLC, for the National Nuclear Security Administration of the U.S. Department of
 Energy under contract DE-AC52-06NA25396. 
 
 \setlength{\baselineskip}{12pt}
-%\Section*{REFERENCES}
+\clearpage
+\ess
 \bibliographystyle{ans}
 \bibliography{references}
 \clearpage
 \appendix
+
+\ess
 
 \section{Implementation of ECMC finite-element space and tallies}
 
@@ -1148,20 +1235,20 @@ problem.
 During a MC batch, moments of the error are tallied.  The necessary moments of the error are
 defined analogously to Eq.'s~\eqref{app1}--\eqref{app2}.
 The tallies are evaluated by weighting the particle density with the appropriate
-basis function and integrating along the path of the history.  For the cell average, the $n$-th
+basis function and integrating along the history path through the cell.  For the cell average, the $n$-th
 particle makes the contribution
 \begin{equation}
-    \epsilon^n_{a,ij} = \frac{1}{h_xh_\mu} \int\limits_{s^n_o}^{s^n_f}  w^n(x,\mu) \d s
+    \epsilon^n_{a,ij} = \frac{1}{h_xh_\mu} \int\limits_{s^n_o}^{s^n_f}  w^n(x,\mu) \d s,
 \end{equation}
 where $s_o^n$ and $s_f^n$ are the beginning and end of the $n$-th particle track in the cell and $w(x,\mu)$ is
-the weight of the error particle in the MC simulation.  As it is a pure absorber
-simulation, weight is attenuated exponentially, i.e., $w(x,\mu)\propto
+the weight of the error particle in the MC simulation.  Weight is attenuated exponentially, i.e., $w(x,\mu)\propto
 \exp(-\sigma_t|x/\mu|)$.
 Substitution of the exponential attenuation of the weight produces the result
 \begin{equation}
-    \epsilon^n_{a,ij} = \frac{w(x_0,\mu)}{\sigma_t h_x h_\mu} \left(1 - e^{-\sigma_ts^n}\right)
+    \epsilon^n_{a,ij} = \frac{w(x_0,\mu)}{\sigma_t h_x h_\mu} \left(1 -
+    e^{-\sigma_ts^n}\right).
 \end{equation}
-where $w(x_0,\mu)$ is the particle weight at the start of the path and $s^n$ is the
+Here, $w(x_0,\mu)$ is the particle weight at the start of the path and $s^n$ is the
 length of the track. The contribution of a
 particle track to $\epsilon_x$ is given by
 \begin{equation}
@@ -1172,26 +1259,30 @@ particle track to $\epsilon_x$ is given by
 where $x_0$ and $x_f$ are the beginning and ending $x$ coordinates of the $n$-th
 path.  The contribution to the first moment in $\mu$ is 
 \begin{equation}
-    \epsilon^n_{\mu,ij} = \frac{w(x_0,\mu)}{h_{\mu}^2h_x\sigma_t}\left(\mu - \mu_j\right) \left(1 - e^{-\sigma_ts^n}\right)
+    \epsilon^n_{\mu,ij} = \frac{w(x_0,\mu)}{h_{\mu}^2h_x\sigma_t}\left(\mu -
+    \mu_j\right) \left(1 - e^{-\sigma_ts^n}\right),
 \end{equation}
-where the particle $x$-direction cosine $\mu$ does not change along the path because it is a pure-absorber simulation.
+where the particle $x$-direction cosine $\mu$ does not change because it is a pure-absorber simulation.
 Finally, the moments of the error are simply the average contribution of all particles.
 
-\Section{Adaptive Mesh Refinement}
+\section{Adaptive Mesh Refinement}
 \label{app:refinement}
 This section describes the adaptive refinement strategy for the ECMC algorithm.
-Detailed equations for performing projections and computing the residual source on
+Detailed equations for performing projections between meshes and computing the residual source on
 the refined meshes can be found in~\cite{jake}.  At the end of the ECMC batch,
 refinement is performed in space-angle cells based on a jump indicator.  The jump
-indicator is the magnitude of the different between solutions in adjacent cells,
-averaged over an edge.  The maximum jump within a cell is used as the indicator for
-each cell.  Based on this indicator, the 20\% of cells with the largest jump are
-refined.  The refinement of a cell is symmetric, with each space-angle cell divided into four
-equal-sized cells.  The solution for $\tilde{I}^{n+1}$ of the batch is projected onto
-the finer mesh for the next batch.  At the end of the last HO solve in a time step,
+indicator is the magnitude of the different between $I(x,\mu)$ in adjacent cells,
+averaged over each edge.  The value of the largest jump, out of the four edges within a
+cell, is used as the
+indicator for that cell.  Based on this indicator, the 20\% of cells with the largest jump are
+refined.  Future work will explore simply using $\epsilon$ to indicate refinement,
+rather than the jump error.  The refinement of a cell is chosen to be symmetric, with each space-angle cell divided into four
+equal-sized cells.  The solution for $\tilde{I}^{n+1}(x,\mu)$ of the batch is projected onto
+the finer mesh for the next batch. Because the dimensionality of the sample space has
+increased, we increase the number of histories per batch s.t. the ratio of the number
+of histories to total cells is approximately constant for all meshes.  At the end of the last HO solve in a time step,
 $\tilde{I}^{n+1}$ is projected back onto the original, coarsest mesh and stored as
-$\tilde{I}^{n}$ for the time step.
-
+$\tilde{I}^{n}$ for the next time step.
 
 \end{document}
 

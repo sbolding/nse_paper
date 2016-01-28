@@ -1,0 +1,46 @@
+\begin{table}[!htb]
+\centering
+\caption{\bf Comparison of leakages $(p/s)$ for GQ Method 1 (GQ1), GQ Method 2 (GQ2), and Monte Carlo (MC).}
+\LTA{1}
+\vspace{14pt}
+\small
+\begin{tabular}{crcccc}
+\toprule[1pt]
+                          & & \multicolumn{4}{c}{Face} \\ \cline{3-6}
+\multicolumn{2}{c}{Method}  &  $x^-$  & $x^+$  & $y^-$  & $y^+$  \\ \hline
+\multicolumn{2}{c}{MC}      & $0.199278 \pm 1.4 \cdot 10^{-5}$
+                            & $0.019233 \pm 4.6 \cdot 10^{-6}$
+                            & $0.072106 \pm 8.7 \cdot 10^{-6}$
+                            & $0.190231 \pm 1.4 \cdot 10^{-5}$ \\  \hline
+\multirow{3}{*}{S$_{4}$}
+& GQ1 & 2.220842e-01 & 1.821048e-02 & 6.744504e-02 & 1.930308e-01 \\
+& GQ2 & 2.220842e-01 & 1.821048e-02 & 6.532314e-02 & 1.951527e-01 \\
+ \hline
+\multirow{3}{*}{S$_{8}$}
+& GQ1 & 2.091496e-01 & 1.894772e-02 & 7.002274e-02 & 1.899175e-01 \\
+& GQ2 & 2.091496e-01 & 1.894771e-02 & 6.970301e-02 & 1.902372e-01 \\
+ \hline
+\multirow{3}{*}{S$_{16}$}
+& GQ1 & 2.024318e-01 & 1.914877e-02 & 7.141571e-02 & 1.900609e-01 \\
+& GQ2 & 2.024318e-01 & 1.914877e-02 & 7.138919e-02 & 1.900875e-01 \\
+ \hline
+\multirow{3}{*}{S$_{32}$}
+& GQ1 & 2.000532e-01 & 1.920919e-02 & 7.192883e-02 & 1.902319e-01 \\
+& GQ2 & 2.000532e-01 & 1.920917e-02 & 7.192763e-02 & 1.902331e-01 \\
+\bottomrule[1pt]
+\end{tabular}
+\normalsize
+\end{table}
+\efloatseparator
+ 
+\begin{table}[!htb]
+\centering
+\caption{\bf Comparison of the S$_8$ GQ Method 1 and the GQ Method flux moments at the center of the y$^{-}$ face.}
+\LTA{2}
+\vspace{14pt}
+\small
+
+\normalsize
+\end{table}
+\efloatseparator
+ 
