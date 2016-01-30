@@ -32,6 +32,7 @@
 % define newcommands
 % -----------------------------------------------------------------------------
 \renewcommand\thesection{\Roman{section}}
+\renewcommand\thetable{\Roman{table}}
 \renewcommand\thesubsection{\thesection.\Alph{subsection}}
 
 %\setlength{\floatsep}{4pt plus 1pt minus 1pt}
@@ -198,7 +199,7 @@ TAMU 3133\\
 College Station, TX  77843-3133\\
 morel@tamu.edu\\
 \vspace{0.25in}
-?? Pages -- ? Tables -- ? Figures \\
+47 Pages -- 8 Tables -- 5 Figures  \\
 \ec
 \ess
 
@@ -1109,12 +1110,10 @@ be resolved, the adaptive algorithm allows for a higher convergence rate of
 statistical variance.  It is noted that the consistency terms and LO solution are still computed over
 the fixed, coarser mesh.  However, in general, the refined mesh can produce higher accuracy in consistency terms that is
 not being measured by the FOM.
-
 \begin{figure}[htb]
   \centering
     \includegraphics[width=0.65\textwidth]{heated_marshak.pdf}
-    \caption{\label{hot_plot}}
-\caption{\bf Comparison of radiation temperatures for the pre-heated Marshak wave problem for 100
+    \caption{\label{hot_plot}\bf Comparison of radiation temperatures for the pre-heated Marshak wave problem for 100
     $x$ cells at $\mathbf{t=0.5}$ sh.}
 \end{figure}
 
