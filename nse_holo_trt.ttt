@@ -44,10 +44,11 @@ hists./step     & IMC & HOLO-ECMC  &  IMC & HOLO-ECMC   \\ \hline
     and LO iteration counts for the Marshak Wave problem. }}
 \vspace{-0.1in}
 \begin{tabular}{|cc|c|cc|}\hline
-hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist) & Iters./LO solve \\ \hline
-10$^5$                    &   0.001 & 10  &  5.3   & 3.8               \\
-$1.2\times10^4 $          &   0.001 & 9.7 &  8.1   & 4.1               \\
-$1.2\times10^4$           &   0.005 & 19  &  9.4   & 6.2                \\ \hline
+hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist) & Newton
+iters./LO solve \\ \hline
+100,000                    &   0.001 & 10  &  5.3   & 3.8               \\
+12,000           &   0.001 & 9.7 &  8.1   & 4.1               \\
+12,000          &   0.005 & 19  &  9.4   & 6.2                \\ \hline
 \end{tabular}
 \end{table}
 \efloatseparator
@@ -55,12 +56,13 @@ $1.2\times10^4$           &   0.005 & 19  &  9.4   & 6.2                \\ \hlin
 \begin{table}[htb!]
 \centering
 \caption{\label{twomat_table} \textbf{Average CPU times per history and LO iteration
-counst required for the two material problem.}}
+counts required for the two material problem.}}
 \begin{tabular}{|cc|c|cc|} \hline
-hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist)  &  Iters./LO Solve\\ \hline
-10$^5$            &   0.001 & 17  & 3.5   & 4.9 \\
-$3\times10^4 $   &    0.001 & 18  & 6.9   &    5.0 \\
-$3\times10^4$     &   0.005 & 59  & 7.4   &    7.6 \\ \hline
+hists./step & $\Delta t (sh)$ & IMC ($\mu$s/hist.) & HOLO-ECMC ($\mu$s/hist)  &
+Newton iters./LO Solve\\ \hline
+100,000          &   0.001 & 17  & 3.5   & 4.9 \\
+30,000   &    0.001 & 18  & 6.9   &    5.0 \\
+30,000    &   0.005 & 59  & 7.4   &    7.6 \\ \hline
 \end{tabular}
 \end{table}
 \efloatseparator
@@ -107,7 +109,8 @@ indicated in parenthesis.}}
 hists./step   & SMC & ECMC (1) & ECMC (3)  & SMC & ECMC (1) & ECMC (3)   \\ \hline
    12,000   & 0.86\%   & 0.13\% & 0.24\% & 1      & 41  & 13      \\
   100,000     & 0.16\%   & 0.042\% & 0.08\% & 3.32   & 52  & 15       \\
-  99,881 (AMR) & --  & --  & 0.038\% & -- & -- &   61               \\ \hline
+  99,881 (AMR, 9 batches) & --  & \multicolumn{2}{c|}{ 0.038\%} & -- &
+  \multicolumn{2}{c|}{61}               \\ \hline
 \end{tabular}
 \end{table}
 \efloatseparator
