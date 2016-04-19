@@ -386,12 +386,12 @@ energy due to the implicit time differencing in optically thin regions.
 In the HOLO context, the LO solver models the physical scattering and
 resolves the material temperature spatial distribution $T(x)$ at each time step.  The LO equations are formed via half-range 
 angular and spatial moments of
-Eq.~\eqref{ho_trans} and Eq.~\eqref{eq:lo_mat}, formed over a spatial finite element
+Eq.~\eqref{ho_trans} and Eq.~\eqref{lo_mat}, formed over a spatial finite element
 mesh.  The angular treatment in the LO equations has the same form as those used in the
 hybrid-S$_2$ method in~\cite{wolters},  with
 element-averaged consistency parameters that are analogous to a variable
-Eddington factor.  If the angular consistency parameters were estimated exactly, then the LO equations are exact with respect to the chosen
-spatial discretization.  These consistency parameters are lagged in each LO solve,
+Eddington factor.  If the angular consistency parameters were exact, then the LO equations
+are exact, neglecting spatial discretization errors.  These consistency parameters are lagged in each LO solve,
 estimated from the previous HO solution for $I^{n+1}(x,\mu)$, as explained below. For
 the initial LO solve for each time step, the parameters are calculated with
 $I^{n}(x,\mu)$.  The discrete LO equations always conserve total energy, independent of the accuracy of the consistency terms.
@@ -490,7 +490,8 @@ the LDFE trial space, i.e.,
 $ T(x) \simeq T_{L,i} b_{L,i}(x) + T_{R,i} b_{R,i}(x),\quad x\in(x_{i-1/2},x_\ir)$.
 Similarly, the emission term is represented in the material and radiation equations with the LDFE
 interpolant $T^4(x)\simeq T_{L,i}^4 b_{L,i}(x) + T_{R,i}^4 b_{R,i}(x)$.   The $L$ and $R$ spatial moments are taken of the material
-energy equation, using these definitions for $T(x)$ and $\sigma_a a c T^4(x)$ to simplify moments. For example, the final LO material energy
+energy equations; the LDFE representations for $T(x)$ and $\sigma_a a c T^4(x)$ are used to
+simplify the spatial integrals. For example, the final LO material energy
  equation resulting from application of the $L$ moment is
  \begin{multline}\label{lo_mat_dis}
      \frac{\rho_i c_{v,i}}{\Delta t}\left[ \left(\frac{2}{3}T_{L,i} + \frac{1}{3}T_{R,i}
@@ -527,15 +528,15 @@ moments, e.g., $\phi^+_{i+1/2} = 2\mom{\phi}_R^+ - \mom{\phi}_L^+$.
 %The HO ECMC solver computes an LDFE representation of the intensity, using the
 %LD spatial closure to relate intensity on the faces to the volumetric
 %moments.
-Because there are no derivatives of the $T$ in Eq.~\eqref{lo_mat}, there is no need
+Because there are no derivatives of $T$ in Eq.~\eqref{lo_mat}, there is no need
 to define $T$ on the faces; the temperature has been assumed linear within a cell to
 relate $T$ and $T^4$.
 
 The linear-discontinuous (LD) closure with upwinding is not strictly positive.  In particular, for
 optically thick cells with a steep intensity gradient, the solution becomes negative.
-These negativities can propagate to adjacent cells. In thick regions of
+These negative values of intensity can propagate to adjacent cells. In thick regions of
 TRT problems, reasonably fine spatial cells can still be on the order of millions of mean
-free paths; negativities with an LD representation are unavoidable in practice for
+free paths; negative values with an LD representation are unavoidable in practice for
 such cells and mesh refinement is of minimal use.  Typically, for a standard LDFE method,
 the equations are lumped to produce a strictly positive solution (for 1D)~\cite{morel_newton}. However, standard FE lumping
 procedures would introduce difficulties in computing the consistency terms from the
@@ -545,7 +546,7 @@ preserving the same average within a cell, but the relation between the moments 
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
 positive, the outflow is positive.  This closure is only used
-in cells where negativities occur.
+in cells where negative intensities occur.
 
 \subsection{Solving the Non-Linear LO System}
 
@@ -560,7 +561,7 @@ to a desired relative tolerance.  Convergence is calculated using the spatial $L
 norm of the change in $\phi^{n+1}(x)$ and $T^{n+1}(x)$, relative to the norm of each
 solution.  The lumping-equivalent discretization
 discussed above is used for cells where the solution for
-$\phi^{n+1}$ becomes negative. When negativities are detected, the lumping-equivalent discretization is used within
+$\phi^{n+1}$ becomes negative. When negative values for $\phi^{n+1,\pm}(x)$ are detected, the lumping-equivalent discretization is used within
 those cells and that Newton step is repeated. 
 %Application of the first order Taylor expansion in time of the
 %gray emission source, about some temperature $T^*$ at some
@@ -674,13 +675,13 @@ space and iterates on the solution estimate by recomputing the residual.
 
 Exponential convergence is obtained because with each batch a
 better estimate of the solution is being used to compute the new residual, decreasing
-the magnitude of the MC residual source each iteration $m$, relative to the solution
+the magnitude of the MC residual source at each iteration $m$, relative to the solution
 $I^{n+1}$.  Each MC
 estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
 governed by the standard $1/\sqrt{N}$ convergence rate~\cite{shultis_mc}, for a
 particular source $r^{(m)}$, where $N$ is the number of histories performed.  If the statistical estimate of the projection $\tilde\epsilon$ is not sufficiently
 accurate, then the iterations would diverge. 
-%Although the
+%Although th
 %variance in tallies of $\epsilon^{(m)}$ can be estimated with the sample variance of
 %histories, the variance in the moments of $I^{n+1,(m+1)}$ cannot be easily
 %estimated due to the correlation between $I^{n+1,(m)}$ and the source
@@ -728,7 +729,7 @@ sampling
 method~\cite{shultis_mc} was used for determining source particle locations.  The goal is to effectively distribute particle
 histories to regions of importance, but to sample a sufficient number of histories in
 less probable regions to prevent large statistical noise.  However, there is no need
-to sample histories in regions in equilibrium.
+to sample histories in regions in thermal equilibrium.
 The residual gives a good indication of where
 histories are most likely to contribute to the error, particularly in optically thick
 cells where particles do not transport long distances.  The residual consists of both face

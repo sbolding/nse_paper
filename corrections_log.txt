@@ -1,0 +1,149 @@
+pr 12, 2016
+
+Ref.:  MS# NSE16-36
+A HIGH-ORDER LOW-ORDER ALGORITHM WITH EXPONENTIALLY-CONVERGENT MONTE CARLO FOR
+THERMAL RADIATIVE TRANSFER
+Nuclear Science and Engineering
+
+Dear Mr. Bolding,
+
+As you will note from the reports below, the reviewers would favor publication
+of your manuscript provided you revise it to take their comments and
+suggestions into account. Therefore, I recommend that you revise the
+manuscript accordingly, and resubmit the revised manuscript for further
+consideration. Please highlight the revisions clearly, both on a copy of the
+revised manuscript and in your reply letter to me.
+
+Your revision is due by Jul 11, 2016.
+
+To submit a revision, go to http://nse.edmgr.com/ and log in as an Author.
+You will see a menu item called Submission Needing Revision.  You will find
+your submission record there.
+
+Sincerely,
+
+Dan G. Cacuci
+Editor
+Nuclear Science and Engineering
+
+Reviewers' comments:
+
+Reviewer #1: Paper is well written with only a few suggested grammatical
+changes :
+- p7 missing eq link
+    Fixed
+- p7 reword the text "estimated exactly", it is either estimated or exact, not
+  both
+    Fixed
+- p11 in III.B I suggest reviewing the sentence that starts with " The L and R
+  moments ..." the ending especially doesn't read well "to simplify moments".
+    Clarified sentence.
+- p12 change "of the T" to "of T"
+    Fixed
+- p12 I suggest replacing the word "negativities" by "negative values" appears
+  at least 5 times in article, this is a wrong use of the noun negativity
+    Fixed
+- p17 word missing, "residual source AT each iteration m"
+    Fixed
+- p18 what type of equilibrium, I am assuming thermal equilibrium?
+    Fixed
+
+As for the content, I do have a few general comments for the authors to
+consider
+- p17 The authors discuss the benefits of exponentially converging MC compared
+  to standard MC.  I was interested in finding a bit more, but reference 10 is
+not available outside of A&M.  From my understanding, it can be demonstrated
+mathematically that the convergence rate will be exponential if we assume that
+there is no correlation between batches.  This assumption might be valid for
+the simple problems analyzed but does it hold on realistic problems where the
+transport operation as a near unity spectral radius?
+
+
+- p17 The discussion on mesh and angular convergence is disjoint since it
+  compares to discretization in neutronics problem (angle vs spatial issues),
+but then discusses comparisons with standard MC (which doesn't have any
+discretization).  This paragraph should be revised to clearly state the need
+for discretization in the HOLO method, but that no such discretization is
+needed in the MC problem.  The article makes it seem that the HOLO method will
+reproduce exactly MC results, but should instead clearly state that it
+represents at high fidelity approximation of the standard MC solution due to
+the discretization introduced.
+- p18 The authors mention a continuous weight loss weighing scheme.  How is
+  this handled at a material crossing.  Is the distance traveled resampled? or
+is sampling done on the basis of mean free paths thus continuing seamlessly
+across an interface?
+- p19 The authors introduce a completely arbitrary cutoff of 10-4 where they
+  choose not to simulate anymore particles.  Should this cutoff be problem
+dependent? and couldn't this lead to biases depending on the location of these
+regions with respect to the source?
+- The 1-D results are good, but the real key is on how the method will perform
+  on realistic problems with real physics (beyond one group).  The authors do
+discuss this as potential future work, but if such results do exist now it
+would certainly strengthen the paper.  Many methods look great in 1D, 1 group.
+
+
+Reviewer #2: This work presents a novel "high order, low order" acceleration
+method for accurately and efficiently solving thermal radiative transfer
+problems. The method is well-described and put into appropriate context with
+the literature. The method has several hurdles to overcome before it would see
+widespread deployment, but this paper establishes that the method can be
+advantageously deployed in a limited setting.
+
+ Here are some suggestions for improvement before final publication:
+
+p.3 absorption-reemission (extra space); "optically thick" needs no hyphen
+
+p.6 "similar statistical efficiency by choosing the old intensity as the
+initial guess"…Actually, the authors of [8] went to some length to choose
+their "I^+" in a way that eliminated volumetric sources after first
+considering the old intensity as the initial guess (see their Eq. (39)).
+
+p.7 Unresolved Eq. number
+
+p.8 Some in-line references (as were done in the introduction) would help in
+the middle paragraph.
+
+p. 10 "which we denote consistency" —> "which we denote as consistency"
+
+p. 12 It would be nice to see some discussion or analysis regarding whether
+the coupled system retains the equilibrium diffusion limit. We know that it
+will not exhibit maximum principle violations since it is time-implicit (this
+should be clearly stated; reference Larsen, Kumar, and Morel, JCP vol. 238,
+2013). The time-implicit behavior should also lend itself to preserving the
+equilibrium diffusion limit (see Densmore & Larsen, JCP vol. 199, 2004). The
+particulars of the LDFE spatial discretization is the larger concern when
+coupled with a MC HO method, but there is evidence to suggest it will be OK in
+the literature.
+
+p. 16/17 Any mention of difficulties encountered and overcome with negative
+particle weights would be helpful to the field.
+
+p. 21 This is the first location that the location of isotropic scattering (in
+the HO or LO) system is explicitly mentioned. It might be worth introducing
+that earlier. Also, the logical next question in future work will be whether
+you can include anisotropic and/or multifrequency (Compton) scattering in this
+approach — this question does not appear to be answered, even speculatively.
+
+p. 22 You may want to call out in the text that the FOMs are two orders of
+magnitude higher!
+
+p. 23 "simulation is ran" —> "simulation is run"
+also "wave front" should be one word, "wavefront"
+again, explicitly mention the orders of magnitude reduction in variance shown
+in Table III
+
+p.24, In comparing the cost of the effective scattering, are any scattering
+acceleration schemes (random walk, DDMC) used in the IMC? This should be
+stated explicitly. DDMC papers can indicate the expected time reduction for
+comparable problems, but you may have enough margin to overcome this by
+addressing it with a statement instead of implementing the comparison.
+
+p. 28 In future work it would be nice to see comparisons to problems with
+analytic (or, at least, highly converged) solutions to compare the *overall*
+accuracy to existing methods. This paper makes clear that the errors being
+analyzed are always statistical, but it does not analyze or quantify the
+magnitude of the discretization errors. I believe the assertion that they are
+acceptable in comparison to the statistical errors in IMC, but future work
+should better quantify this. (I consider this a "proof-of-principle" paper —
+it remains to be seen if this entire scheme works in multi-frequency and
+multi-D).
