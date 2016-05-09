@@ -264,8 +264,8 @@ $E$ by the relation $E = \phi/c$.  The equations are
 strongly coupled through the gray Planckian emission source $\sigma_a a c T^4$, which
 is a nonlinear function of temperature, and the absorption
 term $\sigma_a \phi$.   In general, the material properties are a function of $T$.  The temperature dependent material properties and
-absorption- reemission physics lead to systems that require solution in a mix of
-streaming and optically-thick, diffusive regions. 
+absorption and reemission physics lead to systems that require solution in a mix of
+streaming and optically thick, diffusive regions. 
 
 Monte Carlo (MC) solution to the TRT equations is typically achieved by the 
 implicit Monte Carlo (IMC) method~\cite{fnc}. This
@@ -337,11 +337,12 @@ finite-element (LDFE) trial space, although the RMC
 algorithm could similarly be formulated with an LDFE representation.  Adaptive
 mesh-refinement can be used in ECMC to produce highly accurate solutions with minimal
 statistical noise, as long as sufficient particle histories are performed. 
-The formulation of the residual in~\cite{rmc} can produce minimal
+The formulation of the residual in~\cite{rmc} use an estimate of the solution such
+that only face sources need to be sampled.  This residual formulation can produce minimal
 statistical noise in slowly varying problems where the behavior of the system is near
-equilibrium. The ECMC algorithm has
-similar statistical efficiency by choosing the old intensity as the initial guess to
-the algorithm.  The ECMC algorithm will generally be more efficient in cases where
+equilibrium. Our ECMC algorithm has similar statistical efficiency by choosing the previous time step intensity as the initial guess to
+the algorithm; however, a linear volumetric source must be sampled in addition to face
+sources.  The ECMC algorithm will generally be more efficient in cases where
 the solution varies greatly over a time step or when very low statistical noise is
 desired.  Generally, the minimum number of histories per batch to obtain convergence with the
 LDFE trial space is larger than a piece-wise constant representation because additional
@@ -403,8 +404,8 @@ The LDFE representation of the emission source mitigates teleportation error.
 transport problem for the HO operator. This HO transport problem represents a characteristic method that uses MC to
 invert the continuous streaming plus removal operator with an LDFE representation of
 sources. We will solve this transport problem using ECMC.  The output from ECMC is
-$\tilde{I}^{n+1}(x,\mu)$, a space-angle LDFE projection of the exact solution for
-$I^{n+1}(x,\mu)$.  Once computed, $\tilde{I}^{n+1}(x,\mu)$ is used
+$\tilde{I}^{n+1}(x,\mu)$, a space-angle LDFE projection of the exact solution
+$I^{n+1}(x,\mu)$ to the described transport problem.  Once computed, $\tilde{I}^{n+1}(x,\mu)$ is used
 to directly evaluate the necessary consistency parameters for the next LO solve.  Since there is a global, functional representation of
 the angular intensity,  LO parameters are estimated using quadrature and do not
 require additional tallies.  The HO solution is not used to directly estimate a new
@@ -461,7 +462,7 @@ moments with the $+$ and $-$ half-range integrals to Eq.~\eqref{ho_trans}
 ultimately yields four moment
 equations per cell. As in~\cite{wolters}, algebraic manipulation is performed to form
 intensity-weighted
-averages of $\mu$, which we denote consistency terms.  As an example, the equation resulting from application of the $L$ moment and
+averages of $\mu$, which we denote as consistency terms.  As an example, the equation resulting from application of the $L$ moment and
 positive half-range integral is
 \begin{multline}\label{lo_tran}
     -2{\mu}_{i-1/2}^{n+1,+} \phi_{i-1/2}^{n+1,+} + \cur {\mu}_{L,i}^{n+1,+}
@@ -638,12 +639,21 @@ the Monte Carlo LDFE projection of the error in $\tilde{I}^{n+1,(m)}$, i.e.,
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
 \end{equation}
 where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.
-This inversion is strictly a standard Monte Carlo simulation.  The space-angle moments of the
+This inversion is strictly a standard Monte Carlo simulation. The space-angle moments of the
 error computed in $\tilde{\epsilon}^{(m)}$ can be added to the moments of
 $\tilde{I}^{n+1}(m)$ to produce a more accurate solution.
+ The MC source $r^{(m)}$
+consists of both face and volumetric sources and can produce positive and
+negative weight particles.  The distribution for particle source locations is based on the $L_1$
+norm over space and angle of the residual~\cite{jake}.  A particular cell volume or face 
+is sampled, and then rejection sampling is used to sample from
+the appropriate distribution on the face or interior of the space-angle cell.  If the
+residual is negative at the sampled location, the weight of the particle history is negative
+negative.  Tallies are still based on the simple sum of weights.
 
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
-solution onto the LDFE trial space.  This is in general far more accurate than a standard
+solution onto the LDFE trial space of  
+Eq.~\eqref{ho_base}.  This is in general far more accurate than a standard
 finite element solution.  For example, in typical IMC calculations the average energy
 deposition within a cell is computed using a standard path-length volumetric flux
 tally; the zeroth moment of the LDFE projection of $\tilde{\epsilon}$ is computed
@@ -691,8 +701,7 @@ Because the exact angular intensity does not in general lie within the LDFE tria
 iterative estimate of the error will eventually stagnate once the error cannot be sufficiently
 represented by a given FE mesh.  An adaptive $h-$refinement algorithm has been
 implemented that can be used to allow the system to continue converging towards the
-exact solution~\cite{jake,ans_2014}. For TRT problems where absorption-reemission
-physics dominate, the diffusive and slowly varying
+exact solution~\cite{jake,ans_2014}. For TRT problems where absorption-reemission physics dominate, the diffusive and slowly varying
 regions of the problem require a less refined angular mesh to capture the solution than typical neutronics
 problems.  However, greater spatial resolution is needed due to steep spatial
 gradients.   
@@ -703,8 +712,8 @@ converge statistically at a standard $1/\sqrt{N}$ convergence rate, the remainin
 error will be much smaller than for a standard MC simulation, producing a much more
 efficient solution method overall.
 
-For the HO solver, in cells near the radiation wave front, the LDFE trial space results in negativities in
-$\tilde{I}^{n+1}(x,\mu)$, similar to the LO solver.  Because the residual formulation in ECMC allows for negative weight
+For the HO solver, in cells near the radiation wavefront, the LDFE trial space results in
+negative values in $\tilde{I}^{n+1}(x,\mu)$, similar to the LO solver.  Because the residual formulation in ECMC allows for negative weight
 particles to occur, currently we do not treat these cells specially.  We detect if
 the consistency terms lie in the appropriate half space at the end of the HO solve,
 an indication that the intensity was negative within that cell.  If the terms are non-physical, then
@@ -724,31 +733,28 @@ for the continuously changing weight, as given in Appendix~\ref{app:tallies}. Hi
 before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
 continuously deposit weight until they reach 0.25\% of their original weight.
 
-As another way to improve efficiency, a modified systematic
-sampling
-method~\cite{shultis_mc} was used for determining source particle locations.  The goal is to effectively distribute particle
-histories to regions of importance, but to sample a sufficient number of histories in
-less probable regions to prevent large statistical noise.  However, there is no need
-to sample histories in regions in thermal equilibrium.
-The residual gives a good indication of where
-histories are most likely to contribute to the error, particularly in optically thick
-cells where particles do not transport long distances.  The residual consists of both face
-and volumetric sources~\cite{jake}.   
-In the sampling algorithm the number of particle histories sampled in
-each space-angle cell is predetermined and proportional to the magnitude of the
-residual, including face and volumetric sources, within that cell.  Then, for the predetermined number of histories within a cell, the source
-location is randomly sampled according to the residual source distribution of that
-cell.  There is
-a relative probability cutoff of $10^{-4}$ such that cells with an insignificant
-residual will have no histories sampled there. In these regions the problem is
-remaining in equilibrium and the solution is known exactly.  
-For cells that are significant, but have a predetermined number of histories below some preset
-minimum $N_{min}$, the number of histories sampled in that cell is set to
-$N_{min}$. This is to limit
-bad statistics in low probability cells (this would be important for adaptively
-refined meshes).  In the simulations performed for this work $N_{min}=1$.  This
-choice was made to keep the total number of histories per time step
-constant throughout the simulation for comparison to IMC. 
+As another way to improve efficiency, a modified systematic sampling
+method~\cite{shultis_mc} was used for determining source particle locations.  The goal is
+to effectively distribute particle histories to regions of importance, but to sample a
+sufficient number of histories in less probable regions to prevent large statistical
+noise.  However, there is no need to sample histories in regions in thermal equilibrium.
+The residual gives a good indication of where histories are most likely to contribute to
+the error, particularly in optically thick cells where particles do not transport long
+distances.   In
+the sampling algorithm the number of particle histories sampled in each space-angle cell
+is predetermined and proportional to the magnitude of the residual, including face and
+volumetric sources, within that cell.  Then, for the predetermined number of histories
+within a cell, the source location is randomly sampled according to the residual source
+distribution of that cell.  There is a relative probability cutoff of $10^{-4}$ such that
+cells with an insignificant residual will have no histories sampled there. In these
+regions the problem is remaining in equilibrium and the solution is known exactly.  For
+cells that are significant, but have a predetermined number of histories below some preset
+minimum $N_{min}$, the number of histories sampled in that cell is set to $N_{min}$. This
+is to limit bad statistics in low probability cells (this would be important for
+adaptively refined meshes).  In the simulations performed for this work $N_{min}=1$.  This
+choice was made to keep the total number of histories per time step constant throughout
+the simulation for comparison to IMC. 
+
 %The unmodified probability of a particle being born in cell $j$ is 
 %\begin{equation}
 %p_j = \frac{||r^{(m)}_j||}{||r^{(m)}||}
@@ -853,8 +859,8 @@ of $N_c=25$ and $N_c=200$, $4,000$ histories per batch ($n=12,000$ per time step
 were used.  For $N_c=500$, 16,000 histories per time step were used due to increased
 number of space-angle cells that
 need to be sampled. The IMC and HOLO solutions agree as the mesh is converged.  There is
-similar agreement in the location of the wave front due to the linear shape of the emission source over a cell.  The cells
-nearest the wave front required use of the lumping-equivalent discretization and
+similar agreement in the location of the wavefront due to the linear shape of the emission source over a cell.  The cells
+nearest the wavefront required use of the lumping-equivalent discretization and
 $S_2$ equivalent terms during the LO
 solve, resulting in strictly positive solutions.
  
@@ -898,8 +904,8 @@ with temperature-independent cross sections.  The material properties are given 
 Table~\ref{two_mat_props}.  Initially the radiation and material energies are in
 equilibrium at a temperature of 0.05 keV.  An isotropic incident intensity of 0.500 keV
 is applied at $x=0$ at $t=0$; the isotropic incident intensity on the right boundary is 0.05
-keV.  The simulation is ran for 5 sh. For all HOLO simulations, we have used 8
-equal-sized mesh cells in $\mu$. As for the Marshak problem, the cells nearest the wave front required use of the lumping-equivalent discretization and
+keV.  The simulation end time is 5 sh. For all HOLO simulations, we have used 8
+equal-sized mesh cells in $\mu$. As for the Marshak problem, the cells nearest the wavefront required use of the lumping-equivalent discretization and
 $S_2$ equivalent terms during the LO solve.
 \begin{table}[H]
         \caption{Material properties for two material problem\label{two_mat_props}}
@@ -916,7 +922,7 @@ temperatures at the end of the simulation. The
 IMC and HOLO results show good agreement
 over the finer mesh.
 On the coarse mesh ($N_c=20$), the LDFE representation of $T^4$ in the HOLO method predicts the location of the
-wave front more accurately than the IMC method with source tilting.
+wavefront more accurately than the IMC method with source tilting.
 
 Fig.~\ref{compare_ho} demonstrates the benefit of ECMC as a HO solver compared to
 standard MC.  The HOLO algorithm
@@ -927,7 +933,7 @@ statistical noise.  This noise is introduced into the LO solver by bad statistic
 computing the consistency terms. Also
 plotted is an S$_2$ solution obtained with consistency terms that are equivalent
 to S$_2$ and no HO correction.  The S$_2$ solution results in an artificially fast
-wave front, as expected, demonstrating the necessity of HO correction in this problem.
+wavefront, as expected, demonstrating the necessity of HO correction in this problem.
 
 Table~\ref{twomat_var} compares the FOM and $\ss$ for IMC and the HOLO-ECMC method.  The FOM
 values are normalized to the value for IMC with $n=30,000$.  The end time was reduced
@@ -939,7 +945,7 @@ right region of this problem, due to
 the large, constant cross section.  Also, in the optically thin
 region of the problem the solution quickly comes to equilibrium.  Thus, the ECMC
 algorithm has to estimate a very small change in the intensity over a time step.  Additionally, difficulties in resolving
-the solution at the wave front are not as severe compared to the Marshak wave
+the solution at the wavefront are not as severe compared to the Marshak wave
 problem, where the cold cells have a much larger cross section.
 \begin{figure}
     \centering
@@ -1050,7 +1056,7 @@ a single batch produces less variance than the case of three equal batches.  Thi
 indicates that if the solution cannot be resolved with the trial space (i.e., the
 intensity is driven negative), a single large batch may be more accurate. It is noted
 that these results only account for statistical variance, and do not account for
-accuracy, which will depend on the the estimates of $\epsilon$ computed each iteration.   
+accuracy, which will depend on the estimates of $\epsilon$ computed each iteration.   
 
 \begin{table}[H]
 \centering
@@ -1087,7 +1093,7 @@ Finally, to demonstrate the potential of ECMC with adaptive space-angle mesh ref
 results for a modified Marshak wave problem. The problem is modified so that the LDFE
 trial space can accurately represent the solution (i.e., the intensity is strictly
 positive).  Mesh refinement is of minimal use in the previous problems due to most of
-the error existing at the wave fronts, caused by the large cross sections.   The modified problem has the same material
+the error existing at the wavefronts, caused by the large cross sections.   The modified problem has the same material
 properties and left boundary source as the Marshak wave problem in
 Section~\ref{sec:marsh}.  However, the initial equilibrium
 temperature and right boundary condition are raised to $0.03$ keV.   The higher initial temperature reduces the
@@ -1097,9 +1103,9 @@ not required by the LO solution.  The simulation end time is 0.5 sh with a const
 time step of $\Dt=0.001$ sh.  
 
 Fig.~\ref{hot_plot} compares the result from HOLO-ECMC with three batches and IMC.
-It was found that 100 $x$ cells was sufficient to resolve the solution spatially. There is slightly more noise in IMC past the wave front due to the increased emission
+It was found that 100 $x$ cells was sufficient to resolve the solution spatially. There is slightly more noise in IMC past the wavefront due to the increased emission
 source.  Additionally, the opacity is thin enough that some photon energy is able to
-reach the right boundary, in front of the wave front. 
+reach the right boundary, in front of the wavefront. 
 
 Table~\ref{preheat_var} compares the variances for this problem for the various HO
 solvers. The FOM values are normalized to the case of HOLO-SMC with 12,000

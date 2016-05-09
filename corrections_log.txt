@@ -93,17 +93,31 @@ advantageously deployed in a limited setting.
 
 p.3 absorption-reemission (extra space); "optically thick" needs no hyphen
 
+Changed.
+
 p.6 "similar statistical efficiency by choosing the old intensity as the
 initial guess"…Actually, the authors of [8] went to some length to choose
 their "I^+" in a way that eliminated volumetric sources after first
 considering the old intensity as the initial guess (see their Eq. (39)).
 
+I briefly described this difference in the article.  Although, for a linear
+spatial shape of the intensity, it is not possible to eliminate the interior source without
+assuming a flat solution.
+
 p.7 Unresolved Eq. number
+
+Updated.
 
 p.8 Some in-line references (as were done in the introduction) would help in
 the middle paragraph.
 
+I clarified that the projection of the exact solution is to the characteristic
+problem where there is a LDFE spatial representation of sources.
+???NEED REFERENCE FOR CHARACTERISTIC METHODS
+
 p. 10 "which we denote consistency" —> "which we denote as consistency"
+
+changed
 
 p. 12 It would be nice to see some discussion or analysis regarding whether
 the coupled system retains the equilibrium diffusion limit. We know that it
@@ -117,6 +131,10 @@ the literature.
 
 p. 16/17 Any mention of difficulties encountered and overcome with negative
 particle weights would be helpful to the field.
+
+We have not noticed any particular difficulties.  I added more detail of the
+sampling process (in particular determining the negative and positive weights
+of particles) to the end of the third paragraph in section IV.
 
 p. 21 This is the first location that the location of isotropic scattering (in
 the HO or LO) system is explicitly mentioned. It might be worth introducing
@@ -132,11 +150,16 @@ also "wave front" should be one word, "wavefront"
 again, explicitly mention the orders of magnitude reduction in variance shown
 in Table III
 
+Changed to "The simulation end time is 5 sh."
+Changed wave front to wavefront everywhere.
+
 p.24, In comparing the cost of the effective scattering, are any scattering
 acceleration schemes (random walk, DDMC) used in the IMC? This should be
 stated explicitly. DDMC papers can indicate the expected time reduction for
 comparable problems, but you may have enough margin to overcome this by
 addressing it with a statement instead of implementing the comparison.
+
+
 
 p. 28 In future work it would be nice to see comparisons to problems with
 analytic (or, at least, highly converged) solutions to compare the *overall*
