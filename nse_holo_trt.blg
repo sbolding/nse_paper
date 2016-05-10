@@ -6,45 +6,45 @@ Database file #1: references.bib
 Warning--empty booktitle in willert
 Warning--empty booktitle in park
 Warning--empty booktitle in ans_2014
-You've used 14 entries,
+You've used 18 entries,
             2272 wiz_defined-function locations,
-            602 strings with 6538 characters,
-and the built_in function-call counts, 4554 in all, are:
-= -- 256
-> -- 127
+            631 strings with 7344 characters,
+and the built_in function-call counts, 6048 in all, are:
+= -- 347
+> -- 161
 < -- 0
-+ -- 48
-- -- 34
-* -- 375
-:= -- 488
-add.period$ -- 25
-call.type$ -- 14
++ -- 61
+- -- 43
+* -- 506
+:= -- 642
+add.period$ -- 33
+call.type$ -- 18
 change.case$ -- 1
 chr.to.int$ -- 0
-cite$ -- 17
-duplicate$ -- 509
-empty$ -- 492
-format.name$ -- 45
-if$ -- 948
+cite$ -- 21
+duplicate$ -- 670
+empty$ -- 655
+format.name$ -- 57
+if$ -- 1265
 int.to.chr$ -- 0
-int.to.str$ -- 14
-missing$ -- 132
-newline$ -- 46
-num.names$ -- 14
-pop$ -- 192
+int.to.str$ -- 18
+missing$ -- 173
+newline$ -- 58
+num.names$ -- 18
+pop$ -- 240
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 61
+skip$ -- 77
 stack$ -- 0
-substring$ -- 196
-swap$ -- 349
+substring$ -- 294
+swap$ -- 470
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 3
-while$ -- 27
-width$ -- 16
-write$ -- 124
+while$ -- 36
+width$ -- 20
+write$ -- 160
 (There were 3 warnings)

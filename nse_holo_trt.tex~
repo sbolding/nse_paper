@@ -269,8 +269,8 @@ streaming and optically thick, diffusive regions.
 
 Monte Carlo (MC) solution to the TRT equations is typically achieved by the 
 implicit Monte Carlo (IMC) method~\cite{fnc}. This
-method linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{t_cont} over a discrete time
-step.  Linearization of the system produces a transport equation that contains an approximate emission source and an effective scattering cross section representing
+method partially linearizes Eq.~\eqref{ho_cont} \& Eq.~\eqref{t_cont} over a discrete time
+step, with material properties evaluated at the previous temperature.  Linearization of the system produces a transport equation that contains an approximate emission source and an effective scattering cross section representing
 absorption and reemission of photons over a time step. This transport equation is
 advanced over a time step via MC. The MC simulation tallies energy absorption
 over a discretized spatial mesh.  The energy absorption in each mesh cell is used to directly estimate
@@ -347,13 +347,10 @@ the solution varies greatly over a time step or when very low statistical noise 
 desired.  Generally, the minimum number of histories per batch to obtain convergence with the
 LDFE trial space is larger than a piece-wise constant representation because additional
 histories are needed to sufficiently estimate the first moment in $x$ and $\mu$ of the
-intensity. It is noted that our formulation of the LO
+intensity. 
+It is noted that our formulation of the LO
 equations and consistency terms contrast greatly from the typical formulation
 in~\cite{rmc,willert,park}.  
-%The LDFE
-%representation in the HO and LO systems enforces spatial consistency and ensures the
-%solution correctly produce the equilibrium diffusion limit, a critical aspect
-%for TRT equations.
 
 In this work, we demonstrate the utility of an S$_2$-like LO operator~\cite{wolters}
 in conjunction with an ECMC method~\cite{jake} for the HO solver.
@@ -396,6 +393,9 @@ are exact, neglecting spatial discretization errors.  These consistency paramete
 estimated from the previous HO solution for $I^{n+1}(x,\mu)$, as explained below. For
 the initial LO solve for each time step, the parameters are calculated with
 $I^{n}(x,\mu)$.  The discrete LO equations always conserve total energy, independent of the accuracy of the consistency terms.
+The LO system uses a LDFE spatial discretization for the temperature and half-range scalar intensities.  The LDFE spatial discretization should correctly preserve the equilibrium diffusion limit, a critical aspect
+for TRT equations~\cite{larsen_edl,morel_newton}.  Additionally, the implicit time discretization with sufficient convergence of the nonlinear emission source will 
+ensure that the method will not exhibit maximum principle violations~\cite{larsen_mpv}.
 
 The solution to the LO system is used to construct a LDFE spatial representation of
 the scattering and emission sources on the right hand side of Eq.~\eqref{ho_trans}.
@@ -403,7 +403,8 @@ The LDFE representation of the emission source mitigates teleportation error.
  This defines a fixed-source, pure absorber
 transport problem for the HO operator. This HO transport problem represents a characteristic method that uses MC to
 invert the continuous streaming plus removal operator with an LDFE representation of
-sources. We will solve this transport problem using ECMC.  The output from ECMC is
+sources; the representation of sources is similar to the linear moments method
+discussed in~\cite{larsen_error}.  We will solve this transport problem using ECMC.  The output from ECMC is
 $\tilde{I}^{n+1}(x,\mu)$, a space-angle LDFE projection of the exact solution
 $I^{n+1}(x,\mu)$ to the described transport problem.  Once computed, $\tilde{I}^{n+1}(x,\mu)$ is used
 to directly evaluate the necessary consistency parameters for the next LO solve.  Since there is a global, functional representation of
@@ -521,17 +522,20 @@ The relation between the volume and face averaged quantities and the angular con
 A lagged estimate of $I^{n+1}$ from the previous HO solve is
 used to estimate the angular consistency parameters. In the HOLO algorithm, the equations for LO unknowns at iteration $k+1$ use consistency parameters
 computed (via relations, e.g., Eq.~\eqref{const}) using the latest HO solution $\tilde{I}^{n+1,k+1/2}$
-as an approximation for $I^{n+1}(x,\mu)$. To close the LO system spatially, the usual upwinding
+as an approximation for $I^{n+1}(x,\mu)$. To close the LO system spatially, a linear-discontinuous (LD) spatial closure with the usual upwinding
 approximation is used.  For example, for positive flow (e.g., Eq.~\eqref{lo_tran}) the face terms $\mu_{i-1/2}$ and $\phi_{i-1/2}$
 are upwinded from the previous cell $i-1$ or from a boundary condition; the terms
 at $x_{i+1/2}$ are linearly extrapolated, computed using the $L$ and $R$ basis
 moments, e.g., $\phi^+_{i+1/2} = 2\mom{\phi}_R^+ - \mom{\phi}_L^+$. 
-%The HO ECMC solver computes an LDFE representation of the intensity, using the
-%LD spatial closure to relate intensity on the faces to the volumetric
-%moments.
 Because there are no derivatives of $T$ in Eq.~\eqref{lo_mat}, there is no need
 to define $T$ on the faces; the temperature has been assumed linear within a cell to
-relate $T$ and $T^4$.
+relate $T$ and $T^4$.  
+
+The choice of a LD spatial closure should preserve the equilibrium diffusion limit.  In this limit, the MC HO solution will estimate angular consistency terms 
+associated with an isotropic intensity, based on a spatially LD emission source.  The isotropic-intensity consistency terms will produce
+LO equations that are equivalent to $S_2$ equations, with quadrature points of $\pm 1/2$.  Because the spatial
+closure produces equations that are equivalent to an LDFE solution to these equations, we expect the equations to preserve the
+equilibrium diffusion limit~\cite{morel_newton,densmore_edl}.
 
 The linear-discontinuous (LD) closure with upwinding is not strictly positive.  In particular, for
 optically thick cells with a steep intensity gradient, the solution becomes negative.
@@ -653,7 +657,7 @@ negative.  Tallies are still based on the simple sum of weights.
 
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
 solution onto the LDFE trial space of  
-Eq.~\eqref{ho_base}.  This is in general far more accurate than a standard
+Eq.~\eqref{eq:ho_base}.  This is in general far more accurate than a standard
 finite element solution.  For example, in typical IMC calculations the average energy
 deposition within a cell is computed using a standard path-length volumetric flux
 tally; the zeroth moment of the LDFE projection of $\tilde{\epsilon}$ is computed
@@ -662,8 +666,8 @@ representation of the source term $q$.  Volumetric flux tallies over
 each space-angle element are required to represent $\tilde{\epsilon}^{(m)}$.
 The LD approximation in space is used to relate the outflow within a cell to the
 volumetric moments, eliminating the need for face-averaged tallies.
-  The
-procedure for representing the solution and tally definitions are given in Appendix~\ref{app:tallies}.
+The procedure for representing the solution and tally definitions are given
+in Appendix~\ref{app:tallies}.
 
 The ECMC algorithm is
 \begin{enumerate}
@@ -712,7 +716,7 @@ converge statistically at a standard $1/\sqrt{N}$ convergence rate, the remainin
 error will be much smaller than for a standard MC simulation, producing a much more
 efficient solution method overall.
 
-For the HO solver, in cells near the radiation wave front, the LDFE trial space results in
+For the HO solver, in cells near the radiation wavefront, the LDFE trial space results in
 negative values in $\tilde{I}^{n+1}(x,\mu)$, similar to the LO solver.  Because the residual formulation in ECMC allows for negative weight
 particles to occur, currently we do not treat these cells specially.  We detect if
 the consistency terms lie in the appropriate half space at the end of the HO solve,
@@ -859,8 +863,8 @@ of $N_c=25$ and $N_c=200$, $4,000$ histories per batch ($n=12,000$ per time step
 were used.  For $N_c=500$, 16,000 histories per time step were used due to increased
 number of space-angle cells that
 need to be sampled. The IMC and HOLO solutions agree as the mesh is converged.  There is
-similar agreement in the location of the wave front due to the linear shape of the emission source over a cell.  The cells
-nearest the wave front required use of the lumping-equivalent discretization and
+similar agreement in the location of the wavefront due to the linear shape of the emission source over a cell.  The cells
+nearest the wavefront required use of the lumping-equivalent discretization and
 $S_2$ equivalent terms during the LO
 solve, resulting in strictly positive solutions.
  
@@ -905,7 +909,7 @@ Table~\ref{two_mat_props}.  Initially the radiation and material energies are in
 equilibrium at a temperature of 0.05 keV.  An isotropic incident intensity of 0.500 keV
 is applied at $x=0$ at $t=0$; the isotropic incident intensity on the right boundary is 0.05
 keV.  The simulation end time is 5 sh. For all HOLO simulations, we have used 8
-equal-sized mesh cells in $\mu$. As for the Marshak problem, the cells nearest the wave front required use of the lumping-equivalent discretization and
+equal-sized mesh cells in $\mu$. As for the Marshak problem, the cells nearest the wavefront required use of the lumping-equivalent discretization and
 $S_2$ equivalent terms during the LO solve.
 \begin{table}[H]
         \caption{Material properties for two material problem\label{two_mat_props}}
@@ -922,7 +926,7 @@ temperatures at the end of the simulation. The
 IMC and HOLO results show good agreement
 over the finer mesh.
 On the coarse mesh ($N_c=20$), the LDFE representation of $T^4$ in the HOLO method predicts the location of the
-wave front more accurately than the IMC method with source tilting.
+wavefront more accurately than the IMC method with source tilting.
 
 Fig.~\ref{compare_ho} demonstrates the benefit of ECMC as a HO solver compared to
 standard MC.  The HOLO algorithm
@@ -933,7 +937,7 @@ statistical noise.  This noise is introduced into the LO solver by bad statistic
 computing the consistency terms. Also
 plotted is an S$_2$ solution obtained with consistency terms that are equivalent
 to S$_2$ and no HO correction.  The S$_2$ solution results in an artificially fast
-wave front, as expected, demonstrating the necessity of HO correction in this problem.
+wavefront, as expected, demonstrating the necessity of HO correction in this problem.
 
 Table~\ref{twomat_var} compares the FOM and $\ss$ for IMC and the HOLO-ECMC method.  The FOM
 values are normalized to the value for IMC with $n=30,000$.  The end time was reduced
@@ -945,7 +949,7 @@ right region of this problem, due to
 the large, constant cross section.  Also, in the optically thin
 region of the problem the solution quickly comes to equilibrium.  Thus, the ECMC
 algorithm has to estimate a very small change in the intensity over a time step.  Additionally, difficulties in resolving
-the solution at the wave front are not as severe compared to the Marshak wave
+the solution at the wavefront are not as severe compared to the Marshak wave
 problem, where the cold cells have a much larger cross section.
 \begin{figure}
     \centering
@@ -1056,7 +1060,7 @@ a single batch produces less variance than the case of three equal batches.  Thi
 indicates that if the solution cannot be resolved with the trial space (i.e., the
 intensity is driven negative), a single large batch may be more accurate. It is noted
 that these results only account for statistical variance, and do not account for
-accuracy, which will depend on the the estimates of $\epsilon$ computed each iteration.   
+accuracy, which will depend on the estimates of $\epsilon$ computed each iteration.   
 
 \begin{table}[H]
 \centering
@@ -1093,7 +1097,7 @@ Finally, to demonstrate the potential of ECMC with adaptive space-angle mesh ref
 results for a modified Marshak wave problem. The problem is modified so that the LDFE
 trial space can accurately represent the solution (i.e., the intensity is strictly
 positive).  Mesh refinement is of minimal use in the previous problems due to most of
-the error existing at the wave fronts, caused by the large cross sections.   The modified problem has the same material
+the error existing at the wavefronts, caused by the large cross sections.   The modified problem has the same material
 properties and left boundary source as the Marshak wave problem in
 Section~\ref{sec:marsh}.  However, the initial equilibrium
 temperature and right boundary condition are raised to $0.03$ keV.   The higher initial temperature reduces the
@@ -1103,9 +1107,9 @@ not required by the LO solution.  The simulation end time is 0.5 sh with a const
 time step of $\Dt=0.001$ sh.  
 
 Fig.~\ref{hot_plot} compares the result from HOLO-ECMC with three batches and IMC.
-It was found that 100 $x$ cells was sufficient to resolve the solution spatially. There is slightly more noise in IMC past the wave front due to the increased emission
+It was found that 100 $x$ cells was sufficient to resolve the solution spatially. There is slightly more noise in IMC past the wavefront due to the increased emission
 source.  Additionally, the opacity is thin enough that some photon energy is able to
-reach the right boundary, in front of the wave front. 
+reach the right boundary, in front of the wavefront. 
 
 Table~\ref{preheat_var} compares the variances for this problem for the various HO
 solvers. The FOM values are normalized to the case of HOLO-SMC with 12,000

@@ -30,22 +30,28 @@ Reviewers' comments:
 
 Reviewer #1: Paper is well written with only a few suggested grammatical
 changes :
-- p7 missing eq link
+1. p7 missing eq link
     Fixed
-- p7 reword the text "estimated exactly", it is either estimated or exact, not
+
+2. p7 reword the text "estimated exactly", it is either estimated or exact, not
   both
     Fixed
-- p11 in III.B I suggest reviewing the sentence that starts with " The L and R
+
+3. p11 in III.B I suggest reviewing the sentence that starts with " The L and R
   moments ..." the ending especially doesn't read well "to simplify moments".
-    Clarified sentence.
-- p12 change "of the T" to "of T"
+    I clarified the sentence.
+
+4. p12 change "of the T" to "of T"
     Fixed
-- p12 I suggest replacing the word "negativities" by "negative values" appears
+
+5. p12 I suggest replacing the word "negativities" by "negative values" appears
   at least 5 times in article, this is a wrong use of the noun negativity
     Fixed
-- p17 word missing, "residual source AT each iteration m"
+
+6. p17 word missing, "residual source AT each iteration m"
     Fixed
-- p18 what type of equilibrium, I am assuming thermal equilibrium?
+
+7. p18 what type of equilibrium, I am assuming thermal equilibrium?
     Fixed
 
 As for the content, I do have a few general comments for the authors to
@@ -111,9 +117,9 @@ Updated.
 p.8 Some in-line references (as were done in the introduction) would help in
 the middle paragraph.
 
+I added some references and cleaned up the content a little.
 I clarified that the projection of the exact solution is to the characteristic
 problem where there is a LDFE spatial representation of sources.
-???NEED REFERENCE FOR CHARACTERISTIC METHODS
 
 p. 10 "which we denote consistency" —> "which we denote as consistency"
 
@@ -129,12 +135,17 @@ particulars of the LDFE spatial discretization is the larger concern when
 coupled with a MC HO method, but there is evidence to suggest it will be OK in
 the literature.
 
+I added a line and reference about the equilibrium diffusion limit and maximum
+principle violations to the beginning paragraph on page 8.  I also discussed
+why we expect the diffusion limit to hold in a new paragraph on Pg 12 with
+references.
+
 p. 16/17 Any mention of difficulties encountered and overcome with negative
 particle weights would be helpful to the field.
 
-We have not noticed any particular difficulties.  I added more detail of the
+We have not noticed any particular numerical difficulties as of yet with negative particles.  I added more detail of the
 sampling process (in particular determining the negative and positive weights
-of particles) to the end of the third paragraph in section IV.
+of particles) to the end of the third paragraph in section IV. 
 
 p. 21 This is the first location that the location of isotropic scattering (in
 the HO or LO) system is explicitly mentioned. It might be worth introducing
@@ -151,7 +162,7 @@ again, explicitly mention the orders of magnitude reduction in variance shown
 in Table III
 
 Changed to "The simulation end time is 5 sh."
-Changed wave front to wavefront everywhere.
+Changed wave front to wavefront throughout.
 
 p.24, In comparing the cost of the effective scattering, are any scattering
 acceleration schemes (random walk, DDMC) used in the IMC? This should be

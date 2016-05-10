@@ -57,10 +57,32 @@
 {E.~Wolters}, \emph{Hybrid Monte Carlo - Deterministic Neutron Transport
   Methods Using Nonlinear Functionals}, Ph.D. dissertation, Michigan (2011).
 
+\bibitem{larsen_edl}
+{E.~Larsen}, {G.~Pomraning}, and {V.~Badham}, \enquote{Asymptotic analysis of
+  radiative transfer problems,} \emph{Journal of Quantitative Spectroscopy and
+  Radiative Transfer}, \textbf{29}, 4, pp. 285 -- 310 (1983).
+
 \bibitem{morel_newton}
 {J.~Morel}, {T.~Wareing}, and {K.~Smith}, \enquote{{Linear-Discontinuous
   Spatial Differencing Scheme for $S_n$ Radiative Transfer Calculations},}
   \emph{Journal of Computational Physics}, \textbf{128}, pp. 445--462 (1996).
+
+\bibitem{larsen_mpv}
+{E.~W. Larsen}, {A.~Kumar}, and {J.~E. Morel}, \enquote{Properties of the
+  Implicitly Time-differenced Equations of Thermal Radiation Transport,}
+  \emph{J. Comput. Phys.}, \textbf{238}, pp. 82--96 (Apr. 2013).
+
+\bibitem{larsen_error}
+{P.~N. Edward W.~Larsen}, \enquote{Finite-Difference Approximations and
+  Superconvergence for the Discrete-Ordinate Equations in Slab Geometry,}
+  \emph{SIAM Journal on Numerical Analysis}, \textbf{19}, 2, pp. 334--348
+  (1982).
+
+\bibitem{densmore_edl}
+{J.~D. Densmore} and {E.~W. Larsen}, \enquote{Asymptotic equilibrium diffusion
+  analysis of time-dependent Monte Carlo methods for grey radiative transfer,}
+  \emph{Journal of Computational Physics}, \textbf{199}, 1, pp. 175 -- 204
+  (2004).
 
 \bibitem{shultis_mc}
 {J.~Shultis} and {W.~Dunn}, \emph{{E}xploring {M}onte {C}arlo {M}ethods},
