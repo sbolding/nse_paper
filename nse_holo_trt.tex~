@@ -547,7 +547,7 @@ the equations are lumped to produce a strictly positive solution (for 1D)~\cite{
 procedures would introduce difficulties in computing the consistency terms from the
 HO solution.  Thus, an alternative spatial closure is used that is equivalent to the
 standard FE lumping procedure.  The $L$ and $R$ moments are defined the same as before,
-preserving the same average within a cell, but the relation between the moments and
+preserving the average within a cell, but the relation between the moments and
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
 positive, the outflow is positive.  This closure is only used
@@ -660,7 +660,7 @@ representation of the emission and scattering source and the LDFE space-angle pr
 general far more accurate than a standard finite element solution, e.g., a S$_N$ collocation method in angle.  In typical IMC calculations, the average
 energy deposition within a cell is computed using a standard path-length volumetric
 flux tally; the zeroth moment of the LDFE projection of ${\epsilon}$ is
-computed using an equivalent tally, preserving the zeroth moment of the error.
+computed using an equivalent tally, preserving the zeroth moment of the true error.
 
 Volumetric flux tallies over each space-angle element are required to estimate
 $\tilde{\epsilon}^{(m)}$.  The LD approximation in space is used to relate the
