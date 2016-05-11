@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  10 MAY 2016 23:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  11 MAY 2016 08:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -937,29 +937,28 @@ Overfull \hbox (2.52971pt too wide) detected at line 628
 \openout4 = `nse_holo_trt.ttt'.
 
  (nse_holo_trt.ttt)
-[23] [24] [25] [26] [27] [28] [29] [30] [31] (./nse_holo_trt.bbl [32
+[23] [24] [25] [26] [27] [28] [29] [30] (./nse_holo_trt.bbl [31
 
-] [33])
-[34]
-Overfull \hbox (15.03842pt too wide) detected at line 1248
+] [32]) [33]
+Overfull \hbox (15.03842pt too wide) detected at line 1243
 []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x; ^^V\OT1/cmr/m/n/12 ) = \OML/cmm/m/it/12 
 I[] \OT1/cmr/m/n/12 + []\OML/cmm/m/it/12 I[] [] \OT1/cmr/m/n/12 + []\OML/cmm/m/
 it/12 I[] [] ;  x[] < x < x[];  ^^V[] \OMS/cmsy/m/n/12 ^^T \OML/cmm/m/it/12 ^^V
  \OMS/cmsy/m/n/12 ^^T \OML/cmm/m/it/12 ^^V[]
  []
 
-[35
+[34
 
-] [36] AED endfloat: Processing end Figures and Tables [37]
+] [35] AED endfloat: Processing end Figures and Tables [36]
 (./nse_holo_trt.fff
-<figures/marshak_mesh_conv.pdf, id=138, 517.71071pt x 409.79662pt>
+<figures/marshak_mesh_conv.pdf, id=134, 517.71071pt x 409.79662pt>
 File: figures/marshak_mesh_conv.pdf Graphic file (type pdf)
 
 <use figures/marshak_mesh_conv.pdf>
 Package pdftex.def Info: figures/marshak_mesh_conv.pdf used on input line 5.
 (pdftex.def)             Requested size: 320.35347pt x 253.58354pt.
 
-<figures/marshak_200_compare.pdf, id=139, 508.9671pt x 409.79662pt>
+<figures/marshak_200_compare.pdf, id=135, 508.9671pt x 409.79662pt>
 File: figures/marshak_200_compare.pdf Graphic file (type pdf)
 
 <use figures/marshak_200_compare.pdf>
@@ -970,70 +969,70 @@ Package pdftex.def Info: figures/marshak_200_compare.pdf used on input line 10.
 
 LaTeX Warning: Float too large for page by 6.09038pt on input line 14.
 
-[38 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
+[37 <./figures/marshak_mesh_conv.pdf> <./figures/marshak_200_compare.pdf
 
 pdfTeX warning: pdflatex (file ./figures/marshak_200_compare.pdf): PDF inclusio
 n: multiple pdfs with page group included in a single page
->] <figures/two_mat_conv.pdf, id=247, 501.29784pt x 409.79662pt>
+>] <figures/two_mat_conv.pdf, id=244, 501.29784pt x 409.79662pt>
 File: figures/two_mat_conv.pdf Graphic file (type pdf)
 
 <use figures/two_mat_conv.pdf>
 Package pdftex.def Info: figures/two_mat_conv.pdf used on input line 21.
 (pdftex.def)             Requested size: 297.46957pt x 243.17857pt.
 
-<figures/two_mat_ho_compare.pdf, id=248, 501.29784pt x 409.79662pt>
+<figures/two_mat_ho_compare.pdf, id=245, 501.29784pt x 409.79662pt>
 File: figures/two_mat_ho_compare.pdf Graphic file (type pdf)
 
 <use figures/two_mat_ho_compare.pdf>
 Package pdftex.def Info: figures/two_mat_ho_compare.pdf used on input line 25.
 (pdftex.def)             Requested size: 297.46957pt x 243.17857pt.
- [39 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
+ [38 <./figures/two_mat_conv.pdf> <./figures/two_mat_ho_compare.pdf
 
 pdfTeX warning: pdflatex (file ./figures/two_mat_ho_compare.pdf): PDF inclusion
 : multiple pdfs with page group included in a single page
->] <figures/heated_marshak.pdf, id=361, 526.7194pt x 417.02364pt>
+>] <figures/heated_marshak.pdf, id=358, 526.7194pt x 417.02364pt>
 File: figures/heated_marshak.pdf Graphic file (type pdf)
 
 <use figures/heated_marshak.pdf>
 Package pdftex.def Info: figures/heated_marshak.pdf used on input line 34.
 (pdftex.def)             Requested size: 300.47266pt x 237.9032pt.
- [40
+ [39
 
 
 
 
  <./figures/heated_marshak.pdf>])
-(./nse_holo_trt.ttt [41
+(./nse_holo_trt.ttt [40
 
+
+] [41
 
 ] [42
-
-] [43
 
 ]
 Overfull \hbox (7.08833pt too wide) in paragraph at lines 46--53
  [][] 
  []
 
-[44
+[43
 
 ]
 Overfull \hbox (8.98137pt too wide) in paragraph at lines 60--67
  [][] 
  []
 
-[45
+[44
+
+] [45
 
 ] [46
-
-] [47
 
 ]
 Overfull \hbox (25.98419pt too wide) in paragraph at lines 106--115
  [][] 
  []
 
-[48
+[47
 
 ]) (./nse_holo_trt.aux) ) 
 Here is how much of TeX's memory you used:
@@ -1060,10 +1059,10 @@ pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pf
 b></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
 
-Output written on nse_holo_trt.pdf (48 pages, 357449 bytes).
+Output written on nse_holo_trt.pdf (47 pages, 357385 bytes).
 PDF statistics:
- 495 PDF objects out of 1000 (max. 8388607)
- 224 compressed objects within 3 object streams
+ 492 PDF objects out of 1000 (max. 8388607)
+ 222 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  38 words of extra memory for PDF output out of 10000 (max. 10000000)
 

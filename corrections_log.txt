@@ -172,7 +172,7 @@ particle weights would be helpful to the field.
 
 We have not noticed any particular numerical difficulties as of yet with negative particles.  I added more detail of the
 sampling process (in particular determining the negative and positive weights
-of particles) to the end of the third paragraph in section IV. 
+of particles) to the Appendix.
 
 p. 21 This is the first location that the location of isotropic scattering (in
 the HO or LO) system is explicitly mentioned. It might be worth introducing

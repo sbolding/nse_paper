@@ -603,7 +603,7 @@ solves. The sources at $k$ in Eq.~\eqref{eq:ho_base} are estimated by the previo
 evaluated at $T^{n+1,k}$.  As all sources on the right side of the equation are known,
 this defines a fixed-source, pure absorber transport problem.  We will solve
 this equation using ECMC.  A more detailed description of the
-ECMC method can be found in~\cite{jake}, but a brief overview is given here.  A general proof of exponential convergence for related, but differently formulated, MC transport methods is depicted in~\cite{spanier_mc}.
+ECMC method can be found in~\cite{jake}, but a brief overview is given here.  A general proof of exponential convergence for related adaptive MC transport methods with a different formulation is depicted in~\cite{spanier_mc}.
 
  In operator notation, Eq.~\eqref{eq:ho_base} can be written as
 \begin{equation}\label{te_oper}
@@ -611,7 +611,7 @@ ECMC method can be found in~\cite{jake}, but a brief overview is given here.  A 
 \end{equation}
 where $I^{n+1,k+1/2}$ is the transport solution of the angular intensity based on the
 $k$-th LO estimate of $q^k$.
-The linear operator $\B L^k$ is the streaming plus
+The linear operator $\B L^k$ is the continuous streaming plus
 removal operator defined by the left hand
 side of Eq.~\eqref{ho_trans}.
 The $m$-th approximate LDFE solution to Eq.~\eqref{te_oper} ($m$ is the index of inner HO
@@ -635,7 +635,7 @@ and manipulation of the result yields the error equation
 \begin{equation}\label{eq:err_eq}
     \B L (I^{n+1} - \tilde{I}^{n+1,(m)}) = \B L {\epsilon}^{(m)} = r^{(m)}
 \end{equation}
-where $I^{n+1}$ is the exact solution and ${\epsilon}^{(m)}$ is the error in
+where $I^{n+1}$ is the exact solution and ${\epsilon}^{(m)}$ is the true error in
 $\tilde{I}^{n+1,(m)}$. 
 We have suppressed the HOLO iteration indices because the LO estimated $q^{k}$ and $\B L^{k}$ remain constant over the entire HO solve.
 The $\B L$ operator in the above equation is inverted yielding
@@ -644,34 +644,29 @@ the Monte Carlo LDFE projection of the error in $\tilde{I}^{n+1,(m)}$, i.e.,
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
 \end{equation}
 where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.  
-This inversion is strictly a standard Monte Carlo simulation.   The space-angle
-moments of the error computed in $\tilde{\epsilon}^{(m)}$ can be added to the
+This inversion is strictly a standard Monte Carlo simulation.   It is noted that the exact
+error in $\tilde{I}^{n+1,(m)}$ (with respect to Eq.~\eqref{eq:ho_base}) is being estimated with MC;
+%in Because $\B L$ in Eq.~\eqref{eq:err_eq} is the continous operator and $\B
+%L^{-1}$ represents the analytic inverse of $\B L$~\cite{shultis_mc}, the exact error
+tallies produce a projection of the error onto a LDFE space-angle trial space. The space-angle
+moments of the error computed as $\tilde{\epsilon}^{(m)}$ can be added to the
 moments of $\tilde{I}^{n+1}(m)$ to produce a more accurate solution.  
 
- The MC source $r^{(m)}(x,\mu)$ in Eq.~\eqref{eq:mc_err}
-consists of both face and volumetric sources and can produce positive and
-negative weight particles.  The distribution for sampling particle coordinates, in space and angle, is based on the $L_1$
-norm over space and angle of the residual~\cite{jake}.  A particular cell volume or face 
-is sampled, and then rejection sampling~\cite{shultis_mc} is used to sample from
-the appropriate distribution on the face or interior of the space-angle cell.  If the
-residual is negative at the sampled coordinates, the weight of the particle history is negative.
-  Tallies are still computed using the simple average of particle weights.
 
 Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the LDFE projection of the exact Monte Carlo
-solution to the transport problem defined by Eq.~\eqref{eq:ho_base}.  The primary truncation error is in the LD spatial
-representation of the source term $q$.  
-Because $\B L$ in Eq.~\eqref{eq:err_eq} is the continous operator and $\B
-L^{-1}$ represents the analytic inverse of $\B L$~\cite{shultis_mc}, the exact error
-in $\tilde{I}^{n+1,(m)}$ is being estimated with MC each batch; this exact error is then
-projected onto a LDFE space-angle trial space via tallies.  The projection of the intensity is in
-general far more accurate than a standard finite element solution.  In typical IMC calculations, the average
+solution to the transport problem defined by Eq.~\eqref{eq:ho_base}.  The discretization error is in $q$, i.e., the LD spatial
+representation of the emission and scattering source and the LDFE space-angle projection $\tilde I^{n}(x,\mu)$.
+ The projection of the intensity is in
+general far more accurate than a standard finite element solution, e.g., a S$_N$ collocation method in angle.  In typical IMC calculations, the average
 energy deposition within a cell is computed using a standard path-length volumetric
 flux tally; the zeroth moment of the LDFE projection of ${\epsilon}$ is
 computed using an equivalent tally, preserving the zeroth moment of the error.
-Volumetric flux tallies over each space-angle element are required to represent
+
+Volumetric flux tallies over each space-angle element are required to estimate
 $\tilde{\epsilon}^{(m)}$.  The LD approximation in space is used to relate the
 outflow within a cell to the volumetric moments, eliminating the need for
-face-averaged tallies.  The procedure for representing the solution and tally
+face-averaged tallies.  The procedure for representing the solution, sampling with negative and
+positive weight particles, and tally
 definitions are given in Appendix~\ref{app:tallies}.
 
 The ECMC algorithm is
@@ -1235,7 +1230,7 @@ Energy under contract DE-AC52-06NA25396.
 
 \ess
 
-\section{Implementation of ECMC finite-element space and tallies}
+\section{Implementation of ECMC finite-element space, tallies, and residual sampling}
 
 \label{app:tallies}
 
@@ -1260,9 +1255,17 @@ where $\mathcal{D}: x_\il \leq  x \leq  x_\ir \times \mu_\jl \leq \mu \leq \mu_\
 %$I_a$ is the cell average intensity, and $I_\mu$ and $I_x$ define the
 %the first moment in $\mu$ and $x$ of the intensity, respectively. 
 Standard upwinding in space is used to
-define $I(\mu)$ on incoming faces. This representation can directly be plugged into
+define $I(\mu)$ on incoming faces. 
+
+This representation can directly be plugged into
 Eq.~\eqref{eq:resid} and evaluated to produce the residual source in the ECMC HO transport
-problem. 
+problem.  The MC source $r^{(m)}(x,\mu)$ in Eq.~\eqref{eq:mc_err}
+consists of both face and volumetric sources and can produce positive and
+negative weight particles.  The distribution for sampling particle coordinates, in space and angle, is based on the $L_1$
+norm over space and angle of the residual~\cite{jake}.  A particular cell volume or face 
+is sampled, and then rejection sampling~\cite{shultis_mc} is used to sample from
+the appropriate distribution on the face or interior of the space-angle cell.  If the
+residual is negative at the sampled coordinates, the weight of the particle history is negative.
 
 During a MC batch, moments of the error are tallied.  The necessary moments of the error are
 defined analogously to Eq.'s~\eqref{app1}--\eqref{app2}.
