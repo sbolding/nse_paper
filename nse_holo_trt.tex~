@@ -300,7 +300,7 @@ Recent work has focused on so-called high-order low-order (HOLO)
 approaches~\cite{willert,park,rmc,ans_2014}.  Such methods utilize a low-order (LO)
 operator based on angular moments of the transport equation, formulated over a fixed
 spatial mesh. Physics operators that are time consuming for MC
-to resolve, e.g., absorption-reemission and scattering events, are moved to the LO
+to resolve, e.g., absorption-reemission and physical scattering events, are moved to the LO
 system.  Newton methods allow for non-linearities in the LO equations to be fully
 resolved efficiently~\cite{willert}.  The high-order (HO) transport equation is defined by 
 Eq.~\eqref{ho_cont}, with sources that are truly implicit in time estimated from the LO solution. The HO equation is solved via MC to produce a high-fidelity solution for
@@ -381,7 +381,7 @@ discrete in time for simpler application of ECMC and to avoid difficulties in co
 fully-discrete LO solver.  However, this does introduce some artificial propagation of
 energy due to the implicit time differencing in optically thin regions. 
 
-In the HOLO context, the LO solver models the physical scattering and
+In the HOLO context, the LO solver models isotropic scattering and
 resolves the material temperature spatial distribution $T(x)$ at each time step.  The LO equations are formed via half-range 
 angular and spatial moments of
 Eq.~\eqref{ho_trans} and Eq.~\eqref{lo_mat}, formed over a spatial finite element
@@ -398,8 +398,8 @@ for TRT equations~\cite{larsen_edl,morel_newton}.  Additionally, the implicit ti
 ensure that the method will not exhibit maximum principle violations~\cite{larsen_mpv}.
 
 The solution to the LO system is used to construct a LDFE spatial representation of
-the scattering and emission sources on the right hand side of Eq.~\eqref{ho_trans}.
-The LDFE representation of the emission source mitigates teleportation error.
+the isotropic scattering and emission sources on the right hand side of
+Eq.~\eqref{ho_trans}.   The LDFE representation of the emission source mitigates teleportation error.
  This defines a fixed-source, pure absorber
 transport problem for the HO operator. This HO transport problem represents a characteristic method that uses MC to
 invert the continuous streaming plus removal operator with an LDFE representation of
@@ -558,7 +558,8 @@ in cells where negative intensities occur.
 We have used Newton's method to solve the global system of coupled LO
 equations, based on a typical linearization of the Planckian source with cross
 sections evaluated at temperatures of the previous iteration, as described in~\cite{morel_newton}.  
-Once the system is linearized, a discrete matrix equation is formed.  Scattering is included in the system matrix. The system
+Once the system is linearized, a discrete matrix equation is formed.  Isotropic scattering,
+including effective scattering terms from the linearization, are included in the system matrix. The system
 matrix is an asymmetric, banded matrix with a band width of seven and is inverted
 directly. 
 Newton iterations are repeated until $\phi^{n+1}(x)$ and $T^{n+1}(x)$ are converged
@@ -602,9 +603,9 @@ solves. The sources at $k$ in Eq.~\eqref{eq:ho_base} are estimated by the previo
 evaluated at $T^{n+1,k}$.  As all sources on the right side of the equation are known,
 this defines a fixed-source, pure absorber transport problem.  We will solve
 this equation using ECMC.  A more detailed description of the
-ECMC method can be found in~\cite{jake}, but a brief overview is given here.
+ECMC method can be found in~\cite{jake}, but a brief overview is given here.  A general proof of exponential convergence for related, but differently formulated, MC transport methods is depicted in~\cite{spanier_mc}.
 
- In operator notation, the previous equation can be written as
+ In operator notation, Eq.~\eqref{eq:ho_base} can be written as
 \begin{equation}\label{te_oper}
 \B L^k I^{n+1,k+1/2}  = q^{k}
 \end{equation}
@@ -631,7 +632,7 @@ solution of the previous time step.
 
 Addition of $\B L I^{n+1} - q=0$ to the residual equation 
 and manipulation of the result yields the error equation
-\begin{equation}
+\begin{equation}\label{eq:err_eq}
     \B L (I^{n+1} - \tilde{I}^{n+1,(m)}) = \B L {\epsilon}^{(m)} = r^{(m)}
 \end{equation}
 where $I^{n+1}$ is the exact solution and ${\epsilon}^{(m)}$ is the error in
@@ -639,35 +640,39 @@ $\tilde{I}^{n+1,(m)}$.
 We have suppressed the HOLO iteration indices because the LO estimated $q^{k}$ and $\B L^{k}$ remain constant over the entire HO solve.
 The $\B L$ operator in the above equation is inverted yielding
 the Monte Carlo LDFE projection of the error in $\tilde{I}^{n+1,(m)}$, i.e., 
-\begin{equation}
+\begin{equation}\label{eq:mc_err}
 \tilde{\epsilon}^{(m)} = \B L^{-1} r^{(m)}
 \end{equation}
-where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.
-This inversion is strictly a standard Monte Carlo simulation. The space-angle moments of the
-error computed in $\tilde{\epsilon}^{(m)}$ can be added to the moments of
-$\tilde{I}^{n+1}(m)$ to produce a more accurate solution.
- The MC source $r^{(m)}$
-consists of both face and volumetric sources and can produce positive and
-negative weight particles.  The distribution for particle source locations is based on the $L_1$
-norm over space and angle of the residual~\cite{jake}.  A particular cell volume or face 
-is sampled, and then rejection sampling is used to sample from
-the appropriate distribution on the face or interior of the space-angle cell.  If the
-residual is negative at the sampled location, the weight of the particle history is negative
-negative.  Tallies are still based on the simple sum of weights.
+where $\B L^{-1}$ is the Monte Carlo inversion of the streaming and removal operator.  
+This inversion is strictly a standard Monte Carlo simulation.   The space-angle
+moments of the error computed in $\tilde{\epsilon}^{(m)}$ can be added to the
+moments of $\tilde{I}^{n+1}(m)$ to produce a more accurate solution.  
 
-Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the projection of the exact Monte Carlo
-solution onto the LDFE trial space of  
-Eq.~\eqref{eq:ho_base}.  This is in general far more accurate than a standard
-finite element solution.  For example, in typical IMC calculations the average energy
-deposition within a cell is computed using a standard path-length volumetric flux
-tally; the zeroth moment of the LDFE projection of $\tilde{\epsilon}$ is computed
-using an equivalent tally.  The primary truncation error is in the LD spatial
-representation of the source term $q$.  Volumetric flux tallies over
-each space-angle element are required to represent $\tilde{\epsilon}^{(m)}$.
-The LD approximation in space is used to relate the outflow within a cell to the
-volumetric moments, eliminating the need for face-averaged tallies.
-The procedure for representing the solution and tally definitions are given
-in Appendix~\ref{app:tallies}.
+ The MC source $r^{(m)}(x,\mu)$ in Eq.~\eqref{eq:mc_err}
+consists of both face and volumetric sources and can produce positive and
+negative weight particles.  The distribution for sampling particle coordinates, in space and angle, is based on the $L_1$
+norm over space and angle of the residual~\cite{jake}.  A particular cell volume or face 
+is sampled, and then rejection sampling~\cite{shultis_mc} is used to sample from
+the appropriate distribution on the face or interior of the space-angle cell.  If the
+residual is negative at the sampled coordinates, the weight of the particle history is negative.
+  Tallies are still computed using the simple average of particle weights.
+
+Here, we emphasize the solution $\tilde{I}^{n+1,(m)}$ represents the LDFE projection of the exact Monte Carlo
+solution to the transport problem defined by Eq.~\eqref{eq:ho_base}.  The primary truncation error is in the LD spatial
+representation of the source term $q$.  
+Because $\B L$ in Eq.~\eqref{eq:err_eq} is the continous operator and $\B
+L^{-1}$ represents the analytic inverse of $\B L$~\cite{shultis_mc}, the exact error
+in $\tilde{I}^{n+1,(m)}$ is being estimated with MC each batch; this exact error is then
+projected onto a LDFE space-angle trial space via tallies.  The projection of the intensity is in
+general far more accurate than a standard finite element solution.  In typical IMC calculations, the average
+energy deposition within a cell is computed using a standard path-length volumetric
+flux tally; the zeroth moment of the LDFE projection of ${\epsilon}$ is
+computed using an equivalent tally, preserving the zeroth moment of the error.
+Volumetric flux tallies over each space-angle element are required to represent
+$\tilde{\epsilon}^{(m)}$.  The LD approximation in space is used to relate the
+outflow within a cell to the volumetric moments, eliminating the need for
+face-averaged tallies.  The procedure for representing the solution and tally
+definitions are given in Appendix~\ref{app:tallies}.
 
 The ECMC algorithm is
 \begin{enumerate}
@@ -687,14 +692,15 @@ algorithm) results in essentially the same estimate of the solution as the resid
 formulation used in~\cite{rmc}.  The primary difference is that our method uses an LDFE trial
 space and iterates on the solution estimate by recomputing the residual.
 
-Exponential convergence is obtained because with each batch a
+Exponential convergence is obtained if the error $\epsilon$ is reduced each batch.  With each batch, a
 better estimate of the solution is being used to compute the new residual, decreasing
 the magnitude of the MC residual source at each iteration $m$, relative to the solution
 $I^{n+1}$.  Each MC
 estimate of the moments of $\epsilon$ still has a statistical uncertainty that is
 governed by the standard $1/\sqrt{N}$ convergence rate~\cite{shultis_mc}, for a
 particular source $r^{(m)}$, where $N$ is the number of histories performed.  If the statistical estimate of the projection $\tilde\epsilon$ is not sufficiently
-accurate, then the iterations would diverge. 
+accurate, then the iterations would diverge. It is noted that there is statistical correlation across batches because
+$I^{n+1,(m+1)}$ and $\epsilon^{(m)}$ are correlated through $I^{n+1,(m)}$ and the MC source $r^{(m)}$.  
 %Although th
 %variance in tallies of $\epsilon^{(m)}$ can be estimated with the sample variance of
 %histories, the variance in the moments of $I^{n+1,(m+1)}$ cannot be easily
@@ -733,9 +739,10 @@ particles to stream without absorption to reduce statistical
 variance in the tallies.  The weight of particles is reduced deterministically along
 the path as they stream, with no need to sample a path length.  Because particles are exponentially attenuated, the normalized weight is
 adjusted as $w(x,\mu) = w(x_0,\mu)\exp(-\sigma_t|(x-x_0)/\mu|)$, where $x_0$ is the starting location of the path.  The tallies account
-for the continuously changing weight, as given in Appendix~\ref{app:tallies}. Histories are allowed to stream in this manner for 6 mean free paths
-before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mean free paths allows particles to 
-continuously deposit weight until they reach 0.25\% of their original weight.
+for the continuously changing weight, as given in Appendix~\ref{app:tallies}. Histories are allowed to stream in this manner for 6 mean free paths (mfp))
+before switching to analog path length sampling; this limits the tracking of very small weight histories. The choice of 6 mfp allows particles to 
+continuously deposit weight until they reach 0.25\% of their original weight.  Path lengths are tracked in terms of mfp, so there is no need to resample at material
+interfaces.
 
 As another way to improve efficiency, a modified systematic sampling
 method~\cite{shultis_mc} was used for determining source particle locations.  The goal is
@@ -749,8 +756,7 @@ the sampling algorithm the number of particle histories sampled in each space-an
 is predetermined and proportional to the magnitude of the residual, including face and
 volumetric sources, within that cell.  Then, for the predetermined number of histories
 within a cell, the source location is randomly sampled according to the residual source
-distribution of that cell.  There is a relative probability cutoff of $10^{-4}$ such that
-cells with an insignificant residual will have no histories sampled there. In these
+distribution of that cell.  In cells where the relative magnitude of the residual is on the order of roundoff no particle histories are sampled. In these 
 regions the problem is remaining in equilibrium and the solution is known exactly.  For
 cells that are significant, but have a predetermined number of histories below some preset
 minimum $N_{min}$, the number of histories sampled in that cell is set to $N_{min}$. This
@@ -779,12 +785,14 @@ the simulation for comparison to IMC.
 \section{COMPUTATIONAL RESULTS}
 
 We will compare results of the HOLO method to IMC with
-a source tilting algorithm for two test problems~\cite{jayenne}.  
-Also, we briefly compare performance in Section~\ref{timing}.
-Finally,  we will demonstrate the efficiency advantage of ECMC in our HOLO
-algorithm by comparing the results to the same HOLO algorithm if the ECMC algorithm
-is replaced with a standard Monte Carlo (SMC) simulation.  Results are also given for
-the case of a single ECMC batch, which is similar to a RMC method.
+a source tilting algorithm for two test problems~\cite{jayenne}.  Also, we
+briefly compare performance in Section~\ref{timing}.  For all IMC results, no
+local, discrete diffusion acceleration methods for effective scattering
+(e.g., those in~\cite{imd,ddmc}) are applied.  Finally,  we will demonstrate
+the efficiency advantage of ECMC in our HOLO algorithm by comparing the results
+to the same HOLO algorithm if the ECMC algorithm is replaced with a standard
+Monte Carlo (SMC) simulation.  Results are also given for the case of a single
+ECMC batch, which is similar to a RMC method.
 
 A measure of variance in cell-averaged scalar intensities was
 calculated to provide a quantitative measure of the statistical accuracy of different solution
@@ -835,8 +843,9 @@ relative tolerance of $10^{-6}$ for the change in $\phi(x)$ and $T(x)$ was used 
 the LO newton solver for all results. Radiation energy
 distributions are plotted as an equivalent temperature given by
 $T_r=(\phi/(ac))^{0.25}$.  Cell-averaged quantities are plotted.
-Although isotropic scattering can be included in the LO solver with this method~\cite{ans_2014}, we have only
-considered problems with $\sigma_s = 0$ here.  
+Although isotropic scattering is handled by the LO solver in the algorithm described above, we have only
+considered problems with $\sigma_s = 0$ here.  Results for neutronics with isotropic
+scattering included are given in~\cite{ans_2014}.
 
 \begin{figure}[htb]
     \centering
@@ -881,7 +890,7 @@ large.  No particles are sampled in the equilibrium region out front of the wave
 Table~\ref{marshak_var} compares $\ss$ and the FOM for IMC and the HOLO method, for different
 numbers of histories per time step. The FOM results are normalized to the value for IMC with
 $n=12,000$.  The HOLO method demonstrates less variance
-for the same numbers of histories.  Where as the FOM remains relatively constant for
+for the same numbers of histories, producing FOM values that are two orders of magnitude greater than for IMC.  Where as the FOM remains relatively constant for
 IMC, as $n$ is increased the FOM improves for the HOLO method.  This is a result of
 each batch producing more statistically accurate estimates of the error $\epsilon$,
 which results in an increased convergence rate of $\epsilon$ overall.  
@@ -1009,7 +1018,7 @@ There is a slight increase in the number of
 newton iterations as the time step is increased, but the average cost per history is
 not significantly increased.   Similar to the results
 in~\cite{park}, as the time step size is increased to to 0.005 sh, the IMC method
-increases in cost per time step, particularly for the two material problem. Because
+increases in cost per time step, due to an increase in effective scattering events, particularly for the two material problem. Because
 the cross sections in the the two material problem do not have a $T^{-3}$
 behavior,the cost of the effective scattering cross section in IMC is more apparent,
 resulting in longer simulation times. 
@@ -1168,7 +1177,7 @@ comparable to IMC with source tilting.  The ECMC approach, with initial guesses 
 previous radiation intensity, results in efficient reduction of statistical error and
 allows for particles to be distributed to largely varying regions of the problem.
 The LO solver resolves the non-linearities in the equations resulting in a fully
-implicit time discretization
+implicit time discretization.
 The LO solver
 can accurately and efficiently resolve the solution in diffusive regions, while the HO
 transport solver provides the accuracy of a full transport treatment where necessary. 
@@ -1186,7 +1195,11 @@ that allows for time-continuous MC transport (similar to IMC) is also currently 
 investigated.  This may reduce some of the loss of accuracy in optically thin regions
 due to the time discretization of the transport equation in the HO solver.
 However, greater time accuracy is not of primary concern as this method is intended
-for use in problems dominated by large absorption opacities, where the LO acceleration is critical.  
+for use in problems dominated by large absorption opacities, where the LO
+acceleration is critical. Inclusion of Compton scattering in this algorithm, which would introduce
+additional non-linear dependence through energy exchange with the
+material, is a topic for future research.
+
 
 Future work will also explore the accuracy of the HOLO method, in particular,
 analyzing the optimal number of batches and the benefit of adaptive refinement.  This will likely

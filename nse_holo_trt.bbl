@@ -84,6 +84,12 @@
   \emph{Journal of Computational Physics}, \textbf{199}, 1, pp. 175 -- 204
   (2004).
 
+\bibitem{spanier_mc}
+{R.~Kong} and {J.~Spanier}, \enquote{A new proof of geometric convergence for
+  general transport problems based on sequential correlated sampling methods.}
+  \emph{Journal of Computational Physics}, \textbf{227}, pp. 9762 -- 9777
+  (2008).
+
 \bibitem{shultis_mc}
 {J.~Shultis} and {W.~Dunn}, \emph{{E}xploring {M}onte {C}arlo {M}ethods},
   Academic Press, Burlington, MA 01803 (2012).
