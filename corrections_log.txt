@@ -1,3 +1,14 @@
+
+Dan,
+
+The comments from reviewers were appreciated and helpful.  Each statement is addressed individually below
+as appropriate.  I have also highlighted the changed sections in blue in the attached "marked manuscript"
+
+Regards,
+
+Simon 
+
+
 Ref.:  MS# NSE16-36
 A HIGH-ORDER LOW-ORDER ALGORITHM WITH EXPONENTIALLY-CONVERGENT MONTE CARLO FOR
 THERMAL RADIATIVE TRANSFER
@@ -24,38 +35,50 @@ Dan G. Cacuci
 Editor
 Nuclear Science and Engineering
 
+
+------------------------------------------------------
+
 Reviewers' comments:
 
 Reviewer #1: Paper is well written with only a few suggested grammatical
 changes :
-1. p7 missing eq link
-    Fixed
 
-2. p7 reword the text "estimated exactly", it is either estimated or exact, not
+
+- p7 missing eq link
+
+    Fixed.
+
+- p7 reword the text "estimated exactly", it is either estimated or exact, not
   both
-    Fixed
 
-3. p11 in III.B I suggest reviewing the sentence that starts with " The L and R
+    Fixed.
+
+- p11 in III.B I suggest reviewing the sentence that starts with " The L and R
   moments ..." the ending especially doesn't read well "to simplify moments".
+
     I clarified the sentence.
 
-4. p12 change "of the T" to "of T"
-    Fixed
+- p12 change "of the T" to "of T"
 
-5. p12 I suggest replacing the word "negativities" by "negative values" appears
+    Fixed.
+
+- p12 I suggest replacing the word "negativities" by "negative values" appears
   at least 5 times in article, this is a wrong use of the noun negativity
-    Fixed
 
-6. p17 word missing, "residual source AT each iteration m"
-    Fixed
+    Fixed.
 
-7. p18 what type of equilibrium, I am assuming thermal equilibrium?
-    Fixed
+- p17 word missing, "residual source AT each iteration m"
+
+    Fixed.
+
+- p18 what type of equilibrium, I am assuming thermal equilibrium?
+
+    Fixed.
 
 As for the content, I do have a few general comments for the authors to
 consider
 
-8. p17 The authors discuss the benefits of exponentially converging MC compared
+- p17 The authors discuss the benefits of exponentially converging MC compared
   to standard MC.  I was interested in finding a bit more, but reference 10 is
 not available outside of A&M.  From my understanding, it can be demonstrated
 mathematically that the convergence rate will be exponential if we assume that
@@ -64,18 +87,17 @@ the simple problems analyzed but does it hold on realistic problems where the
 transport operation as a near unity spectral radius?
 
 I have rewritten this section to include more detail on ECMC.  There is
-statisitcal correlations between batches and they are generally necessary for
+statistical correlations between batches, and they are generally necessary for
 the underlying random variables being estimated to converge exponentially. If
 the previous intensity was uncorrelated from the error (both of which are random
 variables with some variance) then the variance of the new intensity would be
 larger than the previous, so no convergence would be obtained.
 The statistics associated with the estimators is in general beyond the scope
 of this work and there are not many recent references. I have added a
-reference to an article on related geometric convergence algorithms and tried
+reference to an article on geometric convergence of related transport
+algorithms (although it is very terse), and tried
 to clarify that correlations exist between batches.  The A&M thesis should be available upon
-request.  The work within that thesis has been submitted to another journal
-article, but has not been accepted.    
-
+request.  
 
 - p17 The discussion on mesh and angular convergence is disjoint since it
   compares to discretization in neutronics problem (angle vs spatial issues),
@@ -107,7 +129,6 @@ This would lead to biases and this statement of 'relative probability' was
 very misleading and incorrectly presented.  I have clarified
 that the cutoff is only to prevent sampling from cells that are in
 equilibrium due to roundoff issues.
-
 
 - The 1-D results are good, but the real key is on how the method will perform
   on realistic problems with real physics (beyond one group).  The authors do
