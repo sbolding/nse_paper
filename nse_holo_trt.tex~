@@ -136,7 +136,8 @@
 \newcommand{\jr}{{j+1/2}}
 \newcommand{\FOM}{\ensuremath{\text{FOM}}}
 \colorlet{shadecolor}{blue!16}
-\newcommand{\sh}[1]{{\color{blue!90} #1}}
+%\newcommand{\sh}[1]{{\color{shadecolor} #1 }}   %used to highlight changes
+\newcommand{\sh}[1]{{#1}}   %highlights are removed
 
 \graphicspath{{figures/}}
 
@@ -556,8 +557,9 @@ standard FE lumping procedure.  The $L$ and $R$ moments are defined the same as 
 preserving the average within a cell, but the relation between the moments and
 the outflow is modified.   For example, for positive $\mu$,
 the outflow is now defined as $\phi^+_{i+1/2} = \mom{\phi}_R^+.$  Because the basis function $b_{R,i}(x)$ is strictly
-positive, the outflow is positive.  This closure is only used
-in cells where \sh{negative intensities} occur.
+positive, the outflow is positive. This closure is only used
+in cells where \sh{negative intensities} occur.  For simplicity, we also use standard FE lumping for
+$T(x)$ and $T^4(x)$ in the material balance equations, e.g., Eq.~\eqref{lo_mat_disc}. 
 
 \subsection{Solving the Non-Linear LO System}
 
