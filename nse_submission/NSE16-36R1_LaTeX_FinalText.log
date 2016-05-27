@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  25 MAY 2016 13:24
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.9.28)  25 MAY 2016 13:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**nse_holo_trt.tex
-(./nse_holo_trt.tex
+**NSE16-36R1_LaTeX_FinalText.tex
+(./NSE16-36R1_LaTeX_FinalText.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 78 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -863,8 +863,8 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 \c@mdf@zref@counter=\count170
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
-(./nse_holo_trt.aux)
-\openout1 = `nse_holo_trt.aux'.
+(./NSE16-36R1_LaTeX_FinalText.aux)
+\openout1 = `NSE16-36R1_LaTeX_FinalText.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 147.
 LaTeX Font Info:    ... okay on input line 147.
@@ -930,13 +930,14 @@ Overfull \hbox (2.52971pt too wide) detected at line 638
  []
 
 [15] [16] [17] [18] [19] [20] [21]
-\openout3 = `nse_holo_trt.fff'.
+\openout3 = `NSE16-36R1_LaTeX_FinalText.fff'.
 
- (nse_holo_trt.fff) [22]
-\openout4 = `nse_holo_trt.ttt'.
+ (NSE16-36R1_LaTeX_FinalText.fff) [22]
+\openout4 = `NSE16-36R1_LaTeX_FinalText.ttt'.
 
- (nse_holo_trt.ttt)
-[23] [24] [25] [26] [27] [28] [29] [30] (./nse_holo_trt.bbl [31
+
+(NSE16-36R1_LaTeX_FinalText.ttt) [23] [24] [25] [26] [27] [28] [29] [30]
+(./NSE16-36R1_LaTeX_FinalText.bbl [31
 
 ] [32]) [33]
 Overfull \hbox (15.03842pt too wide) detected at line 1257
@@ -949,7 +950,7 @@ it/12 I[] [] ;  x[] < x < x[];  ^^V[] \OMS/cmsy/m/n/12 ^^T \OML/cmm/m/it/12 ^^V
 [34
 
 ] [35] AED endfloat: Processing end Figures and Tables [36]
-(./nse_holo_trt.fff
+(./NSE16-36R1_LaTeX_FinalText.fff
 <figures/marshak_mesh_conv.pdf, id=134, 517.71071pt x 409.79662pt>
 File: figures/marshak_mesh_conv.pdf Graphic file (type pdf)
 
@@ -1001,7 +1002,7 @@ Package pdftex.def Info: figures/heated_marshak.pdf used on input line 34.
 
 
  <./figures/heated_marshak.pdf>])
-(./nse_holo_trt.ttt [40
+(./NSE16-36R1_LaTeX_FinalText.ttt [40
 
 
 ] [41
@@ -1033,31 +1034,31 @@ Overfull \hbox (25.98419pt too wide) in paragraph at lines 106--115
 
 [47
 
-]) (./nse_holo_trt.aux) ) 
+]) (./NSE16-36R1_LaTeX_FinalText.aux) ) 
 Here is how much of TeX's memory you used:
  19395 strings out of 493304
- 364123 string characters out of 6139871
- 412031 words of memory out of 5000000
+ 364333 string characters out of 6139871
+ 412045 words of memory out of 5000000
  22422 multiletter control sequences out of 15000+600000
  15740 words of font info for 57 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,13n,55p,10447b,543s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex
-10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/
-share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/t
-exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.
-pfb>
-Output written on nse_holo_trt.pdf (47 pages, 357578 bytes).
+ 56i,13n,55p,10461b,543s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmti12.pfb>
+Output written on NSE16-36R1_LaTeX_FinalText.pdf (47 pages, 357578 bytes).
 PDF statistics:
  492 PDF objects out of 1000 (max. 8388607)
  222 compressed objects within 3 object streams
